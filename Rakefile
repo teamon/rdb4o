@@ -2,16 +2,16 @@ require 'rubygems'
 require 'rake/gempackagetask'
 
 PLUGIN = "rdb4o"
-NAME = "rdb4o"
-VERSION = "0.0.1"
+GEM_NAME = "rdb4o"
+GEM_VERSION = "0.0.1"
 AUTHOR = "Kacper Cieśla"
 EMAIL = "kacper.ciesla@gmail.com"
 HOMEPAGE = "http://"
 SUMMARY = "Small library for accessing db4o from jruby"
 
 spec = Gem::Specification.new do |s|
-  s.name = NAME
-  s.version = VERSION
+  s.name = GEM_NAME
+  s.version = GEM_VERSION
   s.platform = 'jruby'
   s.has_rdoc = true
   #s.extra_rdoc_files = ["README", "LICENSE", 'TODO']
@@ -22,11 +22,18 @@ spec = Gem::Specification.new do |s|
   s.homepage = HOMEPAGE  
   s.require_path = 'lib'
   s.autorequire = PLUGIN
-  s.files = %w(LICENSE README Rakefile TODO) +  Dir.glob("{lib}/**/**/**/**/*")
+  s.files = %w(LICENSE README Rakefile TODO) +  Dir.glob("{lib,spec}/**/*")
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
+end
+
+desc "Create a gemspec file"
+task :gemspec do
+  File.open("#{GEM_NAME}.gemspec", "w") do |file|
+    file.puts spec.to_ruby
+  end
 end
 
 namespace :jruby do
@@ -42,7 +49,7 @@ namespace :spec do
     specs = Dir[File.dirname(__FILE__) + "/spec/**/*_spec.rb"]
     sh %{jruby -S spec -O spec/spec.opts #{specs.join(" ")}}
   end
-  
+
   desc "Compile spec models"
   task :compile_models do
     require 'lib/rdb4o'
