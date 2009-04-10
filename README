@@ -9,3 +9,16 @@ Lots of thanks for Marcin Mielżyński (lopex) for helping me with this.
 
 It was mainly used for merd_rdb4o, so you may want to take a look at http://github.com/comboy/merb_rdb4o
 
+
+Instalation
+===============
+jruby -S gem install rdb4o
+
+Usage
+===============
+
+Connect to database
+require 'rubygems'
+require 'rdb4o'
+
+Rdb4o::Database.setup :dbfile => 'simple.db'

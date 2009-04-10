@@ -2,7 +2,7 @@ $: << File.dirname(__FILE__)
 
 include Java
 
-$CLASSPATH << "#{File.dirname(__FILE__)}/java"
+$CLASSPATH << "#{File.dirname(File.expand_path(__FILE__))}/java"
 
 begin
   require 'java/db4o.jar'
@@ -29,3 +29,4 @@ end
 
 require 'rdb4o/database'
 require 'rdb4o/model'
+require 'rdb4o/tools'

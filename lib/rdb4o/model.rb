@@ -1,10 +1,6 @@
 module Rdb4o
   
   module Model
-    # To let others know where to find Rdb4oBase.class
-    def self.base_classpath
-      "#{File.dirname(File.expand_path(__FILE__))}/../java"
-    end
     
     def self.included(base) #:nodoc:
        base.extend(ClassMethods)
