@@ -32,8 +32,6 @@ module Rdb4o
           class_name = class_file.split('/')[-1].split('.')[0]
           # FIXME: EVAL = EVIL !!!
           # should be some const_get
-          puts "Java::#{package}::#{class_name}".inspect
-          puts eval("Java::#{package}::#{class_name}").inspect
           model_class = eval("Java::#{package}::#{class_name}")
           Object.const_set(class_name, model_class)
           Rdb4o.set_model(model_class)

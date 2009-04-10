@@ -22,7 +22,7 @@ module Rdb4o
   # Includes Rdb4o::Base module into given class
   def self.set_model(some_class)     
    some_class = Object.const_get(some_class) if some_class.class == 'String'
-   some_class.class_eval "include Rdb4o::Model"
+   some_class.send(:include, Rdb4o::Model)
   end  
   
 end
