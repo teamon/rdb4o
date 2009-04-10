@@ -37,6 +37,12 @@ namespace :jruby do
 end
 
 namespace :spec do
+  desc "Run specs"
+  task :run do
+    specs = Dir[File.dirname(__FILE__) + "/spec/**/*_spec.rb"]
+    sh %{jruby -S spec -O spec/spec.opts #{specs.join(" ")}}
+  end
+  
   desc "Compile spec models"
   task :compile_models do
     require 'lib/rdb4o'
