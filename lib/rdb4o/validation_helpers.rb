@@ -10,8 +10,22 @@ module Rdb4o
         msg = "is not #{range} characters"
         range = (range..range)
       end
-      validatable_attributes(atts, opts) do |attr, value, message| 
+      validatable_attributes(atts, opts) do |attr, value, message|
         (message || msg) unless value && range.include?(value.length)
+      end
+    end
+    
+    # Check that the attribute values are not longer than the given max length.
+    def validate_max_length(max, atts, opts={})
+      validatable_attributes(atts, opts) do |attr, value, message|
+        (message || "is longer than #{max} characters") unless value && value.length <= max
+      end
+    end
+
+    # Check that the attribute values are not shorter than the given min length.
+    def validate_min_length(min, atts, opts={})
+      validatable_attributes(atts, opts) do |attr, value, message|
+        (message || "is shorter than #{min} characters") unless value && value.length >= min
       end
     end
     

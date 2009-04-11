@@ -138,23 +138,23 @@ describe Rdb4o::ValidationHelpers do
   # 
 
   # 
-  # specify "should support validates_max_length" do
-  #   Person.set_validations{validates_max_length(5, :name)}
-  #   @person.should_not be_valid
-  #   @person.name = '12345'
-  #   @person.should be_valid
-  #   @person.name = '123456'
-  #   @person.should_not be_valid
-  # end
-  # 
-  # specify "should support validates_min_length" do
-  #   Person.set_validations{validates_min_length(5, :name)}
-  #   @person.should_not be_valid
-  #   @person.name = '12345'
-  #   @person.should be_valid
-  #   @person.name = '1234'
-  #   @person.should_not be_valid
-  # end
+  it "should support validate_max_length" do
+    Person.set_validations { validate_max_length(5, :name) }
+    @person.should_not be_valid
+    @person.name = '12345'
+    @person.should be_valid
+    @person.name = '123456'
+    @person.should_not be_valid
+  end
+  
+  it "should support validate_min_length" do
+    Person.set_validations { validate_min_length(5, :name) }
+    @person.should_not be_valid
+    @person.name = '12345'
+    @person.should be_valid
+    @person.name = '1234'
+    @person.should_not be_valid
+  end
   # 
   # specify "should support validates_not_string" do
   #   Person.set_validations{validates_not_string(:name)}
