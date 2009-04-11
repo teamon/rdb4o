@@ -45,15 +45,12 @@ module Rdb4o
       # Returns all models matching conditions hash *OR* proc
       def all(conditions = {}, &proc)
         if proc
-          result = self.database.query Finder.new(proc, self)
+          self.database.query Finder.new(proc, self)
         elsif !conditions.empty?
-          object = self.new(conditions)
-          result = self.database.get(object)
+          self.database.get(self.new conditions)
         else
-          result = self.database.get(self.java_class)
-        end
-
-        result.to_a
+          self.database.get(self.java_class)
+        end.to_a
       end
 
       # FIXME - this is LAME!
@@ -78,6 +75,23 @@ module Rdb4o
       def database(name = :default)
         Rdb4o::Database[name]
       end
+
+      # macros
+
+      def has_many(name, opts = {})
+        options = {
+          :class_name => name.to_s.singular.capitalize,
+          :key => Extlib::Inflection.demodulize(self).downcase
+        }.merge(opts)
+
+        class_eval <<-METHODS
+          def #{name}
+            #{options[:class_name]}.all(:#{options[:key]} => self)
+          end
+        METHODS
+      end
+
+
     end
 
     module InstanceMethods

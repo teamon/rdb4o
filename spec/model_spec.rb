@@ -9,6 +9,7 @@ describe Rdb4o::Model do
   before(:each) do
     Person.destroy_all
     Cat.destroy_all
+    Dog.destroy_all
   end
 
   describe "Class Methods" do
@@ -123,4 +124,47 @@ describe Rdb4o::Model do
 
   end
 
+  describe "One to may" do
+    it "should work without parameters" do
+      class Person
+        has_many :cats
+      end
+
+      john = Person.create(:name => 'John')
+      john.cats.size.should == 0
+
+      foo = Cat.create(:name => 'Foo', :person => john)
+      foo.person.should == john
+      john.cats.size.should == 1
+      john.cats.should == [foo]
+    end
+
+    it "should work with :key parameter" do
+      class Person
+        has_many :dogs, :key => :owner
+      end
+
+      john = Person.create(:name => 'John')
+      john.dogs.size.should == 0
+
+      foo = Dog.create(:name => 'Foo', :owner => john)
+      foo.owner.should == john
+      john.dogs.size.should == 1
+      john.dogs.should == [foo]
+    end
+
+    it "should work with :class_name parameter" do
+      class Person
+        has_many :pets, :class_name => Cat
+      end
+
+      john = Person.create(:name => 'John')
+      john.pets.size.should == 0
+
+      foo = Cat.create(:name => 'Foo', :person => john)
+      foo.person.should == john
+      john.pets.size.should == 1
+      john.pets.should == [foo]
+    end
+  end
 end

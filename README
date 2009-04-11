@@ -22,3 +22,8 @@ require 'rubygems'
 require 'rdb4o'
 
 Rdb4o::Database.setup :dbfile => 'simple.db'
+
+
+blah blah
+
+example: http://gist.github.com/93771

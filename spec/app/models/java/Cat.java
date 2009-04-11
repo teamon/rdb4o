@@ -10,7 +10,7 @@ public class Cat extends Rdb4oModel {
 	private String name;
 	private String color;
 	private int age;
-	private Person owner;
+	private Person person;
           
   public void setName(String name) { this.name = name; }
   public String getName() { return this.name; }
@@ -21,6 +21,6 @@ public class Cat extends Rdb4oModel {
   public void setAge(int age) { this.age = age; }
   public int getAge() { return this.age; }
 
-  public void setOwner(Person owner) { this.owner = owner; }
-  public Person getOwner() { return this.owner; }
+  public void setPerson(Person person) { this.person = person; }
+  public Person getPerson() { return this.person; }
 }
