@@ -1,7 +1,6 @@
 $: << File.dirname(__FILE__)
 
 include Java
-
 $CLASSPATH << "#{File.dirname(File.expand_path(__FILE__))}/java"
 
 begin
@@ -13,6 +12,8 @@ rescue LoadError
     raise "Rdb4o ERROR: Could not find db4objects library, put it in my lib/java dir, or try setting environment variable DB4O_JAR to db4objects jar location (You can get it at www.db4o.com)" 
   end
 end
+
+require 'extlib'
 
 # Rdb4o
 

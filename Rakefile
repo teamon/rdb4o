@@ -23,6 +23,7 @@ spec = Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.autorequire = PLUGIN
   s.files = %w(LICENSE README Rakefile TODO) +  Dir.glob("{lib,spec}/**/*")
+  s.add_dependency('extlib', '>= 0.9')
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
