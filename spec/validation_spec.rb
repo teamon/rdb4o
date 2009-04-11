@@ -77,14 +77,36 @@ describe Rdb4o::Model::Errors do
   end
 end
 
-# describe Rdb4o::Validation do
-#   
-#   before(:all) do
-#     Rdb4o::Database.setup(:dbfile => "validation_spec.db")
-#   end
-# 
-#   it "should respond to #valid?" do
-#     Person.new.should respond_to(:valid?)
-#   end
-# 
-# end
+describe Rdb4o::Model do
+  before do
+    # class Person (see app/models/java/Person.java)
+    class Person
+      def validate
+        errors.add(:age, 'too low') if age < 18
+      end
+    end
+    
+    @person = Person.new
+    
+  end
+  
+  it "should supply a #valid? method that returns true if validations pass" do
+    @person.age = 10
+    @person.should_not be_valid
+    @person.age = 20
+    @person.should be_valid
+  end
+
+  it "should provide an errors object" do
+    @person.age = 20
+    @person.should be_valid
+    @person.errors.should be_empty
+
+    @person.age = 10
+    @person.should_not be_valid
+    @person.errors[:age].should == ['too low']
+    @person.errors.on(:age).should == ['too low']
+    @person.errors[:blah].should be_empty
+  end
+end
+
