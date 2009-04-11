@@ -76,6 +76,7 @@ module Rdb4o
       # Saves object to database
       def save
         self.class.database.set(self)
+        true
       end
       
       # Deletes object form database

@@ -76,7 +76,7 @@ describe Rdb4o::Model do
       
       john = Person.new(:name => 'John')
       john.new?.should == true
-      john.save
+      john.save.should == true
       john.new?.should == false
       
       Person.all.size.should == 1
