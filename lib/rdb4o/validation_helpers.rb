@@ -90,14 +90,13 @@ module Rdb4o
     # the block.  If the block returns anything except nil or false, add it as
     # an error message for that attributes.
     def validatable_attributes(atts, opts)
-      am, an, ab, m = opts.values_at(:allow_missing, :allow_nil, :allow_blank, :message)
-      Array(atts).each do |a|
-        next if am && !values.has_key?(a)
-        v = send(a)
-        next if an && v.nil?
-        next if ab && v.respond_to?(:blank?) && v.blank?
-        if message = yield(a, v, m)
-          errors.add(a, message)
+      allow_nil, allow_blank, message = opts.values_at(:allow_nil, :allow_blank, :message)
+      Array(atts).each do |attr|
+        value = send(attr)
+        next if allow_nil && value.nil?
+        next if allow_blank && value.respond_to?(:blank?) && value.blank?
+        if msg = yield(attr, value, message)
+          errors.add(attr, msg)
         end
       end
     end
