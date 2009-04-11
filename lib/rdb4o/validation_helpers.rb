@@ -1,3 +1,5 @@
+# This is mostly port of sequel validation helpers
+
 module Rdb4o
   module ValidationHelpers
     
@@ -38,8 +40,15 @@ module Rdb4o
     
     # Check attribute value(s) is included in the given set.
     def validate_includes(set, atts, opts={})
-      validatable_attributes(atts, opts) do |attr, value, message| 
+      validatable_attributes(atts, opts) do |attr, value, message|
         (message || "is not in range or set: #{set.inspect}") unless set.include?(value)
+      end
+    end
+    
+    # Check attribute value(s) is not considered blank by the database, but allow false values.
+    def validate_presence(atts, opts={})
+      validatable_attributes(atts, opts) do |attr, value, message|
+        (message || "is not present") if value.blank?
       end
     end
     

@@ -194,23 +194,29 @@ describe Rdb4o::ValidationHelpers do
   #   @person.name = '.0123'
   # end
   # 
-  # specify "should support validates_presence" do
-  #   Person.set_validations{validates_presence(:name)}
-  #   @person.should_not be_valid
-  #   @person.name = ''
-  #   @person.should_not be_valid
-  #   @person.name = 1234
-  #   @person.should be_valid
-  #   @person.name = nil
-  #   @person.should_not be_valid
-  #   @person.name = true
-  #   @person.should be_valid
-  #   @person.name = false
-  #   @person.should be_valid
-  #   @person.name = Time.now
-  #   @person.should be_valid
-  # end
-  # 
+  
+  it "should support validates_presence for String attribute" do
+    Person.set_validations { validate_presence(:name) }
+    @person.should_not be_valid
+    @person.name = ''
+    @person.should_not be_valid
+    @person.name = nil
+    @person.should_not be_valid
+    @person.name = "blah"
+    @person.should be_valid
+  end
+  
+  it "should support validates_presence for int attribute" do    
+    Person.set_validations { validate_presence(:age) }
+    @person.should be_valid # age default to 0
+    # @person.age = nil # impossible "primitives do not accept null"
+    # @person.should_not be_valid
+    @person.age = 1234
+    @person.should be_valid
+    @person.age = 0
+    @person.should be_valid
+  end
+
   # it "should support validates_unique with a single attribute" do
   #   Person.columns(:id, :username, :password)
   #   Person.set_dataset MODEL_DB[:items]
