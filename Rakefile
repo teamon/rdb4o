@@ -46,8 +46,13 @@ end
 namespace :spec do
   desc "Run specs"
   task :run do
-    specs = Dir[File.dirname(__FILE__) + "/spec/**/*_spec.rb"]
-    sh %{jruby -S spec -O spec/spec.opts #{specs.join(" ")}}
+    if ENV['file']
+      specs = File.dirname(__FILE__) + "/spec/#{ENV['file']}_spec.rb"
+    else
+      specs = Dir[File.dirname(__FILE__) + "/spec/**/*_spec.rb"].join(" ")
+    end
+    
+    sh %{jruby -S spec -O spec/spec.opts #{specs}}
   end
 
   desc "Compile spec models"

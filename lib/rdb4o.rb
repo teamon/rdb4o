@@ -29,4 +29,5 @@ end
 
 require 'rdb4o/database'
 require 'rdb4o/model'
+require 'rdb4o/validation'
 require 'rdb4o/tools'
