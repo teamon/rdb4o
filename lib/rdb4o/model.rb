@@ -64,6 +64,8 @@ module Rdb4o
     end
     
     module InstanceMethods
+      include ValidationHelpers
+      
       
       # Update object attributes
       def update(attrs = {})
