@@ -45,7 +45,7 @@ module Rdb4o
     
     # Close/disconnect database    
     def self.close(name = :default)
-      @databases[name].close
+      @databases[name].close if @databases[name]
     end
   end
 end
