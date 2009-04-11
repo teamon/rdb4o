@@ -73,9 +73,7 @@ describe Rdb4o::ValidationHelpers do
   # end
   # 
   it "should support validates_exact_length" do
-    Person.set_validations {
-      validates_exact_length(3, :name)
-    }
+    Person.set_validations { validates_exact_length(3, :name) }
     @person.should_not be_valid
     @person.name = '123'
     @person.should be_valid
@@ -84,14 +82,14 @@ describe Rdb4o::ValidationHelpers do
     @person.name = '1234'
     @person.should_not be_valid
   end
-  # 
-  # specify "should support validate_format" do
-  #   Person.set_validations{validates_format(/.+_.+/, :name)}
-  #   @person.name = 'abc_'
-  #   @person.should_not be_valid
-  #   @person.name = 'abc_def'
-  #   @person.should be_valid
-  # end
+  
+  it "should support validate_format" do
+    Person.set_validations { validates_format(/.+_.+/, :name) }
+    @person.name = 'abc_'
+    @person.should_not be_valid
+    @person.name = 'abc_def'
+    @person.should be_valid
+  end
   # 
   # specify "should support validates_includes with an array" do
   #   Person.set_validations{validates_includes([1,2], :name)}
