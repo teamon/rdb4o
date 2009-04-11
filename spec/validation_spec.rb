@@ -6,14 +6,14 @@ describe Rdb4o::Model::Errors do
   before do
     @errors = Rdb4o::Model::Errors.new
   end
-  
+
   it "should be clearable using #clear" do
     @errors.add(:a, 'b')
     @errors.should == {:a=>['b']}
     @errors.clear
     @errors.should == {}
   end
-  
+
   it "should be empty if no errors are added" do
     @errors.should be_empty
     @errors[:blah] << "blah"
@@ -85,11 +85,11 @@ describe Rdb4o::Model do
         errors.add(:age, 'too low') if age < 18
       end
     end
-    
+
     @person = Person.new
-    
+
   end
-  
+
   it "should supply a #valid? method that returns true if validations pass" do
     @person.age = 10
     @person.should_not be_valid
@@ -113,14 +113,14 @@ end
 describe "Model#save" do
   before(:all) do
     Rdb4o::Database.setup(:dbfile => "validation_spec.db")
-    
+
     class Person
       def validate
         errors.add(:age, 'blah') unless age == 5
       end
     end
   end
-  
+
   before do
     Person.destroy_all
     @person = Person.new(:age => 1)
@@ -131,19 +131,18 @@ describe "Model#save" do
     @person.should_not be_valid
     @person.save.should == false
     Person.all.should be_empty
-    
+
     @person.age = 5
     @person.should be_valid
     @person.save.should == true
     Person.all.size.should == 1
   end
-  
+
   it "should skip validations if the :validate=>false option is used" do
     Person.all.should be_empty
     @person.should_not be_valid
     @person.save(:validate => false)
     Person.all.size.should == 1
   end
-    
-end
 
+end

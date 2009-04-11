@@ -62,3 +62,40 @@ namespace :spec do
     Rdb4o::Tools.compile_models(File.dirname(__FILE__) + "/spec/app/models/java")
   end
 end
+
+
+# development
+
+desc 'Strip trailing whitespace from source files'
+task :strip do
+  Dir["#{File.dirname(__FILE__)}/**/*.rb"].each do |path|
+    content = File.open(path, 'r') do |f|
+      f.map { |line| line.gsub(/\G\s/, ' ').rstrip + "\n" }.join.rstrip
+    end + "\n"
+    
+    if File.read(path) != content
+      puts "Stripping whitepsace from #{path}"
+      File.open(path, 'w') {|f| f.write content}
+    end
+  end
+  # Pathname.getwd.find do |path|
+  #   # skip unreadable, unwritable, .git and .svn directories
+  #   Find.prune if (path.directory? && (!path.readable? || !path.writable?)) || %w[ .git .svn ].include?(path.basename.to_s)
+  # 
+  #   # skip non-files, zero-sized files, files not matching specific names, or files without the matching extensions
+  #   next unless path.file? && path.size? && (files.include?(path.basename.to_s) || extensions.include?(path.extname[1..-1]))
+  # 
+  #   # replace leading whitespace (including tabs) with spaces
+  #   # replace trailing whitespace with a newline
+  #   document = path.open('r') do |f|
+  #     f.collect { |line| line.gsub(/\G\s/, ' ').rstrip + "\n" }.join.rstrip
+  #   end + "\n"
+  # 
+  #   # skip the file if it was not modified
+  #   next if Zlib.crc32(document) == Zlib.crc32(path.read)
+  # 
+  #   puts "Stripping whitepsace from #{path}"
+  #   path.open('w') { |f| f.write document }
+  # end
+end
+

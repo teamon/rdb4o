@@ -4,7 +4,7 @@ module Rdb4o
     def self.base_classpath
       "#{File.dirname(File.expand_path(__FILE__))}/../java"
     end
-    
+
     def self.compile_models(path)
       class_files = []
       puts "Looking for .java files in #{path}"
@@ -14,8 +14,8 @@ module Rdb4o
         #puts "  #{command}"
         class_files << class_file
       end
-      
-      unless class_files.empty?      
+
+      unless class_files.empty?
         command = "javac -cp #{base_classpath} #{class_files.join(' ')}"
         puts command
         puts `#{command}`
@@ -24,7 +24,7 @@ module Rdb4o
         puts "No .java files found"
       end
     end
-    
+
     def self.load_models(path)
       Dir.glob("#{path}/*.java").each do |class_file|
         if File.exists? "#{class_file.split('.')[0]}.class"
@@ -38,7 +38,7 @@ module Rdb4o
         end
       end
     end
-    
+
     def self.compile_and_load_models(path)
       compile_models(path)
       load_models(path)

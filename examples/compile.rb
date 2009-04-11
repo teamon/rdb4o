@@ -3,7 +3,7 @@ require 'rubygems'
 begin
   require 'rdb4o'
 rescue LoadError => e
-  raise LoadError.new "#{e.message}\nrun $ jruby -S rake jruby:install first" 
+  raise LoadError.new "#{e.message}\nrun $ jruby -S rake jruby:install first"
 end
 
 $CLASSPATH << File.dirname(__FILE__)

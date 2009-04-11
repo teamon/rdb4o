@@ -1,6 +1,6 @@
 module Rdb4o
   module Model
-    
+
     # This is taken from sequel
     class Errors < Hash
       ATTRIBUTE_JOINER = ' and '
@@ -19,16 +19,16 @@ module Rdb4o
       def count
         values.inject(0){|m, v| m += v.length}
       end
-      
+
       # Returns an array of fully-formatted error messages.
       def full_messages
-        inject([]) do |m, kv| 
+        inject([]) do |m, kv|
           att, errors = *kv
           errors.each {|e| m << "#{Array(att).join(ATTRIBUTE_JOINER)} #{e}"}
           m
         end
       end
-      
+
       # Returns the array of errors for the given attribute, or nil
       # if there are no errors for the attribute.
       def on(att)
