@@ -22,6 +22,13 @@ module Rdb4o
       end
     end
     
+    # Check that the attribute values length is in the specified range.
+    def validate_length_range(range, atts, opts={})
+      validatable_attributes(atts, opts) do |attr, value, message| 
+        (message || "is outside the allowed range") unless value && range.include?(value.length)
+      end
+    end
+    
     protected
     
     # Skip validating any attribute that matches one of the allow_* options.

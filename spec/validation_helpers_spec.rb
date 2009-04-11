@@ -83,6 +83,17 @@ describe Rdb4o::ValidationHelpers do
     @person.should_not be_valid
   end
   
+  it "should support validates_length_range" do
+    Person.set_validations { validate_length_range(2..5, :name) }
+    @person.should_not be_valid
+    @person.name = '12345'
+    @person.should be_valid
+    @person.name = '1'
+    @person.should_not be_valid
+    @person.name = '123456'
+    @person.should_not be_valid
+  end
+  
   it "should support validate_format" do
     Person.set_validations { validate_format(/.+_.+/, :name) }
     @person.name = 'abc_'
@@ -114,7 +125,7 @@ describe Rdb4o::ValidationHelpers do
     @person.age = 5
     @person.should_not be_valid    
   end
-  # 
+
   # specify "should supports validates_integer" do
   #   Person.set_validations{validates_integer(:name)}
   #   @person.name = 'blah'
@@ -125,16 +136,7 @@ describe Rdb4o::ValidationHelpers do
   #   @person.should_not be_valid
   # end
   # 
-  # specify "should support validates_length_range" do
-  #   Person.set_validations{validates_length_range(2..5, :name)}
-  #   @person.should_not be_valid
-  #   @person.name = '12345'
-  #   @person.should be_valid
-  #   @person.name = '1'
-  #   @person.should_not be_valid
-  #   @person.name = '123456'
-  #   @person.should_not be_valid
-  # end
+
   # 
   # specify "should support validates_max_length" do
   #   Person.set_validations{validates_max_length(5, :name)}
