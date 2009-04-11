@@ -6,6 +6,11 @@ describe Rdb4o::Model do
     Rdb4o::Database.setup(:dbfile => "model_spec.db")
   end
 
+  before(:each) do
+    Person.destroy_all
+    Cat.destroy_all
+  end
+
   describe "Class Methods" do
     # it "#[]"
 
@@ -33,6 +38,17 @@ describe Rdb4o::Model do
       Person.all {|p| p.name == 'Jimmy'}.size.should == 2
       Person.all {|p| p.name == 'Tom'}.size.should == 1
       Person.all {|p| p.age > 38}.size.should == 2
+    end
+
+    it "#all should return only objects that match class" do
+      Person.create(:name => 'Kyle')
+      Person.create(:name => 'Stan')
+      Person.create(:name => 'Kenny')
+      Cat.create(:name => 'Foo')
+      Cat.create(:name => 'Bar')
+
+      Person.all { true }.size.should == 3
+      Cat.all { true }.size.should == 2
     end
 
     it "#get_by_db4o_id" do
@@ -85,9 +101,9 @@ describe Rdb4o::Model do
 
     it "#destroy should delete object form database" do
       john = Person.create(:name => 'John')
-      Person.all.size.should == 2
-      john.destroy
       Person.all.size.should == 1
+      john.destroy
+      Person.all.size.should == 0
     end
 
 

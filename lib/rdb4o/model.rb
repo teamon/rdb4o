@@ -8,9 +8,23 @@ module Rdb4o
     end
 
     class Finder < Java::com::rdb4o::RubyPredicate
-      attr_accessor :proc
+      attr_accessor :proc, :klazz
       def rubyMatch(obj)
-        @proc.call obj
+        if klazz.nil? || obj.is_a?(klazz)
+          !!@proc.call(obj) # make sure we pass boolean
+        else
+          false
+        end
+      end
+
+      class << self
+        alias :orig_new :new
+        def new(proc, klazz = nil)
+          finder = Finder.orig_new
+          finder.proc = proc
+          finder.klazz = klazz
+          finder
+        end
       end
     end
 
@@ -31,12 +45,9 @@ module Rdb4o
       # Returns all models matching conditions hash *OR* proc
       def all(conditions = {}, &proc)
         if proc
-          finder = Finder.new
-          finder.proc = proc
-          result = self.database.query(finder)
+          result = self.database.query Finder.new(proc, self)
         elsif !conditions.empty?
-          object = self.new
-          object.update(conditions)
+          object = self.new(conditions)
           result = self.database.get(object)
         else
           result = self.database.get(self.java_class)
