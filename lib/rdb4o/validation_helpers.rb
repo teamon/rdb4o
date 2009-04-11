@@ -2,16 +2,23 @@ module Rdb4o
   module ValidationHelpers
     
     # Check that the attribute values are the given exact length.
-    def validates_exact_length(exact, atts, opts={})
+    def validate_exact_length(exact, atts, opts={})
       validatable_attributes(atts, opts) do |attr, value, message| 
         (message || "is not #{exact} characters") unless value && value.length == exact
       end
     end
     
     # Check the string representation of the attribute value(s) against the regular expression pattern.
-    def validates_format(pattern, atts, opts={})
+    def validate_format(pattern, atts, opts={})
       validatable_attributes(atts, opts) do |attr, value, message|
         (message || 'is invalid') unless value.to_s =~ pattern
+      end
+    end
+    
+    # Check attribute value(s) is included in the given set.
+    def validate_includes(set, atts, opts={})
+      validatable_attributes(atts, opts) do |attr, value, message| 
+        (message || "is not in range or set: #{set.inspect}") unless set.include?(value)
       end
     end
     

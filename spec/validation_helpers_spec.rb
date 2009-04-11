@@ -72,8 +72,8 @@ describe Rdb4o::ValidationHelpers do
   #   @person.should be_valid
   # end
   # 
-  it "should support validates_exact_length" do
-    Person.set_validations { validates_exact_length(3, :name) }
+  it "should support validate_exact_length" do
+    Person.set_validations { validate_exact_length(3, :name) }
     @person.should_not be_valid
     @person.name = '123'
     @person.should be_valid
@@ -84,38 +84,36 @@ describe Rdb4o::ValidationHelpers do
   end
   
   it "should support validate_format" do
-    Person.set_validations { validates_format(/.+_.+/, :name) }
+    Person.set_validations { validate_format(/.+_.+/, :name) }
     @person.name = 'abc_'
     @person.should_not be_valid
     @person.name = 'abc_def'
     @person.should be_valid
   end
-  # 
-  # specify "should support validates_includes with an array" do
-  #   Person.set_validations{validates_includes([1,2], :name)}
-  #   @person.should_not be_valid
-  #   @person.name = 1
-  #   @person.should be_valid
-  #   @person.name = 1.5
-  #   @person.should_not be_valid
-  #   @person.name = 2
-  #   @person.should be_valid    
-  #   @person.name = 3
-  #   @person.should_not be_valid 
-  # end
-  # 
-  # specify "should support validates_includes with a range" do
-  #   Person.set_validations{validates_includes(1..4, :name)}
-  #   @person.should_not be_valid
-  #   @person.name = 1
-  #   @person.should be_valid
-  #   @person.name = 1.5
-  #   @person.should be_valid
-  #   @person.name = 0
-  #   @person.should_not be_valid
-  #   @person.name = 5
-  #   @person.should_not be_valid    
-  # end
+  
+  it "should support validate_includes with an array" do
+    Person.set_validations { validate_includes([1,2], :age) }
+    @person.should_not be_valid
+    @person.age = 1
+    @person.should be_valid
+    @person.age = 2
+    @person.should be_valid    
+    @person.age = 3
+    @person.should_not be_valid 
+  end
+
+  it "should support validates_includes with a range" do
+    Person.set_validations { validate_includes(1..4, :age) }
+    @person.should_not be_valid
+    @person.age = 1
+    @person.should be_valid
+    @person.age = 2
+    @person.should be_valid
+    @person.age = 0
+    @person.should_not be_valid
+    @person.age = 5
+    @person.should_not be_valid    
+  end
   # 
   # specify "should supports validates_integer" do
   #   Person.set_validations{validates_integer(:name)}
