@@ -20,7 +20,7 @@ Spec::Runner.configure do |config|
   
   config.after(:all) do
     Rdb4o::Database.close
-    Dir["*.db4o"].each {|path| File.delete(path) }
+    Dir["*.db"].each {|path| File.delete(path) }
   end
 end
 

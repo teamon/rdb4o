@@ -45,6 +45,12 @@ module Rdb4o
         result.to_a
       end
       
+      # FIXME - this is LAME!
+      def count(conditions = {}, &proc)
+        puts "I AM LAME COUNT METHOD PLEASE FIX ME"
+        all(conditions, &proc).size
+      end
+      
       # Destroys all objects
       def destroy_all
         all.each {|o| o.destroy}

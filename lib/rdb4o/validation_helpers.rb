@@ -52,6 +52,37 @@ module Rdb4o
       end
     end
     
+    # Checks that there are no duplicate values in the database for the given
+    # attributes.  Pass an array of fields instead of multiple
+    # fields to specify that the combination of fields must be unique,
+    # instead of that each field should have a unique value.
+    #
+    # This means that the code:
+    #   validate_unique([:column1, :column2])
+    # validates the grouping of column1 and column2 while
+    #   validate_unique(:column1, :column2)
+    # validates them separately.
+    #
+    # You should also add a unique index in the
+    # database, as this suffers from a fairly obvious race condition.
+    #
+    # This validation does not respect the :allow_* options that the other validations accept,
+    # since it can deals with multiple attributes at once.
+    #
+    # Possible Options:
+    # * :message - The message to use (default: 'is already taken')
+    def validate_unique(*atts)
+      opts = (atts.pop if atts.last.is_a?(Hash)) || {}
+      if atts.first.is_a?(Array) # ([:one, :two])
+        message = opts[:message] || "#{atts.first.size==1 ? 'is' : 'are'} already taken"
+        params = atts.first.inject({}) {|p,a| p[a] = self.send(a); p}
+        # add something like params[:id] != self.id (maby via proc? or something)
+        errors.add(atts, message) unless self.class.count(params) == 0
+      else # (:one, :two)
+        atts.each {|a| validate_unique([a], opts) }
+      end
+    end
+    
     protected
     
     # Skip validating any attribute that matches one of the allow_* options.
