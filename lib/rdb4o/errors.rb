@@ -29,7 +29,6 @@ module Rdb4o
         end
       end
       
-      
       # Returns the array of errors for the given attribute, or nil
       # if there are no errors for the attribute.
       def on(att)

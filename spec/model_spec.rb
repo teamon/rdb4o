@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 describe Rdb4o::Model do
   
   before(:all) do
-    Rdb4o::Database.setup(:dbfile => "model_spec.db4o")
+    Rdb4o::Database.setup(:dbfile => "model_spec.db")
   end
     
   describe "Class Methods" do

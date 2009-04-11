@@ -28,9 +28,6 @@ module Rdb4o
 end
 
 require 'rdb4o/database'
+require 'rdb4o/errors'
 require 'rdb4o/model'
 require 'rdb4o/tools'
-
-
-require 'rdb4o/validation/validation'
-require 'rdb4o/validation/errors'

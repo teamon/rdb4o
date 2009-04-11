@@ -45,6 +45,11 @@ module Rdb4o
         result.to_a
       end
       
+      # Destroys all objects
+      def destroy_all
+        all.each {|o| o.destroy}
+      end
+      
       def get_by_db4o_id(id)
         obj = database.ext.getByID(id.to_i)
         # Activate depth should be configurable
@@ -74,7 +79,8 @@ module Rdb4o
       end
       
       # Saves object to database
-      def save
+      def save(opts = {})
+        return false if opts[:validate] != false && !valid?
         self.class.database.set(self)
         true
       end
@@ -86,6 +92,24 @@ module Rdb4o
       
       def db4o_id
         self.class.database.ext.getID(self)
+      end
+      
+      # Returns the validation errors associated with this object.
+      def errors
+        @errors ||= Errors.new
+      end
+
+      # Validates the object.  If the object is invalid, errors should be added
+      # to the errors attribute.  By default, does nothing, as all models
+      # are valid by default.
+      def validate
+      end
+
+      # Validates the object and returns true if no errors are reported.
+      def valid?
+        errors.clear
+        validate
+        errors.empty?
       end
       
     end
