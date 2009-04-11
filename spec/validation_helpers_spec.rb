@@ -72,8 +72,8 @@ describe Rdb4o::ValidationHelpers do
   #   @person.should be_valid
   # end
   # 
-  it "should support validate_exact_length" do
-    Person.set_validations { validate_exact_length(3, :name) }
+  it "should support validate_length with exact length" do
+    Person.set_validations { validate_length(3, :name) }
     @person.should_not be_valid
     @person.name = '123'
     @person.should be_valid
@@ -83,8 +83,8 @@ describe Rdb4o::ValidationHelpers do
     @person.should_not be_valid
   end
   
-  it "should support validates_length_range" do
-    Person.set_validations { validate_length_range(2..5, :name) }
+  it "should support validates_length with range" do
+    Person.set_validations { validate_length(2..5, :name) }
     @person.should_not be_valid
     @person.name = '12345'
     @person.should be_valid
@@ -113,7 +113,7 @@ describe Rdb4o::ValidationHelpers do
     @person.should_not be_valid 
   end
 
-  it "should support validates_includes with a range" do
+  it "should support validate_includes with a range" do
     Person.set_validations { validate_includes(1..4, :age) }
     @person.should_not be_valid
     @person.age = 1

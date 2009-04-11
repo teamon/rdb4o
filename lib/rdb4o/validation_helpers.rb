@@ -1,10 +1,17 @@
 module Rdb4o
   module ValidationHelpers
     
-    # Check that the attribute values are the given exact length.
-    def validate_exact_length(exact, atts, opts={})
+    # Check that the attribute values are the given exact length or in the specified range.
+    def validate_length(range, atts, opts={})
+      
+      if range.is_a?(Range)
+        msg = "must be between #{range.first} and #{range.last} characters"
+      else
+        msg = "is not #{range} characters"
+        range = (range..range)
+      end
       validatable_attributes(atts, opts) do |attr, value, message| 
-        (message || "is not #{exact} characters") unless value && value.length == exact
+        (message || msg) unless value && range.include?(value.length)
       end
     end
     
@@ -19,13 +26,6 @@ module Rdb4o
     def validate_includes(set, atts, opts={})
       validatable_attributes(atts, opts) do |attr, value, message| 
         (message || "is not in range or set: #{set.inspect}") unless set.include?(value)
-      end
-    end
-    
-    # Check that the attribute values length is in the specified range.
-    def validate_length_range(range, atts, opts={})
-      validatable_attributes(atts, opts) do |attr, value, message| 
-        (message || "is outside the allowed range") unless value && range.include?(value.length)
       end
     end
     
