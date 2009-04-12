@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 describe Rdb4o::Model do
 
   before(:all) do
+    Rdb4o::Db4o.configure.generateUUIDs(Java::JavaLang::Integer::MAX_VALUE)
+    Rdb4o::Db4o.configure.objectClass(Person).generateUUIDs(true);
     Rdb4o::Database.setup(:dbfile => "model_spec.db")
   end
 
@@ -55,6 +57,12 @@ describe Rdb4o::Model do
     it "#get_by_db4o_id" do
       jimmy = Person.create(:name => 'Jimmy', :age => 35)
       Person.get_by_db4o_id(jimmy.db4o_id).should == jimmy
+    end
+
+    it "#get_by_uuid" do
+      jimmy = Person.create(:name => 'Jimmy', :age => 35)
+      puts jimmy.uuid
+      Person.get_by_uuid(jimmy.uuid).should == jimmy
     end
 
     # it "#first"
@@ -120,6 +128,15 @@ describe Rdb4o::Model do
       john.db4o_id.should == 0
       john.save
       john.db4o_id.should_not == 0
+    end
+
+    it "#uuid" do
+      john = Person.new
+      puts john.uuid
+      # john.db4o_id.should == 0
+      john.save
+      # john.db4o_id.should_not == 0
+      puts john.uuid
     end
 
   end

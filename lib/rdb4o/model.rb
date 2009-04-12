@@ -71,6 +71,10 @@ module Rdb4o
         obj
       end
 
+      def get_by_uuid(uuid)
+        database.ext.getByUUID(uuid)
+      end
+
       # Returns database connection
       def database(name = :default)
         Rdb4o::Database[name]
@@ -109,6 +113,8 @@ module Rdb4o
       def new?
         # not sure..
         self.db4o_id == 0
+        # or maby it should be
+        # self.uuid.nil?
       end
 
       # Saves object to database
@@ -125,6 +131,11 @@ module Rdb4o
 
       def db4o_id
         self.class.database.ext.getID(self)
+      end
+
+      def uuid
+        obj_info = self.class.database.ext.getObjectInfo(self)
+        obj_info && obj_info.getUUID
       end
 
       # Returns the validation errors associated with this object.
