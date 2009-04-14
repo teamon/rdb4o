@@ -1,19 +1,26 @@
-package com.rdb4o;
-
+// package com.db4o.reflect.jdk;
+// 
+// // import com.db4o.reflect.jdk.*;
+// import com.db4o.internal.*;
 // import com.db4o.reflect.*;
-import com.db4o.*;
-import com.db4o.reflect.jdk.*;
-
-public class RubyReflector extends JdkReflector {
-
-    public RubyReflector() {
-		super(Db4o.class.getClassLoader());
-		System.out.println("RubyReflector: flame on!");
-    }
-
-	// public Object deepClone(Object obj){
-	// 	System.out.println("-> deepClone");
-	// 	return super.deepClone(obj);
-	// }
-
-}
+// 
+// public class RubyReflector extends JdkReflector {
+// 	
+// 	public RubyReflector(ClassLoader classLoader){
+// 		this(new ClassLoaderJdkLoader(classLoader));
+// 	}
+// 	
+// 	/**
+//      * Constructor
+//      * @param classLoader class loader
+//      */
+// 	public RubyReflector(JdkLoader classLoader){
+// 		this(classLoader, null);
+// 	}
+// 	
+// 	private RubyReflector(JdkLoader classLoader, ReflectorConfiguration config){
+// 		_classLoader = classLoader;
+// 		_config = config;
+// 	}
+// 	
+// }

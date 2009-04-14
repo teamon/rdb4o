@@ -6,11 +6,15 @@ else
   Rdb4o::Tools.load_models "#{File.dirname(__FILE__)}/app/models/java"
 end
 
-class KickAssReflector < com.db4o.reflect.jdk.JdkReflector
+class RubyReflector < com.db4o.reflect.jdk.JdkReflector
   def initialize
     super(JRuby.runtime.getJRubyClassLoader)
   end
   
+  def deepClone(obj)
+    RubyReflector.new
+  end
+
 end
 
 def track_class(klazz)
@@ -28,17 +32,19 @@ def track_class(klazz)
   end
 end
 
-track_class KickAssReflector
+track_class RubyReflector
 
-Rdb4o::Db4o.configure.reflectWith(KickAssReflector.new)
+Rdb4o::Db4o.configure.reflectWith(RubyReflector.new)
 Rdb4o::Database.setup(:dbfile => "/tmp/console.db")
 
-class Foo < java.lang.Object
+class Foo # < java.lang.Object
   attr_accessor :baz, :bar
   
   def initialize(baz, bar)
-    super()
+    # super()
     self.baz = baz
     self.bar = bar
   end
 end
+
+# Person.new.save

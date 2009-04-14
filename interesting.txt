@@ -1,0 +1,206 @@
+[teamon ~/Projekty/rdb4o (reflection)] jruby -S rake spec:console
+(in /Users/teamon/Projekty/rdb4o)
+(eval):1 warning: `instance_eval' should not be aliased
+(eval):1 warning: `instance_exec' should not be aliased
+ -> deepClone([#<Java::ComDb4oInternal::Config4Impl::ConfigDeepCloneContext:0x6f1622 @java_object=#<Java::JavaObject:0x2cee10>>], nil)
+ -> setParent([#<Java::ComDb4oReflectGeneric::GenericReflector:0x4b7f7f @java_object=#<Java::JavaObject:0x9f8528>>], nil)
+ -> configuration([#<Java::ComDb4oInternal::ReflectorConfigurationImpl:0xfd3787 @java_object=#<Java::JavaObject:0x48b7f7>>], nil)
+ -> forName(["com.db4o.config.Compare"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x1d5c64 @java_object=#<Java::JavaClass:0x9ce9eb>>], nil)
+ -> forName(["com.db4o.types.Db4oType"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x56c36c @java_object=#<Java::JavaClass:0x3817d7>>], nil)
+ -> forName(["com.db4o.internal.Db4oTypeImpl"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x9bcb0b @java_object=#<Java::JavaClass:0x2f801d>>], nil)
+ -> forName(["com.db4o.Internal4"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x8110f1 @java_object=#<Java::JavaClass:0x7f5fd0>>], nil)
+ -> forName(["com.db4o.types.Unversioned"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xb43585 @java_object=#<Java::JavaClass:0x25d8ab>>], nil)
+ -> forName(["java.lang.Object"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x2decf2 @java_object=#<Java::JavaClass:0x1f0db4>>], nil)
+ -> forName(["com.db4o.ObjectContainer"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xcf247d @java_object=#<Java::JavaClass:0x64c6f7>>], nil)
+ -> forName(["com.db4o.StaticClass"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x977efa @java_object=#<Java::JavaClass:0x1176e2>>], nil)
+ -> forName(["java.lang.String"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xca4765 @java_object=#<Java::JavaClass:0x156674>>], nil)
+ -> forName(["com.db4o.types.TransientClass"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x30c028 @java_object=#<Java::JavaClass:0x979ff0>>], nil)
+ -> forName(["com.db4o.P1Collection"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xdc09c8 @java_object=#<Java::JavaClass:0x62aef>>], nil)
+ -> forName(["java.util.Collection"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x77fcb5 @java_object=#<Java::JavaClass:0x700f6d>>], nil)
+ -> forName(["java.util.Map"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xd9b145 @java_object=#<Java::JavaClass:0x538d5>>], nil)
+ -> forName(["java.lang.Integer"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x1718d4 @java_object=#<Java::JavaClass:0x5f45f1>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0x2a9f97 @java_object=#<Java::JavaClass:0x53a03c>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0x2a9f97 @java_object=#<Java::JavaClass:0x53a03c>>], nil)
+ -> forName(["java.lang.Integer"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x1718d4 @java_object=#<Java::JavaClass:0x5f45f1>>], nil)
+ -> forName(["java.lang.Long"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x7fea3f @java_object=#<Java::JavaClass:0xec07cc>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0x66a3b0 @java_object=#<Java::JavaClass:0x84a8be>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0x66a3b0 @java_object=#<Java::JavaClass:0x84a8be>>], nil)
+ -> forName(["java.lang.Long"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x7fea3f @java_object=#<Java::JavaClass:0xec07cc>>], nil)
+ -> forName(["java.lang.Float"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x9b20bb @java_object=#<Java::JavaClass:0x81d54c>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0x49f19a @java_object=#<Java::JavaClass:0x94c78f>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0x49f19a @java_object=#<Java::JavaClass:0x94c78f>>], nil)
+ -> forName(["java.lang.Float"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x9b20bb @java_object=#<Java::JavaClass:0x81d54c>>], nil)
+ -> forName(["java.lang.Boolean"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xa145d1 @java_object=#<Java::JavaClass:0xeea97c>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0x767cb4 @java_object=#<Java::JavaClass:0xf52beb>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0x767cb4 @java_object=#<Java::JavaClass:0xf52beb>>], nil)
+ -> forName(["java.lang.Boolean"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xa145d1 @java_object=#<Java::JavaClass:0xeea97c>>], nil)
+ -> forName(["java.lang.Double"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x923ae5 @java_object=#<Java::JavaClass:0x58c26e>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0x2c3070 @java_object=#<Java::JavaClass:0x203b6a>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0x2c3070 @java_object=#<Java::JavaClass:0x203b6a>>], nil)
+ -> forName(["java.lang.Double"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x923ae5 @java_object=#<Java::JavaClass:0x58c26e>>], nil)
+ -> forName(["java.lang.Byte"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xced1e9 @java_object=#<Java::JavaClass:0x37460f>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0x85e8c3 @java_object=#<Java::JavaClass:0x747525>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0x85e8c3 @java_object=#<Java::JavaClass:0x747525>>], nil)
+ -> forName(["java.lang.Byte"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xced1e9 @java_object=#<Java::JavaClass:0x37460f>>], nil)
+ -> forName(["java.lang.Character"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x687df7 @java_object=#<Java::JavaClass:0x2619b4>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0x135fe7 @java_object=#<Java::JavaClass:0xfd4d4c>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0x135fe7 @java_object=#<Java::JavaClass:0xfd4d4c>>], nil)
+ -> forName(["java.lang.Character"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x687df7 @java_object=#<Java::JavaClass:0x2619b4>>], nil)
+ -> forName(["java.lang.Short"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x3d292c @java_object=#<Java::JavaClass:0x5a3fbb>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0x1c483d @java_object=#<Java::JavaClass:0xcadcf6>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0x1c483d @java_object=#<Java::JavaClass:0xcadcf6>>], nil)
+ -> forName(["java.lang.Short"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x3d292c @java_object=#<Java::JavaClass:0x5a3fbb>>], nil)
+ -> forName(["java.lang.String"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x30c402 @java_object=#<Java::JavaClass:0x156674>>], nil)
+ -> forName(["java.util.Date"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x5a8b9e @java_object=#<Java::JavaClass:0x845290>>], nil)
+ -> forName(["java.util.Date"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x5a8b9e @java_object=#<Java::JavaClass:0x845290>>], nil)
+ -> forName(["java.lang.Number"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x8bcc0f @java_object=#<Java::JavaClass:0x1fdfd>>], nil)
+ -> forName(["com.db4o.ext.Db4oDatabase"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x3499ef @java_object=#<Java::JavaClass:0x664c47>>], nil)
+ -> forName(["java.lang.Enum"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x4a1da8 @java_object=#<Java::JavaClass:0xe10e13>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x9fb3cf @java_object=#<Java::JavaObject:0xd5e9b7>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0x6e59be @java_object=#<Java::JavaClass:0xc5fb6e>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0x6e59be @java_object=#<Java::JavaClass:0xc5fb6e>>], nil)
+ -> array([], nil)
+ -> forName(["com.db4o.StaticField"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x3b5805 @java_object=#<Java::JavaClass:0xfb605>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xe49b23 @java_object=#<Java::JavaObject:0x854f32>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xf8647f @java_object=#<Java::JavaObject:0x8de987>>], nil)
+ -> forClass([#<Java::JavaLang::Class:0xc4b3f3 @java_object=#<Java::JavaClass:0x22b6e>>], nil)
+ -> createClass([#<Java::JavaLang::Class:0xc4b3f3 @java_object=#<Java::JavaClass:0x22b6e>>], nil)
+>> Person.new
+=> #<Java::AppModelsJava::Person:0x53b352 @java_object=#<Java::JavaObject:0x220076>
+>> Person.new.save
+ -> forObject([#<Java::AppModelsJava::Person:0x139d6a @java_object=#<Java::JavaObject:0xc3c859>, @errors={}>], nil)
+ -> forName(["app.models.java.Person"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x945c20 @java_object=#<Java::JavaClass:0x2c721a>>], nil)
+ -> configuration([], nil)
+ -> forName(["com.rdb4o.Rdb4oModel"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x815ddf @java_object=#<Java::JavaClass:0x39fb04>>], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x3fb1d0 @java_object=#<Java::JavaObject:0xb2d3f1>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xdbc632 @java_object=#<Java::JavaObject:0xb12dc8>>], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x3fb1d0 @java_object=#<Java::JavaObject:0xb2d3f1>>], nil)
+=> true
+>> Person.all
+ -> forObject([#<Java::AppModelsJava::Person:0x139d6a @java_object=#<Java::JavaObject:0xc3c859>, @errors={}>], nil)
+=> [#<Java::AppModelsJava::Person:0x42d1e0 @java_object=#<Java::JavaObject:0xe0ff1d>, #<Java::AppModelsJava::Person:0x8cda4b @java_object=#<Java::JavaObject:0x4f8ff4>, #<Java::AppModelsJava::Person:0x741857 @java_object=#<Java::JavaObject:0xea15bc>, #<Java::AppModelsJava::Person:0x139d6a @java_object=#<Java::JavaObject:0xc3c859>, errors{}, #<Java::AppModelsJava::Person:0x38f7f5 @java_object=#<Java::JavaObject:0x1f08ea>]
+>>           
+
+
+
+Difference:
+
+>> Person.new.save                 
+ -> forObject([#<Java::AppModelsJava::Person:0x5ed2d7 @java_object=#<Java::JavaObject:0x643eae>, @errors={}>], nil)
+ -> forName(["app.models.java.Person"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x399e98 @java_object=#<Java::JavaClass:0xdb1704>>], nil)
+ -> configuration([], nil)
+ -> forName(["com.rdb4o.Rdb4oModel"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xa746a @java_object=#<Java::JavaClass:0x60e674>>], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x8f0146 @java_object=#<Java::JavaObject:0x9cae70>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x6a10c3 @java_object=#<Java::JavaObject:0x729e87>>], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x8f0146 @java_object=#<Java::JavaObject:0x9cae70>>], nil)
+=> true
+
+>> Rdb4o::Database[:default].store(Foo.new(1,2))   
+ -> forObject([#<Foo:0xfc294d @baz=1, @bar=2>], nil)
+ -> forName(["org.jruby.RubyObject"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xd77ab5 @java_object=#<Java::JavaClass:0xb942a5>>], nil)
+ -> configuration([], nil)
+ -> forName(["org.jruby.RubyBasicObject"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x389e48 @java_object=#<Java::JavaClass:0x1fc82b>>], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xabcd30 @java_object=#<Java::JavaObject:0x2c3433>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x6e1623 @java_object=#<Java::JavaObject:0x6f6163>>], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xabcd30 @java_object=#<Java::JavaObject:0x2c3433>>], nil)
+=> nil
+>> 
+
+
+
+More
+
+>> Rdb4o::Database[:default].get(nil).size         
+=> 0
+>> Rdb4o::Database[:default].store(Person.new)
+ -> forObject([#<Java::AppModelsJava::Person:0x9e1998 @java_object=#<Java::JavaObject:0xa28a96>>], nil)
+ -> forName(["app.models.java.Person"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x60be78 @java_object=#<Java::JavaClass:0x78c5cf>>], nil)
+ -> forName(["com.rdb4o.Rdb4oModel"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xef662c @java_object=#<Java::JavaClass:0x1cfec7>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xe242d4 @java_object=#<Java::JavaObject:0x91912a>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x3bee12 @java_object=#<Java::JavaObject:0x8ae0e3>>], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x3bee12 @java_object=#<Java::JavaObject:0x8ae0e3>>], nil)
+=> nil
+>> Rdb4o::Database[:default].store(Foo.new(1,2))
+ -> forObject([#<Foo:0xc3705c @baz=1, @bar=2>], nil)
+ -> forName(["org.jruby.RubyObject"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x153bd9 @java_object=#<Java::JavaClass:0xc586e>>], nil)
+ -> forName(["org.jruby.RubyBasicObject"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xb2ff35 @java_object=#<Java::JavaClass:0x910fb5>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xa53ce6 @java_object=#<Java::JavaObject:0x412d31>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xace961 @java_object=#<Java::JavaObject:0xdf009>>], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xace961 @java_object=#<Java::JavaObject:0xdf009>>], nil)
+=> nil
+>> Rdb4o::Database[:default].get(nil).size      
+=> 2
+>> Rdb4o::Database[:default].get(nil)     
+=> #<Java::ComDb4oInternalQuery::ObjectSetFacade:0xe0b569 @java_object=#<Java::JavaObject:0xa602ff>
+>> Rdb4o::Database[:default].get(nil)[0]
+=> #<Java::AppModelsJava::Person:0x7aaa57 @java_object=#<Java::JavaObject:0x456e6b>
+>> Rdb4o::Database[:default].get(nil)[1]
+ -> forObject([#<Foo:0xc3705c @baz=1, @bar=2>], nil)
+=> #<Foo:0xc3705c @baz=1, @bar=2>
+>> Rdb4o::Database[:default].get(nil)[1]
+ -> forObject([#<Foo:0xc3705c @baz=1, @bar=2>], nil)
+=> #<Foo:0xc3705c @baz=1, @bar=2>
+>> Rdb4o::Database[:default].get(nil).to_a 
+ -> forObject([#<Foo:0xc3705c @baz=1, @bar=2>], nil)
+=> [#<Java::AppModelsJava::Person:0x612593 @java_object=#<Java::JavaObject:0xe9e911>, #<Foo:0xc3705c @baz=1, @bar=2>]
+>> 
+
+restart
+
+
