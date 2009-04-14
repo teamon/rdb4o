@@ -104,59 +104,9 @@
  -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xf8647f @java_object=#<Java::JavaObject:0x8de987>>], nil)
  -> forClass([#<Java::JavaLang::Class:0xc4b3f3 @java_object=#<Java::JavaClass:0x22b6e>>], nil)
  -> createClass([#<Java::JavaLang::Class:0xc4b3f3 @java_object=#<Java::JavaClass:0x22b6e>>], nil)
->> Person.new
-=> #<Java::AppModelsJava::Person:0x53b352 @java_object=#<Java::JavaObject:0x220076>
->> Person.new.save
- -> forObject([#<Java::AppModelsJava::Person:0x139d6a @java_object=#<Java::JavaObject:0xc3c859>, @errors={}>], nil)
- -> forName(["app.models.java.Person"], nil)
- -> createClass([#<Java::JavaLang::Class:0x945c20 @java_object=#<Java::JavaClass:0x2c721a>>], nil)
- -> configuration([], nil)
- -> forName(["com.rdb4o.Rdb4oModel"], nil)
- -> createClass([#<Java::JavaLang::Class:0x815ddf @java_object=#<Java::JavaClass:0x39fb04>>], nil)
- -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x3fb1d0 @java_object=#<Java::JavaObject:0xb2d3f1>>], nil)
- -> configuration([], nil)
- -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xdbc632 @java_object=#<Java::JavaObject:0xb12dc8>>], nil)
- -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x3fb1d0 @java_object=#<Java::JavaObject:0xb2d3f1>>], nil)
-=> true
->> Person.all
- -> forObject([#<Java::AppModelsJava::Person:0x139d6a @java_object=#<Java::JavaObject:0xc3c859>, @errors={}>], nil)
-=> [#<Java::AppModelsJava::Person:0x42d1e0 @java_object=#<Java::JavaObject:0xe0ff1d>, #<Java::AppModelsJava::Person:0x8cda4b @java_object=#<Java::JavaObject:0x4f8ff4>, #<Java::AppModelsJava::Person:0x741857 @java_object=#<Java::JavaObject:0xea15bc>, #<Java::AppModelsJava::Person:0x139d6a @java_object=#<Java::JavaObject:0xc3c859>, errors{}, #<Java::AppModelsJava::Person:0x38f7f5 @java_object=#<Java::JavaObject:0x1f08ea>]
->>           
-
 
 
 Difference:
-
->> Person.new.save                 
- -> forObject([#<Java::AppModelsJava::Person:0x5ed2d7 @java_object=#<Java::JavaObject:0x643eae>, @errors={}>], nil)
- -> forName(["app.models.java.Person"], nil)
- -> createClass([#<Java::JavaLang::Class:0x399e98 @java_object=#<Java::JavaClass:0xdb1704>>], nil)
- -> configuration([], nil)
- -> forName(["com.rdb4o.Rdb4oModel"], nil)
- -> createClass([#<Java::JavaLang::Class:0xa746a @java_object=#<Java::JavaClass:0x60e674>>], nil)
- -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x8f0146 @java_object=#<Java::JavaObject:0x9cae70>>], nil)
- -> configuration([], nil)
- -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x6a10c3 @java_object=#<Java::JavaObject:0x729e87>>], nil)
- -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x8f0146 @java_object=#<Java::JavaObject:0x9cae70>>], nil)
-=> true
-
->> Rdb4o::Database[:default].store(Foo.new(1,2))   
- -> forObject([#<Foo:0xfc294d @baz=1, @bar=2>], nil)
- -> forName(["org.jruby.RubyObject"], nil)
- -> createClass([#<Java::JavaLang::Class:0xd77ab5 @java_object=#<Java::JavaClass:0xb942a5>>], nil)
- -> configuration([], nil)
- -> forName(["org.jruby.RubyBasicObject"], nil)
- -> createClass([#<Java::JavaLang::Class:0x389e48 @java_object=#<Java::JavaClass:0x1fc82b>>], nil)
- -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xabcd30 @java_object=#<Java::JavaObject:0x2c3433>>], nil)
- -> configuration([], nil)
- -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x6e1623 @java_object=#<Java::JavaObject:0x6f6163>>], nil)
- -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xabcd30 @java_object=#<Java::JavaObject:0x2c3433>>], nil)
-=> nil
->> 
-
-
-
-More
 
 >> Rdb4o::Database[:default].get(nil).size         
 => 0
@@ -201,6 +151,142 @@ More
 => [#<Java::AppModelsJava::Person:0x612593 @java_object=#<Java::JavaObject:0xe9e911>, #<Foo:0xc3705c @baz=1, @bar=2>]
 >> 
 
-restart
+restart and..
+
+>> Rdb4o::Database[:default].get(nil).size      
+ -> forName(["com.rdb4o.Rdb4oModel"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xb2891a @java_object=#<Java::JavaClass:0x470b58>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x6e7348 @java_object=#<Java::JavaObject:0x529659>>], nil)
+ -> forName(["app.models.java.Person"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x5096e3 @java_object=#<Java::JavaClass:0xe250d8>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xfd789c @java_object=#<Java::JavaObject:0xf9667b>>], nil)
+ -> forName(["org.jruby.RubyBasicObject"], nil)
+ -> createClass([#<Java::JavaLang::Class:0xea3249 @java_object=#<Java::JavaClass:0x8b6c1e>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0xaceca6 @java_object=#<Java::JavaObject:0xe4b7df>>], nil)
+ -> forName(["org.jruby.RubyObject"], nil)
+ -> createClass([#<Java::JavaLang::Class:0x2f74d5 @java_object=#<Java::JavaClass:0x9f6e68>>], nil)
+ -> configuration([], nil)
+ -> isCollection([#<Java::ComDb4oReflectJdk::JdkClass:0x983700 @java_object=#<Java::JavaObject:0x42fb76>>], nil)
+=> 2
+>> Rdb4o::Database[:default].get(nil)     
+=> #<Java::ComDb4oInternalQuery::ObjectSetFacade:0xd7e1fb @java_object=#<Java::JavaObject:0x354a96>
+>> Rdb4o::Database[:default].get(nil)[0]
+=> #<Java::AppModelsJava::Person:0x41785a @java_object=#<Java::JavaObject:0x449b6a>
+>> Rdb4o::Database[:default].get(nil)[1]
+java.lang.NullPointerException
+	at org.jruby.runtime.callsite.CacheEntry.typeOk(CacheEntry.java:18)
+	at org.jruby.runtime.callsite.CachingCallSite.call(CachingCallSite.java:69)
+	at org.jruby.ast.CallNoArgNode.interpret(CallNoArgNode.java:61)
+	at org.jruby.ast.CallOneArgNode.interpret(CallOneArgNode.java:57)
+	at org.jruby.ast.LocalAsgnNode.interpret(LocalAsgnNode.java:123)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.BlockNode.interpret(BlockNode.java:71)
+	at org.jruby.ast.IfNode.interpret(IfNode.java:112)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.internal.runtime.methods.InterpretedMethod.call(InterpretedMethod.java:125)
+	at org.jruby.internal.runtime.methods.DefaultMethod.call(DefaultMethod.java:126)
+	at org.jruby.runtime.callsite.CachingCallSite.call(CachingCallSite.java:70)
+	at org.jruby.ast.VCallNode.interpret(VCallNode.java:85)
+	at org.jruby.ast.IfNode.interpret(IfNode.java:112)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.BlockNode.interpret(BlockNode.java:71)
+	at org.jruby.ast.RescueNode.executeBody(RescueNode.java:225)
+	at org.jruby.ast.RescueNode.interpretWithJavaExceptions(RescueNode.java:147)
+	at org.jruby.ast.RescueNode.interpret(RescueNode.java:110)
+	at org.jruby.ast.BeginNode.interpret(BeginNode.java:83)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.BlockNode.interpret(BlockNode.java:71)
+	at org.jruby.runtime.InterpretedBlock.evalBlockBody(InterpretedBlock.java:192)
+	at org.jruby.runtime.InterpretedBlock.yield(InterpretedBlock.java:143)
+	at org.jruby.runtime.Block.yield(Block.java:100)
+	at org.jruby.ast.YieldNode.interpret(YieldNode.java:115)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.EnsureNode.interpret(EnsureNode.java:96)
+	at org.jruby.ast.BeginNode.interpret(BeginNode.java:83)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.BlockNode.interpret(BlockNode.java:71)
+	at org.jruby.internal.runtime.methods.InterpretedMethod.call(InterpretedMethod.java:182)
+	at org.jruby.internal.runtime.methods.DefaultMethod.call(DefaultMethod.java:153)
+	at org.jruby.runtime.callsite.CachingCallSite.callBlock(CachingCallSite.java:119)
+	at org.jruby.runtime.callsite.CachingCallSite.callIter(CachingCallSite.java:136)
+	at org.jruby.ast.FCallOneArgBlockNode.interpret(FCallOneArgBlockNode.java:34)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.runtime.InterpretedBlock.evalBlockBody(InterpretedBlock.java:192)
+	at org.jruby.runtime.InterpretedBlock.yield(InterpretedBlock.java:180)
+	at org.jruby.runtime.Block.yield(Block.java:105)
+	at org.jruby.ast.YieldNode.interpret(YieldNode.java:113)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.IfNode.interpret(IfNode.java:112)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.BlockNode.interpret(BlockNode.java:71)
+	at org.jruby.ast.RescueNode.executeBody(RescueNode.java:225)
+	at org.jruby.ast.RescueNode.interpretWithJavaExceptions(RescueNode.java:147)
+	at org.jruby.ast.RescueNode.interpret(RescueNode.java:110)
+	at org.jruby.ast.BeginNode.interpret(BeginNode.java:83)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.runtime.InterpretedBlock.evalBlockBody(InterpretedBlock.java:192)
+	at org.jruby.runtime.InterpretedBlock.yield(InterpretedBlock.java:143)
+	at org.jruby.runtime.Block.yield(Block.java:100)
+	at org.jruby.RubyKernel.loop(RubyKernel.java:1084)
+	at org.jruby.RubyKernel$s_method_0_0$RUBYFRAMEDINVOKER$loop.call(org/jruby/RubyKernel$s_method_0_0$RUBYFRAMEDINVOKER$loop.gen)
+	at org.jruby.runtime.callsite.CachingCallSite.cacheAndCall(CachingCallSite.java:263)
+	at org.jruby.runtime.callsite.CachingCallSite.callBlock(CachingCallSite.java:81)
+	at org.jruby.runtime.callsite.CachingCallSite.callIter(CachingCallSite.java:96)
+	at org.jruby.ast.FCallNoArgBlockNode.interpret(FCallNoArgBlockNode.java:32)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.runtime.InterpretedBlock.evalBlockBody(InterpretedBlock.java:192)
+	at org.jruby.runtime.InterpretedBlock.yield(InterpretedBlock.java:143)
+	at org.jruby.runtime.Block.yield(Block.java:100)
+	at org.jruby.RubyKernel.rbCatch(RubyKernel.java:934)
+	at org.jruby.RubyKernel$s_method_1_0$RUBYFRAMEDINVOKER$rbCatch.call(org/jruby/RubyKernel$s_method_1_0$RUBYFRAMEDINVOKER$rbCatch.gen)
+	at org.jruby.runtime.callsite.CachingCallSite.cacheAndCall(CachingCallSite.java:283)
+	at org.jruby.runtime.callsite.CachingCallSite.callBlock(CachingCallSite.java:121)
+	at org.jruby.runtime.callsite.CachingCallSite.callIter(CachingCallSite.java:136)
+	at org.jruby.ast.FCallOneArgBlockNode.interpret(FCallOneArgBlockNode.java:34)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.BlockNode.interpret(BlockNode.java:71)
+	at org.jruby.internal.runtime.methods.InterpretedMethod.call(InterpretedMethod.java:144)
+	at org.jruby.internal.runtime.methods.DefaultMethod.call(DefaultMethod.java:135)
+	at org.jruby.runtime.callsite.CachingCallSite.cacheAndCall(CachingCallSite.java:263)
+	at org.jruby.runtime.callsite.CachingCallSite.callBlock(CachingCallSite.java:81)
+	at org.jruby.runtime.callsite.CachingCallSite.call(CachingCallSite.java:86)
+	at org.jruby.ast.CallNoArgBlockNode.interpret(CallNoArgBlockNode.java:64)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.BlockNode.interpret(BlockNode.java:71)
+	at org.jruby.internal.runtime.methods.InterpretedMethod.call(InterpretedMethod.java:125)
+	at org.jruby.internal.runtime.methods.DefaultMethod.call(DefaultMethod.java:126)
+	at org.jruby.runtime.callsite.CachingCallSite.cacheAndCall(CachingCallSite.java:253)
+	at org.jruby.runtime.callsite.CachingCallSite.call(CachingCallSite.java:72)
+	at org.jruby.ast.CallNoArgNode.interpret(CallNoArgNode.java:61)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.runtime.InterpretedBlock.evalBlockBody(InterpretedBlock.java:192)
+	at org.jruby.runtime.InterpretedBlock.yield(InterpretedBlock.java:143)
+	at org.jruby.runtime.Block.yield(Block.java:100)
+	at org.jruby.RubyKernel.rbCatch(RubyKernel.java:934)
+	at org.jruby.RubyKernel$s_method_1_0$RUBYFRAMEDINVOKER$rbCatch.call(org/jruby/RubyKernel$s_method_1_0$RUBYFRAMEDINVOKER$rbCatch.gen)
+	at org.jruby.runtime.callsite.CachingCallSite.cacheAndCall(CachingCallSite.java:283)
+	at org.jruby.runtime.callsite.CachingCallSite.callBlock(CachingCallSite.java:121)
+	at org.jruby.runtime.callsite.CachingCallSite.callIter(CachingCallSite.java:136)
+	at org.jruby.ast.FCallOneArgBlockNode.interpret(FCallOneArgBlockNode.java:34)
+	at org.jruby.ast.NewlineNode.interpret(NewlineNode.java:104)
+	at org.jruby.ast.BlockNode.interpret(BlockNode.java:71)
+	at org.jruby.internal.runtime.methods.InterpretedMethod.call(InterpretedMethod.java:163)
+	at org.jruby.internal.runtime.methods.DefaultMethod.call(DefaultMethod.java:144)
+	at org.jruby.runtime.callsite.CachingCallSite.cacheAndCall(CachingCallSite.java:273)
+	at org.jruby.runtime.callsite.CachingCallSite.call(CachingCallSite.java:112)
+	at Users.teamon.jruby.bin.jirb.__file__(jirb:19)
+	at Users.teamon.jruby.bin.jirb.load(jirb)
+	at org.jruby.Ruby.runScript(Ruby.java:577)
+	at org.jruby.Ruby.runNormally(Ruby.java:480)
+	at org.jruby.Ruby.runFromMain(Ruby.java:354)
+	at org.jruby.Main.run(Main.java:229)
+	at org.jruby.Main.run(Main.java:110)
+	at org.jruby.util.ShellLauncher$ScriptThreadProcess.run(ShellLauncher.java:103)
+	at java.lang.Thread.run(Thread.java:613)
+[teamon ~/Projekty/rdb4o (reflection)] 
+
 
 
