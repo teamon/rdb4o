@@ -6,18 +6,13 @@ else
   Rdb4o::Tools.load_models "#{File.dirname(__FILE__)}/app/models/java"
 end
 
-class RubyReflector < com.db4o.reflect.jdk.JdkReflector
-  def initialize
-    super(JRuby.runtime.getJRubyClassLoader)
-  end
-  
-  def deepClone(obj)
-    RubyReflector.new
-  end
 
+class RubyReflector
 end
 
-def track_class(klazz)
+
+
+def track_class(klazz, color = 35)
   methods = klazz.instance_methods
   methods.reject! {|e| e !~ /^[a-z]/}
   methods -= %w(send)
@@ -25,26 +20,31 @@ def track_class(klazz)
     klazz.class_eval <<-OOO
     alias :orig_#{meth} :#{meth}
     def #{meth}(*args, &block)
-      puts "\033[0;35m -> #{meth}\033[0m(#\{args.inspect\}, #\{block.inspect\})"
+      puts "\033[0;#{color}m -> #{meth}\033[0m(#\{args.inspect\}, #\{block.inspect\})"
       send(:orig_#{meth}, *args, &block)
     end
     OOO
   end
 end
+# track_class RubyReflector
+# track_class Java::ComDb4oReflectJdk::JdkReflector, 33
 
-track_class RubyReflector
 
-Rdb4o::Db4o.configure.reflectWith(RubyReflector.new)
+Rdb4o::Db4o.configure.reflectWith(RubyReflector.new(JRuby.runtime.getJRubyClassLoader))
 Rdb4o::Database.setup(:dbfile => "/tmp/console.db")
 
-class Foo # < java.lang.Object
+class Foo
   attr_accessor :baz, :bar
   
-  def initialize(baz, bar)
+  def initialize
     # super()
-    self.baz = baz
-    self.bar = bar
+    # self.baz = baz
+    # self.bar = bar
   end
 end
 
+track_class Foo, 36
+track_class Person, 36
+
 # Person.new.save
+

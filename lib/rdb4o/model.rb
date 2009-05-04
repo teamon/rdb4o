@@ -6,7 +6,7 @@ module Rdb4o
        base.extend(ClassMethods)
        base.send(:include, InstanceMethods)
     end
-
+    
     class Finder < Java::com::rdb4o::RubyPredicate
       attr_accessor :proc, :klazz
       def rubyMatch(obj)
