@@ -38,12 +38,25 @@ task :gemspec do
   end
 end
 
-namespace :jruby do
-  desc "Run :package and install the resulting .gem with jruby"
-  task :install => :package do
-    sh %{jruby -S gem install pkg/#{GEM_NAME}-#{GEM_VERSION}-java.gem --no-rdoc --no-ri}
+desc 'Compile lib'
+task :compile do
+  Dir.chdir "#{File.dirname(__FILE__)}/lib/java"
+  Dir["com/rdb4o/*.java"].each do |f|
+    puts `javac #{f}`
   end
 end
+
+desc 'Make jar'
+task :jar do
+  Dir.chdir "#{File.dirname(__FILE__)}/lib/java"
+  puts `jar -c com > rdb4o.jar`
+end
+
+desc "Run :package and install the resulting .gem with jruby"
+task :install => :package do
+  puts `jruby -S gem install pkg/#{GEM_NAME}-#{GEM_VERSION}-java.gem --no-rdoc --no-ri`
+end
+
 
 namespace :spec do
   desc "Run specs"
@@ -85,4 +98,5 @@ task :strip do
     end
   end
 end
+
 
