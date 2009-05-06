@@ -2,26 +2,22 @@
 require 'rubygems'
 require 'rdb4o'
 
-path = ARGV[0]
-unless path
+
+if ARGV.empty?
   puts "USAGE: compile_models [path]"
   exit
 end
 
-path += ".rb" if path[-1,1] == "*"
-
-Dir[path].each do |file|
+ARGV.each do |file|
+  next unless file =~ /.rb$/
+  
+  puts "reading #{file}"
   require file
 
   while Rdb4o::ModelGenerator.classes.size > 0
-    Rdb4o::ModelGenerator.classes.shift.generate!(File.dirname(file))
+    cls = Rdb4o::ModelGenerator.classes.shift
+    cls.generate!(File.dirname(file))
+    cls.compile!(File.dirname(file))
   end
 end
 
-
-#$CLASSPATH << File.dirname(__FILE__)
-
-#Rdb4o::Tools.compile_and_load_models(File.dirname(__FILE__) + "/models/java")
-
-#Rdb4o::Database.setup :dbfile => 'example.db'
-#puts Cat.all.map{|o| o.name}

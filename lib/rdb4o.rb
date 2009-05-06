@@ -25,6 +25,18 @@ module Rdb4o
    some_class = Object.const_get(some_class) if some_class.class == 'String'
    some_class.send(:include, Rdb4o::Model)
   end
+  
+  def self.jar_classpath
+    File.join(File.dirname(File.expand_path(__FILE__)), "java")
+  end
+  
+  def self.load_models
+    Dir["**/*.class"].each do |class_file|
+      class_name = File.basename(class_file).sub('.class', '')
+      package = File.dirname(class_file).gsub("/", ".")
+      model_class = eval("Java.#{package}.#{class_name}")
+    end
+  end
 
 end
 

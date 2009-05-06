@@ -65,6 +65,13 @@ CLASS_FILE
       }
 
       end
+    
+      def compile!(dir)
+        java_file = File.join(dir, "java", "#{self.name}.java")
+        command = "javac -cp #{Rdb4o.jar_classpath} #{java_file}"
+        puts command
+        puts `#{command}`
+      end
     end
   end
 end
