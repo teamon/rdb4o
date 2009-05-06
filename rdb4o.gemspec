@@ -8,10 +8,10 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kacper Cie\305\233la"]
   s.autorequire = %q{rdb4o}
-  s.date = %q{2009-04-10}
+  s.date = %q{2009-05-06}
   s.description = %q{Small library for accessing db4o from jruby}
   s.email = %q{kacper.ciesla@gmail.com}
-  s.files = ["LICENSE", "README", "Rakefile", "TODO", "lib/java", "lib/java/com", "lib/java/com/rdb4o", "lib/java/com/rdb4o/Rdb4oModel.class", "lib/java/com/rdb4o/Rdb4oModel.java", "lib/java/com/rdb4o/RubyPredicate.class", "lib/java/com/rdb4o/RubyPredicate.java", "lib/java/db4o.jar", "lib/rdb4o", "lib/rdb4o/database.rb", "lib/rdb4o/model.rb", "lib/rdb4o.rb", "spec/app", "spec/app/models", "spec/app/models/java", "spec/app/models/java/Person.class", "spec/app/models/java/Person.java", "spec/database_spec.rb", "spec/model_spec.rb", "spec/spec.opts", "spec/spec_helper.rb"]
+  s.files = ["LICENSE", "README", "Rakefile", "TODO", "bin/compile_models", "lib/java", "lib/rdb4o", "lib/rdb4o.rb", "lib/java/com", "lib/java/db4o.jar", "lib/java/com/rdb4o", "lib/java/com/rdb4o/Rdb4oModel.class", "lib/java/com/rdb4o/Rdb4oModel.java", "lib/java/com/rdb4o/RubyPredicate.class", "lib/java/com/rdb4o/RubyPredicate.java", "lib/rdb4o/database.rb", "lib/rdb4o/errors.rb", "lib/rdb4o/model.rb", "lib/rdb4o/model_generator.rb", "lib/rdb4o/tools.rb", "lib/rdb4o/validation_helpers.rb", "spec/app", "spec/console.rb", "spec/database_spec.rb", "spec/model_generator_spec.rb", "spec/model_spec.rb", "spec/spec.opts", "spec/spec_helper.rb", "spec/validation_helpers_spec.rb", "spec/validation_spec.rb", "spec/app/models", "spec/app/models/java", "spec/app/models/java/Cat.class", "spec/app/models/java/Cat.java", "spec/app/models/java/Dog.class", "spec/app/models/java/Dog.java", "spec/app/models/java/Person.class", "spec/app/models/java/Person.java"]
   s.has_rdoc = true
   s.homepage = %q{http://}
   s.require_paths = ["lib"]
@@ -23,8 +23,11 @@ Gem::Specification.new do |s|
     s.specification_version = 2
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<extlib>, [">= 0.9"])
     else
+      s.add_dependency(%q<extlib>, [">= 0.9"])
     end
   else
+    s.add_dependency(%q<extlib>, [">= 0.9"])
   end
 end

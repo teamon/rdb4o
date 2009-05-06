@@ -2,7 +2,25 @@ module Rdb4o
   module ModelGenerator
     def self.included(base)
       base.extend(ClassMethods)
+      @@classes ||= []
+      @@classes << base
     end
+    
+    def self.classes
+      @@classes
+    end
+    
+    def self.package
+      @@package
+    end
+    
+    def self.package=(pkg)
+      @@package = pkg
+    end
+    
+    # def self.generate!
+    #   @@classes.map {|c| c.generate! }
+    # end
     
     module ClassMethods
       
@@ -12,7 +30,10 @@ module Rdb4o
         @@__generator_fields[name] = {:type => type}.merge(opts)
       end
       
-      def generate!
+      def generate!(dir)
+        java_dir = File.join(dir, "java")
+        package = java_dir.gsub(/\//, ".")
+                
         fields = @@__generator_fields.map do |name, opts|
           name = name.to_s
 <<-FIELD
@@ -21,17 +42,15 @@ module Rdb4o
   public #{opts[:type]} get#{name.capitalize}() { return this._#{name}; }
 FIELD
         end.join "\n"
-        
-        package = "com.foo"
-        
-<<-CLASS_FILE
+
+        content = <<-CLASS_FILE
 package #{package};
 
 import com.rdb4o.Rdb4oModel;
 
-public class #{self} extends Rdb4oModel {
+public class #{self.name} extends Rdb4oModel {
 
-  public #{self}() {
+  public #{self.name}() {
       // Set all stirng empty and all integers to 0
   }
   
@@ -39,6 +58,12 @@ public class #{self} extends Rdb4oModel {
   
 }
 CLASS_FILE
+
+      Dir.mkdir(java_dir) unless File.exist?(java_dir)
+      File.open(File.join(java_dir, "#{self.name}.java"), "w") {|f|
+        f.write(content)
+      }
+
       end
     end
   end
