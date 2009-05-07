@@ -46,9 +46,10 @@ FIELD
         content = <<-CLASS_FILE
 package #{package};
 
-import com.rdb4o.Rdb4oModel;
+//import com.rdb4o.Rdb4oModel;
+import com.db4o;
 
-public class #{self.name} extends Rdb4oModel {
+public class #{self.name} /*extends Rdb4oModel*/ {
 
   public #{self.name}() {
       // Set all stirng empty and all integers to 0

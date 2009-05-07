@@ -23,7 +23,7 @@ spec = Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables = %w( compile_models )
-  s.files = %w( LICENSE README Rakefile TODO ) +  Dir.glob("{bin,lib,spec}/**/*")
+  s.files = %w( LICENSE README Rakefile TODO ) +  Dir.glob("{bin,lib,spec}/**/*") - Dir['lib/java/com/**/*']
   s.add_dependency('extlib', '>= 0.9')
 end
 

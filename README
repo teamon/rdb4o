@@ -1,29 +1,31 @@
-Rdb4o v. 0.0.1
-===============
+(rake compile; rake jar)
 
-Author: Kacper Cieśla
+$ rake install
 
-Small library I wrote for fun too have even more fun with db4o and jruby :)
+$ cd examples/two
+$ javac -cp /Users/teamon/jruby/lib/ruby/gems/1.8/gems/rdb4o-0.0.1-java/lib/java/rdb4o.jar app/models/java/Cat.java
 
-Lots of thanks for Marcin Mielżyński (lopex) for helping me with this.
+$ jirb
 
-It was mainly used for merd_rdb4o, so you may want to take a look at http://github.com/comboy/merb_rdb4o
+>> $CLASSPATH          
+=> []
+>> com.rdb4o::Rdb4oModel
+NameError: cannot load Java class com.rdb4o.Rdb4oModel
+	from /Users/teamon/jruby/lib/ruby/site_ruby/1.8/builtin/javasupport/java.rb:51:in `const_missing'
+	from (irb):3
+	# to sie zachwuje ok, laduje gema (gem laduje rdb4o.jar)
+>> require 'rdb4o'      
+=> true
+>> com.rdb4o::Rdb4oModel
+=> Java::ComRdb4o::Rdb4oModel
+>> com.rdb4o::Rdb4oModel.new
+=> #<Java::ComRdb4o::Rdb4oModel:0x912c1a @java_object=#<Java::JavaObject:0xb38e49>
+>> Java::app.models.java::Cat
+NameError: cannot link Java class app.models.java.Cat, probable missing dependency: com/rdb4o/Rdb4oModel
+	from /Users/teamon/jruby/lib/ruby/site_ruby/1.8/builtin/javasupport/java.rb:51:in `const_missing'
+	from (irb):7
+>> 
 
+no i tu juz jest dupa
 
-Instalation
-===============
-jruby -S gem install rdb4o
-
-Usage
-===============
-
-Connect to database
-require 'rubygems'
-require 'rdb4o'
-
-Rdb4o::Database.setup :dbfile => 'simple.db'
-
-
-blah blah
-
-example: http://gist.github.com/93771
+wykomentowalem wszystko tak, ze rdb4o nie ma zadnych odwolan do db4o (lopex mowil cos o classloaderach db4o - wykluczylem ta opcje ale nadal nie dziala)

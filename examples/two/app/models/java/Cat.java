@@ -1,4 +1,4 @@
-package models.java;
+package app.models.java;
 import com.rdb4o.Rdb4oModel;
 
 public class Cat extends Rdb4oModel {

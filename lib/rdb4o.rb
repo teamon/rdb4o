@@ -3,22 +3,25 @@ $: << File.dirname(__FILE__)
 include Java
 $CLASSPATH << "#{File.dirname(File.expand_path(__FILE__))}/java"
 
-begin
-  require 'java/db4o.jar'
-rescue LoadError
-  begin
-    require ENV['DB4O_JAR'].to_s
-  rescue LoadError
-    raise "Rdb4o ERROR: Could not find db4objects library, put it in my lib/java dir, or try setting environment variable DB4O_JAR to db4objects jar location (You can get it at www.db4o.com)"
-  end
-end
+# begin
+  #require 'db4o.jar'
+  require 'rdb4o.jar'
+  
+  
+# rescue LoadError
+#   begin
+#     require ENV['DB4O_JAR'].to_s
+#   rescue LoadError
+#     raise "Rdb4o ERROR: Could not find db4objects library, put it in my lib/java dir, or try setting environment variable DB4O_JAR to db4objects jar location (You can get it at www.db4o.com)"
+#   end
+# end
 
 require 'extlib'
 
 # Rdb4o
 
 module Rdb4o
-  Db4o = com.db4o.Db4o
+  # Db4o = com.db4o.Db4o
 
   # Includes Rdb4o::Base module into given class
   def self.set_model(some_class)
@@ -27,7 +30,7 @@ module Rdb4o
   end
   
   def self.jar_classpath
-    File.join(File.dirname(File.expand_path(__FILE__)), "java")
+    File.join(File.dirname(File.expand_path(__FILE__)), "java", "rdb4o.jar")
   end
   
   def self.load_models
