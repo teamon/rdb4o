@@ -7,13 +7,13 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kacper Cie\305\233la, Tymon Tobolski"]
-  s.date = %q{2009-05-30}
-  s.default_executable = %q{compile_models}
+  s.date = %q{2009-05-31}
+  s.default_executable = %q{rdb4o}
   s.description = %q{Small library for accessing db4o from jruby}
   s.email = %q{kacper.ciesla@gmail.com}
-  s.executables = ["compile_models"]
+  s.executables = ["rdb4o"]
   s.extra_rdoc_files = ["README", "LICENSE", "TODO"]
-  s.files = ["LICENSE", "README", "Rakefile", "TODO", "bin/compile_models", "lib/java", "lib/java/com", "lib/java/com/rdb4o", "lib/java/com/rdb4o/Rdb4oModel.class", "lib/java/com/rdb4o/Rdb4oModel.java", "lib/java/com/rdb4o/RubyPredicate.class", "lib/java/com/rdb4o/RubyPredicate.java", "lib/java/db4o.jar", "lib/java/rdb4o.jar", "lib/rdb4o", "lib/rdb4o/database.rb", "lib/rdb4o/errors.rb", "lib/rdb4o/model.rb", "lib/rdb4o/model_generator.rb", "lib/rdb4o/validation_helpers.rb", "lib/rdb4o.rb", "spec/app", "spec/app/models", "spec/app/models/cat.rb", "spec/app/models/dog.rb", "spec/app/models/java", "spec/app/models/java/Cat.class", "spec/app/models/java/Cat.java", "spec/app/models/java/Dog.class", "spec/app/models/java/Dog.java", "spec/app/models/java/Person.class", "spec/app/models/java/Person.java", "spec/app/models/person.rb", "spec/console.rb", "spec/database_spec.rb", "spec/model_generator_spec.rb", "spec/model_spec.rb", "spec/spec.opts", "spec/spec_helper.rb", "spec/validation_helpers_spec.rb", "spec/validation_spec.rb"]
+  s.files = ["LICENSE", "README", "Rakefile", "TODO", "bin/rdb4o", "lib/java", "lib/java/com", "lib/java/com/rdb4o", "lib/java/com/rdb4o/Rdb4oModel.class", "lib/java/com/rdb4o/Rdb4oModel.java", "lib/java/com/rdb4o/RubyPredicate.class", "lib/java/com/rdb4o/RubyPredicate.java", "lib/java/db4o.jar", "lib/java/rdb4o.jar", "lib/rdb4o", "lib/rdb4o/database.rb", "lib/rdb4o/errors.rb", "lib/rdb4o/model.rb", "lib/rdb4o/model_generator.rb", "lib/rdb4o/validation_helpers.rb", "lib/rdb4o.rb", "spec/app", "spec/app/models", "spec/app/models/cat.rb", "spec/app/models/dog.rb", "spec/app/models/java", "spec/app/models/java/Cat.class", "spec/app/models/java/Cat.java", "spec/app/models/java/Dog.class", "spec/app/models/java/Dog.java", "spec/app/models/java/Person.class", "spec/app/models/java/Person.java", "spec/app/models/person.rb", "spec/console.rb", "spec/database_spec.rb", "spec/model_generator_spec.rb", "spec/model_spec.rb", "spec/spec.opts", "spec/spec_helper.rb", "spec/validation_helpers_spec.rb", "spec/validation_spec.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://blog.teamon.eu/projekty/}
   s.require_paths = ["lib"]

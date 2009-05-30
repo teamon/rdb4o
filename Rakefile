@@ -22,7 +22,7 @@ spec = Gem::Specification.new do |s|
   s.homepage = HOMEPAGE  
   s.require_path = 'lib'
   s.bindir = 'bin'
-  s.executables = %w( compile_models )
+  s.executables = %w( rdb4o )
   s.files = %w( LICENSE README Rakefile TODO ) +  Dir["{bin,lib,spec}/**/*"]
   s.add_dependency('extlib', '>= 0.9')
 end
