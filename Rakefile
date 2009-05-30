@@ -73,7 +73,7 @@ namespace :spec do
   end
   
   desc "Generate spec models"  
-  task :generate_models do
+  task :generate do
     require File.dirname(__FILE__) + "/lib/rdb4o"
     Dir.chdir(File.dirname(__FILE__) + "/spec")
     Rdb4o::ModelGenerator.dir = "app/models"
@@ -81,7 +81,7 @@ namespace :spec do
   end
 
   desc "Compile spec models"
-  task :compile_models do
+  task :compile do
     require File.dirname(__FILE__) + "/lib/rdb4o"
     Dir.chdir(File.dirname(__FILE__) + "/spec")
     Rdb4o::ModelGenerator.dir = "app/models"
@@ -90,7 +90,8 @@ namespace :spec do
 
   desc "Console"
   task :console do
-    system "jruby -S irb -r #{File.dirname(__FILE__)}/spec/console.rb"
+    Dir.chdir("spec")
+    system "CLASSPATH='../lib/java/db4o.jar:../lib/java/rdb4o.jar:.' jruby -S irb -r console.rb"
   end
 end
 

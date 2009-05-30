@@ -44,6 +44,8 @@ module Rdb4o
       class_name = File.basename(class_file).sub('.class', '')
       package = File.dirname(class_file).gsub("/", ".")
       model_class = eval("Java.#{package}.#{class_name}")
+      Object.const_set(class_name, model_class)
+                # Rdb4o.set_model(model_class)
     end
   end
 

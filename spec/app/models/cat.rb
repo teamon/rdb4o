@@ -5,4 +5,8 @@ class Cat
   field :color, "String"
   field :age, "int"
   
+  def say
+    puts "meow"
+  end
+  
 end

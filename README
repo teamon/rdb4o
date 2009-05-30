@@ -27,3 +27,10 @@ Rdb4o::Database.setup :dbfile => 'simple.db'
 blah blah
 
 example: http://gist.github.com/93771
+
+
+SPEC
+====
+
+cd spec
+CLASSPATH='../lib/java/db4o.jar:../lib/java/rdb4o.jar:.' jruby -S irb -r console.rb
