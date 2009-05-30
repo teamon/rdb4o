@@ -6,7 +6,7 @@ GEM_NAME = "rdb4o"
 GEM_VERSION = "0.0.1"
 AUTHOR = "Kacper Cieśla, Tymon Tobolski"
 EMAIL = "kacper.ciesla@gmail.com"
-HOMEPAGE = "http://teamon.eu/rdb4o/"
+HOMEPAGE = "http://blog.teamon.eu/projekty/"
 SUMMARY = "Small library for accessing db4o from jruby"
 
 spec = Gem::Specification.new do |s|
@@ -40,21 +40,23 @@ end
 
 desc 'Compile lib'
 task :compile do
-  Dir.chdir "#{File.dirname(__FILE__)}/lib/java"
-  Dir["com/rdb4o/*.java"].each do |f|
-    puts `javac #{f}`
+  dir = File.dirname(__FILE__)
+  Dir["#{dir}/lib/java/com/rdb4o/*.java"].each do |f|
+    puts "Compiling #{f}"
+    system "javac -cp #{dir}/lib/java/db4o.jar:#{dir}/lib/java #{f}"
   end
 end
 
 desc 'Make jar'
-task :jar do
+task :jar => :compile do
   Dir.chdir "#{File.dirname(__FILE__)}/lib/java"
-  puts `jar -c com > rdb4o.jar`
+  system "jar -c com > rdb4o.jar"
+  puts "JAR file created"
 end
 
 desc "Run :package and install the resulting .gem with jruby"
 task :install => :package do
-  puts `jruby -S gem install pkg/#{GEM_NAME}-#{GEM_VERSION}-java.gem --no-rdoc --no-ri`
+  system "jruby -S gem install pkg/#{GEM_NAME}-#{GEM_VERSION}-java.gem --no-rdoc --no-ri"
 end
 
 
@@ -67,18 +69,28 @@ namespace :spec do
       specs = Dir[File.dirname(__FILE__) + "/spec/**/*_spec.rb"].join(" ")
     end
     
-    sh %{jruby -S spec -O spec/spec.opts #{specs}}
+    system "jruby -S spec -O spec/spec.opts #{specs}"
+  end
+  
+  desc "Generate spec models"  
+  task :generate_models do
+    require File.dirname(__FILE__) + "/lib/rdb4o"
+    Dir.chdir(File.dirname(__FILE__) + "/spec")
+    Rdb4o::ModelGenerator.dir = "app/models"
+    Rdb4o::ModelGenerator.generate_all!
   end
 
   desc "Compile spec models"
   task :compile_models do
-    require 'lib/rdb4o/tools'
-    Rdb4o::Tools.compile_models(File.dirname(__FILE__) + "/spec/app/models/java")
+    require File.dirname(__FILE__) + "/lib/rdb4o"
+    Dir.chdir(File.dirname(__FILE__) + "/spec")
+    Rdb4o::ModelGenerator.dir = "app/models"
+    Rdb4o::ModelGenerator.compile_all!
   end
 
   desc "Console"
   task :console do
-    exec "jruby -S irb -r #{File.dirname(__FILE__)}/spec/console.rb"
+    system "jruby -S irb -r #{File.dirname(__FILE__)}/spec/console.rb"
   end
 end
 

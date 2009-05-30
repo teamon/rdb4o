@@ -1,40 +1,55 @@
 module Rdb4o
   module ModelGenerator
-    def self.included(base)
-      base.extend(ClassMethods)
-      @@classes ||= []
-      @@classes << base
-    end
-    
-    def self.classes
-      @@classes
-    end
-    
-    def self.package
-      @@package
-    end
-    
-    def self.package=(pkg)
-      @@package = pkg
-    end
-    
-    # def self.generate!
-    #   @@classes.map {|c| c.generate! }
-    # end
-    
-    module ClassMethods
+  
+    class << self
+      attr_accessor :dir
       
-      def field(name, type, opts={})
-        @@__generator_fields ||= {}
-        raise ArgumentError("Type must be a String") unless type.is_a?(String)
-        @@__generator_fields[name] = {:type => type}.merge(opts)
+      def included(base)
+        base.extend(ClassMethods)
+        base.__generator_fields = {}
+        classes << base
+      end
+    
+      def classes
+        @@classes ||= []
       end
       
-      def generate!(dir)
-        java_dir = File.join(dir, "java")
-        package = java_dir.gsub(/\//, ".")
-                
-        fields = @@__generator_fields.map do |name, opts|
+      def generate_all!        
+        load_all      
+        classes.each {|c| c.generate! }
+      end
+      
+      def compile_all!        
+        load_all
+        classes.each {|c| c.compile! }
+      end
+      
+      def java_dir
+        File.join(self.dir, "java")
+      end
+      
+      def package
+        java_dir.gsub("/", ".")
+      end
+    
+      def load_all
+        Dir["#{self.dir}/*.rb"].each do |file|
+          puts "Reading #{file}"
+          require file
+        end
+      end
+    end
+    
+    module ClassMethods
+      attr_accessor :__generator_fields
+      
+      def field(name, type, opts={})
+        # raise ArgumentError("Type must be a String") unless type.is_a?(String) # isnt that stupid?
+        __generator_fields[name] = {:type => type}.merge(opts)
+      end
+      
+      def generate!
+        fields = __generator_fields.map do |name, opts|
           name = name.to_s
 <<-FIELD
   private #{opts[:type]} _#{name};
@@ -44,7 +59,7 @@ FIELD
         end.join "\n"
 
         content = <<-CLASS_FILE
-package #{package};
+package #{Rdb4o::ModelGenerator.package};
 
 import com.rdb4o.Rdb4oModel;
 
@@ -58,19 +73,18 @@ public class #{self.name} extends Rdb4oModel {
   
 }
 CLASS_FILE
-
-      Dir.mkdir(java_dir) unless File.exist?(java_dir)
-      File.open(File.join(java_dir, "#{self.name}.java"), "w") {|f|
-        f.write(content)
-      }
+      
+        dir = Rdb4o::ModelGenerator.java_dir
+        Dir.mkdir(dir) unless File.exist?(dir)
+        File.open(File.join(dir, "#{self.name}.java"), "w") {|f| f.write(content) }
 
       end
     
-      def compile!(dir)
-        java_file = File.join(dir, "java", "#{self.name}.java")
-        command = "javac -cp #{Rdb4o.jar_classpath} #{java_file}"
+      def compile!
+        java_file = File.join(Rdb4o::ModelGenerator.java_dir, "#{self.name}.java")
+        command = "javac -cp #{Rdb4o.jar_classpath}:. #{java_file}"
         puts command
-        puts `#{command}`
+        system(command)
       end
     end
   end

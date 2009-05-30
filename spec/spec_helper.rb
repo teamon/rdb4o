@@ -15,7 +15,7 @@ end
 Spec::Runner.configure do |config|
   config.before(:all) do
     $CLASSPATH << File.dirname(__FILE__)
-    Rdb4o::Tools.load_models "#{File.dirname(__FILE__)}/app/models/java"
+    Rdb4o.load_models "#{File.dirname(__FILE__)}/app/models/java"
   end
 
   config.after(:all) do

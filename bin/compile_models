@@ -2,7 +2,6 @@
 require 'rubygems'
 require 'rdb4o'
 
-
 if ARGV.empty?
   puts "USAGE: compile_models [path]"
   exit

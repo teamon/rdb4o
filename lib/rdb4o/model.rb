@@ -3,8 +3,9 @@ module Rdb4o
   module Model
 
     def self.included(base) #:nodoc:
-       base.extend(ClassMethods)
-       base.send(:include, InstanceMethods)
+      base.extend(ClassMethods)
+      base.send(:include, InstanceMethods)
+      base.send(:include, ModelGenerator)
     end
 
     class Finder < Java::com::rdb4o::RubyPredicate

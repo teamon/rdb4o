@@ -1,7 +1,6 @@
 $: << File.dirname(__FILE__)
 
 include Java
-$CLASSPATH << "#{File.dirname(File.expand_path(__FILE__))}/java"
 
 begin
   require 'java/db4o.jar'
@@ -14,8 +13,18 @@ rescue LoadError
 end
 
 require 'extlib'
+require 'java/rdb4o.jar'
 
 # Rdb4o
+
+def x(msg)
+  STDOUT.puts "\033[0;35m%s\033[0m" % msg
+end
+
+def i(obj)
+  STDOUT.puts "\033[0;36m%s\033[0m" % obj.inspect
+end
+
 
 module Rdb4o
   Db4o = com.db4o.Db4o
@@ -45,4 +54,3 @@ require 'rdb4o/errors'
 require 'rdb4o/validation_helpers'
 require 'rdb4o/model'
 require 'rdb4o/model_generator'
-require 'rdb4o/tools'
