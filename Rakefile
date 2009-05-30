@@ -90,8 +90,8 @@ namespace :spec do
 
   desc "Console"
   task :console do
-    Dir.chdir("spec")
-    system "CLASSPATH='../lib/java/db4o.jar:../lib/java/rdb4o.jar:.' jruby -S irb -r console.rb"
+    dir = File.dirname(__FILE__)
+    system "CLASSPATH='#{dir}/lib/java/db4o.jar:#{dir}/lib/java/rdb4o.jar:#{dir}/spec' jruby -S irb -r #{dir}/spec/console.rb"
   end
 end
 

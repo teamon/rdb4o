@@ -29,8 +29,10 @@ blah blah
 example: http://gist.github.com/93771
 
 
-SPEC
-====
+SPEC CONSOLE
+============
+jruby -S rake spec:generate
+jruby -S rake spec:compile
+rake spec:console
 
-cd spec
-CLASSPATH='../lib/java/db4o.jar:../lib/java/rdb4o.jar:.' jruby -S irb -r console.rb
+
