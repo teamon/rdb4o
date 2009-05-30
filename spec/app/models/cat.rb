@@ -4,6 +4,7 @@ class Cat
   field :name, "String"
   field :color, "String"
   field :age, "int"
+  field :person, "Person"
   
   def say
     puts "meow"

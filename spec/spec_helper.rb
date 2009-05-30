@@ -8,14 +8,11 @@ end
 
 require File.dirname(__FILE__) + '/../lib/rdb4o'
 
-def d(*attrs)
-  attrs.each {|a| puts a.inspect }
-end
+Rdb4o.load_models(File.dirname(__FILE__))
+Dir["#{File.dirname(__FILE__)}/app/models/*.rb"].each {|f| require f }
 
 Spec::Runner.configure do |config|
   config.before(:all) do
-    $CLASSPATH << File.dirname(__FILE__)
-    Rdb4o.load_models "#{File.dirname(__FILE__)}/app/models/java"
   end
 
   config.after(:all) do

@@ -20,5 +20,9 @@ public class Cat extends Rdb4oModel {
   public void setAge(int age) { this._age = age; }
   public int getAge() { return this._age; }
 
+  private Person _person;
+  public void setPerson(Person person) { this._person = person; }
+  public Person getPerson() { return this._person; }
+
   
 }

@@ -14,7 +14,7 @@ spec = Gem::Specification.new do |s|
   s.version = GEM_VERSION
   s.platform = 'jruby'
   s.has_rdoc = true
-  s.extra_rdoc_files = ["README", "LICENSE", 'TODO']
+  s.extra_rdoc_files = ["README", "LICENSE", "TODO"]
   s.summary = SUMMARY
   s.description = s.summary
   s.author = AUTHOR
@@ -23,7 +23,7 @@ spec = Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables = %w( compile_models )
-  s.files = %w( LICENSE README Rakefile TODO ) +  Dir.glob("{bin,lib,spec}/**/*")
+  s.files = %w( LICENSE README Rakefile TODO ) +  Dir["{bin,lib,spec}/**/*"]
   s.add_dependency('extlib', '>= 0.9')
 end
 
@@ -63,13 +63,16 @@ end
 namespace :spec do
   desc "Run specs"
   task :run do
-    if ENV['file']
-      specs = File.dirname(__FILE__) + "/spec/#{ENV['file']}_spec.rb"
-    else
-      specs = Dir[File.dirname(__FILE__) + "/spec/**/*_spec.rb"].join(" ")
-    end
+    dir = File.dirname(__FILE__)
     
-    system "jruby -S spec -O spec/spec.opts #{specs}"
+    if ENV['file']
+      specs = "#{dir}/spec/#{ENV['file']}_spec.rb"
+    else
+      specs = Dir["#{dir}/spec/**/*_spec.rb"].join(" ")
+    end
+
+    c = "CLASSPATH=#{dir}/lib/java/db4o.jar:#{dir}/lib/java/rdb4o.jar:#{dir}/spec jruby -S spec -O spec/spec.opts #{specs}"
+    puts c
   end
   
   desc "Generate spec models"  

@@ -14,9 +14,9 @@ Instalation
 ===============
 jruby -S gem install rdb4o
 
+
 Usage
 ===============
-
 Connect to database
 require 'rubygems'
 require 'rdb4o'

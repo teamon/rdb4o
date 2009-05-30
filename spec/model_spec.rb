@@ -61,7 +61,6 @@ describe Rdb4o::Model do
 
     it "#get_by_uuid" do
       jimmy = Person.create(:name => 'Jimmy', :age => 35)
-      puts jimmy.uuid
       Person.get_by_uuid(jimmy.uuid).should == jimmy
     end
 
@@ -132,16 +131,14 @@ describe Rdb4o::Model do
 
     it "#uuid" do
       john = Person.new
-      puts john.uuid
       # john.db4o_id.should == 0
       john.save
       # john.db4o_id.should_not == 0
-      puts john.uuid
     end
 
   end
 
-  describe "One to may" do
+  describe "One to many" do
     it "should work without parameters" do
       class Person
         has_many :cats
@@ -150,10 +147,10 @@ describe Rdb4o::Model do
       john = Person.create(:name => 'John')
       john.cats.size.should == 0
 
-      foo = Cat.create(:name => 'Foo', :person => john)
-      foo.person.should == john
+      kitty = Cat.create(:name => 'Foo', :person => john)
+      kitty.person.should == john
       john.cats.size.should == 1
-      john.cats.should == [foo]
+      john.cats.should == [kitty]
     end
 
     it "should work with :key parameter" do
@@ -164,10 +161,10 @@ describe Rdb4o::Model do
       john = Person.create(:name => 'John')
       john.dogs.size.should == 0
 
-      foo = Dog.create(:name => 'Foo', :owner => john)
-      foo.owner.should == john
+      puppy = Dog.create(:name => 'Foo', :owner => john)
+      puppy.owner.should == john
       john.dogs.size.should == 1
-      john.dogs.should == [foo]
+      john.dogs.should == [puppy]
     end
 
     it "should work with :class_name parameter" do
@@ -178,10 +175,10 @@ describe Rdb4o::Model do
       john = Person.create(:name => 'John')
       john.pets.size.should == 0
 
-      foo = Cat.create(:name => 'Foo', :person => john)
-      foo.person.should == john
+      kitty = Cat.create(:name => 'Foo', :person => john)
+      kitty.person.should == john
       john.pets.size.should == 1
-      john.pets.should == [foo]
+      john.pets.should == [kitty]
     end
   end
 end
