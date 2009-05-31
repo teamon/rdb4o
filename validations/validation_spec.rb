@@ -2,6 +2,8 @@
 
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
+Rdb4o.use_validations = true
+
 describe Rdb4o::Model::Errors do
   before do
     @errors = Rdb4o::Model::Errors.new

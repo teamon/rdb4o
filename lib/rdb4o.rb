@@ -41,6 +41,13 @@ end
 module Rdb4o
   Db4o = com.db4o.Db4o if jruby?
 
+
+  # global config
+  # class << self
+  #   attr_accessor :use_validations
+  # end
+
+
   # # Includes Rdb4o::Base module into given class
   # def self.set_model(some_class)
   #  some_class = Object.const_get(some_class) if some_class.class == 'String'
@@ -71,5 +78,5 @@ end
 
 require 'rdb4o/database'
 require 'rdb4o/errors'
-require 'rdb4o/validation_helpers'
+# require 'rdb4o/validation_helpers'
 require 'rdb4o/model'

@@ -22,11 +22,11 @@ describe Rdb4o::Model::Field do
     
     it "should have fields" do
       Kyle.fields.should have_key(:name)
-      Kyle.fields[:name].should be_a Rdb4o::Model::Field
+      Kyle.fields[:name].should be_a(Rdb4o::Model::Field)
       Kyle.fields[:name].type.should == String
       
       Kyle.fields.should have_key(:age)
-      Kyle.fields[:age].should be_a Rdb4o::Model::Field
+      Kyle.fields[:age].should be_a(Rdb4o::Model::Field)
       Kyle.fields[:age].type.should == Fixnum
     end
   end
