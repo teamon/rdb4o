@@ -1,6 +1,47 @@
-# require File.dirname(__FILE__) + '/../spec_helper.rb'
-# 
-# describe Rdb4o::Model do
+require File.dirname(__FILE__) + '/../spec_helper.rb'
+
+describe Rdb4o::Model do
+  before(:all) do
+    class Stan
+      include Rdb4o::Model
+      
+      field :name, String
+      field :age, Fixnum
+    end
+  end
+  
+  describe "Class" do
+    it "should create new object with parameters" do
+      s = Stan.new(:name => "Stan Marsh", :age => 8)
+      s.name.should == "Stan Marsh"
+      s.age.should == 8
+    end
+  end
+  
+  describe "Instance" do
+    it "should update instance attributes" do
+      s = Stan.new
+      s.name = "Eric"
+      s.age = 1
+      
+      s.update(:name => "Stan", :age => 8)
+      s.name.should == "Stan"
+      s.age.should == 8
+    end
+    
+    it "should not raise error when trying to set undefined attribute, just ignore that" do
+      lambda {
+        s = Stan.new(:name => "Stan", :age => 8, :color => "blue")
+        s.age.should == 8
+      }.should_not raise_error(NoMethodError)
+    end
+  end
+
+end
+
+
+
+
 # 
 #   before(:all) do
 #     Rdb4o::Db4o.configure.generateUUIDs(Java::JavaLang::Integer::MAX_VALUE)

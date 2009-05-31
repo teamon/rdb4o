@@ -47,7 +47,25 @@ module Rdb4o
       # :api: public
       def attributes
         @attributes ||= {}
-      end      
+      end
+      
+      
+      # Update object attributes
+      #
+      # ==== Parameters
+      # attrs<Hash>:: Hash of attributes that will apply to object
+      #
+      # ==== Returns
+      # self
+      #
+      # :api: public
+      def update(attrs)
+        attrs.each_pair do |key, value|
+          send(:"#{key}=", value) if respond_to?(:"#{key}=")
+          # attributes[key] = value <- lets make use of virtual attributes too
+        end
+      end 
+      
     end
 
     module ClassMethods
@@ -72,7 +90,6 @@ module Rdb4o
             attributes[:#{name}] = value
           end
         FIELD
-        
       end
       
       # All fields
@@ -83,6 +100,22 @@ module Rdb4o
       # :api: public
       def fields
         @fields ||= {}
+      end
+      
+      
+      # Create new object
+      #
+      # ==== Parameters
+      # attrs<Hash>:: Hash of attributes that will apply to object
+      #
+      # ==== Returns
+      # Instance of model
+      #
+      # :api: public
+      def new(attrs = {})
+        instance = super()
+        instance.update(attrs)
+        instance
       end
       
       
@@ -104,11 +137,7 @@ module Rdb4o
       
       
 
-      # def new(attrs = {})
-      #   instance = super()
-      #   instance.update(attrs)
-      #   instance
-      # end
+
 
       # def create(attrs = {})
       #   instance = self.new(attrs)
