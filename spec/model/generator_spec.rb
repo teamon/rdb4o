@@ -9,6 +9,21 @@ describe Rdb4o::Model::Generator do
       field :name, "String"
       field :age, "int"
     end
+    
+    class Kyle
+      include Rdb4o::Model
+      
+      field :name, "String"
+      field :age, "int"
+    end
+     
+    class Stan
+      include Rdb4o::Model
+      
+      field :name, "String"
+      field :age, "int"
+    end
+
   end
 
   it "should generate .java file" do
@@ -32,6 +47,18 @@ describe Rdb4o::Model::Generator do
   it "should generate .java file with package" do
     file = Rdb4o::Model::Generator.generate!(Eric, "app.models")
     file.should include("package app.models.java;")
+  end
+  
+  it "should have list of all classes" do
+    Rdb4o::Model::Generator.classes.should include(Eric, Kyle, Stan)
+  end
+  
+  it "should generate all .java files" do
+    files = Rdb4o::Model::Generator.generate_all!.join
+    
+    files.should include("public class Eric extends Rdb4oModel")
+    files.should include("public class Kyle extends Rdb4oModel")
+    files.should include("public class Stan extends Rdb4oModel")
   end
 
 end

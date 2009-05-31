@@ -2,6 +2,7 @@ module Rdb4o
   module Model
     class Generator
       class << self
+        attr_accessor :classes
         
         # Generate class file
         #
@@ -36,6 +37,14 @@ module Rdb4o
 
             }
           JAVA
+        end
+        
+        
+        # Generate all class files that include Rdb4o::Model
+        #
+        # :api: public
+        def generate_all!
+          classes.map {|c| generate!(c) }
         end
         
       end

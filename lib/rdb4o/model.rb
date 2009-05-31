@@ -40,6 +40,9 @@ module Rdb4o
     def self.included(base)
       base.extend(ClassMethods)
       base.send(:include, InstanceMethods)
+      
+      Generator.classes ||= []
+      Generator.classes << base
     end
     
     module InstanceMethods
