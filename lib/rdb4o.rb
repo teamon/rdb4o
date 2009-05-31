@@ -1,5 +1,22 @@
+require 'rubygems'
+require 'extlib'
+
+def x(msg)
+  STDOUT.puts "\033[0;35m%s\033[0m" % msg
+end
+
+def i(obj)
+  STDOUT.puts "\033[0;36m%s\033[0m" % obj.inspect
+end
+
+def jruby?
+  RUBY_PLATFORM =~ /java/
+end
+
 $: << File.dirname(__FILE__)
 
+if jruby?
+  
 include Java
 
 begin
@@ -12,22 +29,17 @@ rescue LoadError
   end
 end
 
-require 'extlib'
 require 'java/rdb4o.jar'
+
+end
 
 # Rdb4o
 
-def x(msg)
-  STDOUT.puts "\033[0;35m%s\033[0m" % msg
-end
 
-def i(obj)
-  STDOUT.puts "\033[0;36m%s\033[0m" % obj.inspect
-end
 
 
 module Rdb4o
-  Db4o = com.db4o.Db4o
+  Db4o = com.db4o.Db4o if jruby?
 
   # # Includes Rdb4o::Base module into given class
   # def self.set_model(some_class)
@@ -41,12 +53,17 @@ module Rdb4o
   end
   
   def self.load_models(dir = ".")
+    if jruby?
+      
     Dir["#{dir}/**/*.class"].each do |class_file|
       class_name = File.basename(class_file).sub('.class', '')
       package = File.dirname(class_file).gsub("#{dir}/", "").gsub("/", ".")
       model_class = eval("Java.#{package}.#{class_name}")
       Object.const_set(class_name, model_class)
       # Rdb4o.set_model(model_class)
+    end
+    
+    
     end
   end
 
@@ -56,4 +73,3 @@ require 'rdb4o/database'
 require 'rdb4o/errors'
 require 'rdb4o/validation_helpers'
 require 'rdb4o/model'
-require 'rdb4o/model_generator'
