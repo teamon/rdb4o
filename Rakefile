@@ -3,7 +3,7 @@ require 'rake/gempackagetask'
 
 PLUGIN = "rdb4o"
 GEM_NAME = "rdb4o"
-GEM_VERSION = "0.0.1"
+GEM_VERSION = "0.0.2"
 AUTHOR = "Kacper Cieśla, Tymon Tobolski"
 EMAIL = "kacper.ciesla@gmail.com"
 HOMEPAGE = "http://blog.teamon.eu/projekty/"
@@ -75,20 +75,10 @@ namespace :spec do
     puts c
   end
   
-  desc "Generate spec models"  
-  task :generate do
-    require File.dirname(__FILE__) + "/lib/rdb4o"
+  desc "Generate and compile spec models"  
+  task :gen do
     Dir.chdir(File.dirname(__FILE__) + "/spec")
-    Rdb4o::ModelGenerator.dir = "app/models"
-    Rdb4o::ModelGenerator.generate_all!
-  end
-
-  desc "Compile spec models"
-  task :compile do
-    require File.dirname(__FILE__) + "/lib/rdb4o"
-    Dir.chdir(File.dirname(__FILE__) + "/spec")
-    Rdb4o::ModelGenerator.dir = "app/models"
-    Rdb4o::ModelGenerator.compile_all!
+    system "../bin/rdb4o generate app/models"
   end
 
   desc "Console"

@@ -33,10 +33,6 @@ require 'java/rdb4o.jar'
 
 end
 
-# Rdb4o
-
-
-
 
 module Rdb4o
   Db4o = com.db4o.Db4o if jruby?
@@ -46,14 +42,6 @@ module Rdb4o
   # class << self
   #   attr_accessor :use_validations
   # end
-
-
-  # # Includes Rdb4o::Base module into given class
-  # def self.set_model(some_class)
-  #  some_class = Object.const_get(some_class) if some_class.class == 'String'
-  #  some_class.send(:include, Rdb4o::Model)
-  # end
-  # this is not needed now
   
   def self.jar_classpath
     File.join(File.dirname(File.expand_path(__FILE__)), "java")
@@ -67,7 +55,6 @@ module Rdb4o
       package = File.dirname(class_file).gsub("#{dir}/", "").gsub("/", ".")
       model_class = eval("Java.#{package}.#{class_name}")
       Object.const_set(class_name, model_class)
-      # Rdb4o.set_model(model_class)
     end
     
     

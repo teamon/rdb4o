@@ -35,9 +35,6 @@ describe Rdb4o::Model::Field do
     
     it "should have attributes hash" do
       k = Kyle.new
-      pending "It will work have when object creation will be done"
-      k.attributes.should have_key(:name)
-      k.attributes.should have_key(:age)
       
       k.attributes[:name] = "Kyle Broflovski"
       k.attributes[:name].should == "Kyle Broflovski"

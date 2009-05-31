@@ -18,24 +18,24 @@ module Rdb4o
             capital = name.to_s.capitalize
             fields << "  #{field.java_type} #{name};" 
             accessors << "  public void set#{capital}(#{field.java_type} #{name}) { this.#{name} = #{name}; }"
-            accessors << "  public #{field.java_type} get#{capital}(#{field.java_type} #{name}) { return this.#{name}; }"
+            accessors << "  public #{field.java_type} get#{capital}() { return this.#{name}; }"
           end
           
           package = "package #{package}.java;" if package
           
           java = <<-JAVA
-            #{package}
+#{package}
 
-            import com.rdb4o.Rdb4oModel;
+import com.rdb4o.Rdb4oModel;
 
-            public class #{klazz} extends Rdb4oModel {
-              public #{klazz}() {}
+public class #{klazz} extends Rdb4oModel {
+  public #{klazz}() {}
 
-            #{fields.join("\n")}
+#{fields.join("\n")}
 
-            #{accessors.join("\n")}
+#{accessors.join("\n")}
 
-            }
+}
           JAVA
         end
         

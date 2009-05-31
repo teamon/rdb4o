@@ -2,8 +2,8 @@ package app.models.java;
 
 import com.rdb4o.Rdb4oModel;
 
-public class Cat extends Rdb4oModel {
-  public Cat() {}
+public class Kitty extends Rdb4oModel {
+  public Kitty() {}
 
   String name;
   String color;

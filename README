@@ -1,6 +1,9 @@
 Rdb4o v. 0.0.1
 ===============
 
+see http://teamon.github.com/rdb4o
+
+
 Author: Kacper Cieśla, Tymon Tobolski
 
 Small library I wrote for fun too have even more fun with db4o and jruby :)
@@ -35,4 +38,4 @@ jruby -S rake spec:generate
 jruby -S rake spec:compile
 rake spec:console
 
-
+rake spec:gen DEV=true

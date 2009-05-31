@@ -35,11 +35,11 @@ describe Rdb4o::Model::Generator do
     
     file.should include("int age;")
     file.should include("public void setAge(int age) { this.age = age; }")
-    file.should include("public int getAge(int age) { return this.age; }")
+    file.should include("public int getAge() { return this.age; }")
     
     file.should include("String name;")
     file.should include("public void setName(String name) { this.name = name; }")
-    file.should include("public String getName(String name) { return this.name; }")
+    file.should include("public String getName() { return this.name; }")
     
     file.should_not include("package")
   end
