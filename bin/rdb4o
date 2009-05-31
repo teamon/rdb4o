@@ -17,14 +17,16 @@ USAGE
     exit
 end
 
-usage if ARGV.empty?
+def cp
+  "#{Rdb4o.jar_classpath}/db4o.jar:#{Rdb4o.jar_classpath}/rdb4o.jar:."
+end
 
-i ARGV
+usage if ARGV.empty?
 
 case ARGV[0]  
 when "generate"
-  i Dir[ARGV[1] + "/**/*rb"]
-  Dir[ARGV[1] + "/**/*rb"].each do |file|
+  Dir[ARGV[1] + "/**/*.rb"].each do |file|
+    puts file
     dir = File.dirname(file)
     package = dir.gsub("/", ".")
     dir += "/java"
@@ -40,12 +42,15 @@ when "generate"
       }
     end
   end
-  # Rdb4o::ModelGenerator.generate_all!(ARGV[1])
+  
 when "compile"
-  # Rdb4o::ModelGenerator.dir = ARGV[1]
-  # Rdb4o::ModelGenerator.compile_all!
+  Dir[ARGV[1] + "/**/*.java"].each do |file|
+    cmd = "javac -cp #{cp} #{file}"
+    puts cmd
+    system(cmd)
+  end
 when "run"
-  system "CLASSPATH=#{Rdb4o.jar_classpath}/db4o.jar:#{Rdb4o.jar_classpath}/rdb4o.jar:. jruby #{ARGV[1]}"
+  system "CLASSPATH=#{cp} jruby #{ARGV[1]}"
 else
   usage
 end

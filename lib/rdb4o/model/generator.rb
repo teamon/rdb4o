@@ -40,12 +40,13 @@ public class #{klazz} extends Rdb4oModel {
         end
         
         
-        # Generate all class files that include Rdb4o::Model
-        #
-        # :api: public
-        def generate_all!
-          classes.map {|c| generate!(c) }
-        end
+        # May not be usefull at al
+        # # Generate all class files that include Rdb4o::Model
+        # #
+        # # :api: public
+        # def generate_all!
+        #   classes.map {|c| generate!(c) }
+        # end
         
       end
     end
