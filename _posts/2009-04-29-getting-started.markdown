@@ -9,8 +9,8 @@ All you need to use rdb4o is [JRuby](http://jruby.codehaus.org/) 1.2.0.
 ### Instalation
 
 {% highlight bash %}
-jruby -S gem sources -a http://gems.github.com/
-jruby -S gem install teamon-rdb4o
+$ jruby -S gem sources -a http://gems.github.com/
+$ jruby -S gem install teamon-rdb4o
 {% endhighlight %}
 
 ### Create a model file
@@ -28,8 +28,8 @@ end
 ### Generate & compile
 In order to store objects in db4o Ruby classes need Java wrappers, that must be generated and compiled.
 {% highlight bash %}
-rdb4o generate app/models
-rdb4o compile app/models
+$ rdb4o generate app/models
+$ rdb4o compile app/models
 {% endhighlight %}
 
 
@@ -93,7 +93,7 @@ Rdb4o::Database.close
 ### Run program
 Due to classpaths issue the best way to run this program is to use rdb4o executable.
 {% highlight bash %}
-rdb4o run main.rb
+$ rdb4o run main.rb
 {% endhighlight %}
 
 Program should output
