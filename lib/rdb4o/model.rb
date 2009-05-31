@@ -6,6 +6,10 @@ module Rdb4o
       def initialize(name, type, opts ={})
         self.name, self.type, self.options = name, type, opts
       end
+      
+      def java_type
+        type
+      end
     end
     
     if jruby?
