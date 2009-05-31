@@ -15,6 +15,7 @@ $ jruby -S gem install teamon-rdb4o
 
 ### Create a model file
 Ruby model class will be transformed into Java class, so it should have some package. For example app/models.
+
 {% highlight ruby %}
 # app/models/cat.rb
 class Cat
