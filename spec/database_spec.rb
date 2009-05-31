@@ -10,6 +10,7 @@ describe Rdb4o::Database do
 
   it "should create database" do
     Rdb4o::Database.setup(:dbfile => "test.db")
+    File.exists?("test.db").should == true
   end
 
   it "should setup server"

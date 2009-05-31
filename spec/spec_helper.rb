@@ -16,7 +16,7 @@ Spec::Runner.configure do |config|
   end
 
   config.after(:all) do
-    Rdb4o::Database.close
-    Dir["*.db"].each {|path| File.delete(path) }
+    # Rdb4o::Database.close
+    # Dir["*.db"].each {|path| File.delete(path) }
   end
 end
