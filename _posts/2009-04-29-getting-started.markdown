@@ -9,6 +9,11 @@ All you need to use rdb4o is [JRuby](http://jruby.codehaus.org/) 1.2.0.
 ### Instalation
 
 {% highlight bash %}
+$ git clone git://github.com/teamon/rdb4o.git
+$ cd rdb4o
+$ rake install
+
+# this does not work right now...
 $ jruby -S gem sources -a http://gems.github.com/
 $ jruby -S gem install teamon-rdb4o
 {% endhighlight %}
