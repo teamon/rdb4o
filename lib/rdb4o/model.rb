@@ -113,7 +113,7 @@ module Rdb4o
       # :api: private
       def _dump_attributes
         self.class.fields.each_pair do |name, field|
-          send(:"set#{name.to_s.camel_case}", field.dump(attributes[name])) if respond_to? :"set#{name.to_s.camel_case}"
+          send(:"set_#{name}", field.dump(attributes[name])) if respond_to? :"set_#{name}"
         end
       end
       
@@ -122,7 +122,7 @@ module Rdb4o
       # :api: private
       def _load_attributes
         self.class.fields.each_pair do |name, field|
-          send(:"#{name}=", send(:"get#{name.to_s.camel_case}")) if respond_to? :"get#{name.to_s.camel_case}"
+          send(:"#{name}=", field.load(send(:"get_#{name}"))) if respond_to? :"get_#{name}"
         end
       end
 

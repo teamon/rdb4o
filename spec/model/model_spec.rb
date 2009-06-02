@@ -10,6 +10,12 @@ describe Rdb4o::Model do
     Cat.destroy_all!
   end
   
+  specify "Array field" do
+    Person.create(:colors => ["red", "green", "blue", 1, 4, true, nil])
+    reconnect_database
+    Person.all.first.colors.should == ["red", "green", "blue", "1", "4", "true", ""]
+  end
+  
   describe "Class" do
     specify "#new should create new object with parameters" do
       stan = Person.new(:name => "Stan Marsh", :age => 8)

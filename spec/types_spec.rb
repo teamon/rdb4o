@@ -12,6 +12,8 @@ describe Rdb4o::Types do
       
       field :size, "int"
       field :sign, "char"
+      
+      field :colors, [String]
     end
   end
   
@@ -31,6 +33,11 @@ describe Rdb4o::Types do
       
       Rdb4o::Type.for("int").should == "int"
       Rdb4o::Type.for("char").should == "char"
+      
+      Rdb4o::Type.for([String]).superclass.should == Rdb4o::Types::Array
+      Rdb4o::Type.for([String]).type.should == String
+      Rdb4o::Type.for(["int"]).superclass.should == Rdb4o::Types::Array
+      Rdb4o::Type.for(["int"]).type.should == "int"
     end
     
     it "should return correct java_type" do
@@ -47,6 +54,9 @@ describe Rdb4o::Types do
       
       Rdb4o::Type.java_type_for("int").should == "int"
       Rdb4o::Type.java_type_for("char").should == "char"
+      
+      Rdb4o::Type.java_type_for([String]).should == "String[]"
+      Rdb4o::Type.java_type_for(["int"]).should == "int[]"
     end
     
   end
@@ -59,14 +69,11 @@ describe Rdb4o::Types do
       Chef.fields[:dead].java_type.should == "boolean"
       Chef.fields[:size].java_type.should == "int"
       Chef.fields[:sign].java_type.should == "char"
+      Chef.fields[:colors].java_type.should == "String[]"
     end
   end
   
   describe "dump" do
-    before do
-      @c = Chef.new
-    end
-    
     specify "String" do
       Rdb4o::Types::String.dump("some string").should == "some string"
       Rdb4o::Types::String.dump(4).should == "4"

@@ -4,4 +4,6 @@ class Person
   field :name, String
   field :age, Fixnum
   
+  field :colors, [String]
+  
 end

@@ -27,7 +27,7 @@ module Rdb4o
       #
       # :api: public
       def dump(value)
-        Rdb4o::Type.dump(self.type, value)
+        Rdb4o::Type.dump(type, value)
       end
         
         
@@ -41,7 +41,7 @@ module Rdb4o
       #
       # :api: public
       def load(value)
-        Rdb4o::Type.load(self.type, value)
+        Rdb4o::Type.load(type, value)
       end
     end
   end

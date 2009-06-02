@@ -13,10 +13,6 @@ module Rdb4o
     
   class Type
     class << self
-      def java_type(type = nil)
-        @java_type = type if type
-        @java_type
-      end
       
       # Type class for specified name
       #
@@ -30,11 +26,15 @@ module Rdb4o
       #
       # :api: public
       def for(type)
-        type = Extlib::Inflection.demodulize(type.to_s)
-        if Rdb4o::Types.constants.include?(type)
-          Rdb4o::Types.const_get(type)
+        if type.is_a?(Array)
+          Rdb4o::Types::Array.with(type.first)
         else
-          type
+          type = Extlib::Inflection.demodulize(type.to_s)
+          if Rdb4o::Types.constants.include?(type)
+            Rdb4o::Types.const_get(type)
+          else
+            type
+          end
         end
       end
       
@@ -70,7 +70,7 @@ module Rdb4o
       # :api: public
       def dump(type, value)
         type = self.for(type)
-        if type.respond_to?(:dump)
+        if type.respond_to?(:dump) && type.method(:dump).arity == 1
           type.dump(value)
         else
           value
@@ -90,7 +90,7 @@ module Rdb4o
       # :api: public
       def load(type, value)
         type = self.for(type)
-        if type.respond_to?(:load)
+        if type.respond_to?(:load) && type.method(:dump).arity == 1
           type.load(value)
         else
           value
