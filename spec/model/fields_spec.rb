@@ -13,8 +13,8 @@ describe Rdb4o::Model::Field do
       field :age, Fixnum
     end
   end
-
-  describe "Class" do
+  
+  describe "fields" do
     
     it "should have empty fields" do
       Kenny.fields.should be_empty
@@ -22,13 +22,29 @@ describe Rdb4o::Model::Field do
     
     it "should have fields" do
       Kyle.fields.should have_key(:name)
-      Kyle.fields[:name].should be_a(Rdb4o::Model::Field)
-      Kyle.fields[:name].type.should == String
-      
       Kyle.fields.should have_key(:age)
-      Kyle.fields[:age].should be_a(Rdb4o::Model::Field)
-      Kyle.fields[:age].type.should == Fixnum
     end
+  end
+  
+
+  
+  describe "Field" do
+    # Isnt checking for class lame in ruby world?
+    # it "should have correct class" do
+    #   Kyle.fields[:name].should be_a(Rdb4o::Model::Field)
+    #   Kyle.fields[:age].should be_a(Rdb4o::Model::Field)
+    # end
+  
+    it "should have correct type" do  
+      Kyle.fields[:name].type.should == Rdb4o::Types::String
+      Kyle.fields[:age].type.should == Rdb4o::Types::Fixnum
+    end
+  
+    it "should respond to java type" do
+      Kyle.fields[:name].should respond_to(:java_type)
+      Kyle.fields[:age].should respond_to(:java_type)
+    end
+  
   end
   
   describe "Instance" do

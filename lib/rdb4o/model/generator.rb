@@ -15,10 +15,10 @@ module Rdb4o
           fields, accessors = [], []
           
           klazz.fields.each_pair do |name, field|
-            capital = name.to_s.capitalize
+            camel = name.to_s.camel_case
             fields << "  #{field.java_type} #{name};" 
-            accessors << "  public void set#{capital}(#{field.java_type} #{name}) { this.#{name} = #{name}; }"
-            accessors << "  public #{field.java_type} get#{capital}() { return this.#{name}; }"
+            accessors << "  public void set#{camel}(#{field.java_type} #{name}) { this.#{name} = #{name}; }"
+            accessors << "  public #{field.java_type} get#{camel}() { return this.#{name}; }"
           end
           
           package = "package #{package}.java;" if package

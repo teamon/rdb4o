@@ -12,7 +12,9 @@ def usage
   rdb4o generate [directory]
   rdb4o compile [directory]
 
+For example:
   rdb4o generate app/models
+  rdb4o compile app/models
 USAGE
     exit
 end
@@ -48,7 +50,7 @@ when "compile"
     cmd = "javac -cp #{cp} #{file}"
     puts cmd
     system(cmd)
-  end
+  end  
 when "run"
   system "CLASSPATH=#{cp} jruby #{ARGV[1]}"
 else

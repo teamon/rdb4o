@@ -1,16 +1,6 @@
 module Rdb4o
 
   module Model
-    class Field
-      attr_accessor :name, :type, :options
-      def initialize(name, type, opts ={})
-        self.name, self.type, self.options = name, type, opts
-      end
-      
-      def java_type
-        type
-      end
-    end
     
     if jruby?
       
@@ -40,6 +30,7 @@ module Rdb4o
     def self.included(base)
       base.extend(ClassMethods)
       base.send(:include, InstanceMethods)
+      base.send(:include, Rdb4o::Types)
       
       Generator.classes ||= []
       Generator.classes << base
@@ -123,6 +114,16 @@ module Rdb4o
         instance = super()
         instance.update(attrs)
         instance
+      end
+      
+      
+      # Set java attributes with properiate types
+      #
+      # :api: private
+      def _dump_attributes
+        self.class.fields.each_pair do |name, field|
+          self.send("set#{name.camel_case}", field.dump(attributes[:name]))
+        end
       end
       
       

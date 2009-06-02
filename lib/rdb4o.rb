@@ -63,8 +63,10 @@ module Rdb4o
 
 end
 
-require 'rdb4o/database'
+require :rdb4o / :database
 # require 'rdb4o/errors'
 # require 'rdb4o/validation_helpers'
-require 'rdb4o/model'
-require 'rdb4o/model/generator'
+require :rdb4o / :model
+require :rdb4o / :model / :generator
+require :rdb4o / :model / :field
+require :rdb4o / :type

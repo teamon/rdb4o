@@ -7,3 +7,12 @@ Basically is totally unstable. But sometimes it works ;)
 - UUIDs 
 - easy way to configure it (activation depth and so on)
 - type mismatch error handling (type cast)
+
+
+not-so-important
+
+field :foo, Boolean
+
++ foo
++ foo=(v)
++ foo? <<==

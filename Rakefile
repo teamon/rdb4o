@@ -31,6 +31,11 @@ Rake::GemPackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
 
+
+dir = File.dirname(__FILE__)
+ENV["CLASSPATH"] = "#{dir}/lib/java/db4o.jar:#{dir}/lib/java/rdb4o.jar:#{dir}/spec"
+
+
 desc "Create a gemspec file"
 task :gemspec do
   File.open("#{GEM_NAME}.gemspec", "w") do |file|
@@ -40,7 +45,6 @@ end
 
 desc 'Compile lib'
 task :compile do
-  dir = File.dirname(__FILE__)
   Dir["#{dir}/lib/java/com/rdb4o/*.java"].each do |f|
     puts "Compiling #{f}"
     system "javac -cp #{dir}/lib/java/db4o.jar:#{dir}/lib/java #{f}"
@@ -49,7 +53,7 @@ end
 
 desc 'Make jar'
 task :jar => :compile do
-  Dir.chdir "#{File.dirname(__FILE__)}/lib/java"
+  Dir.chdir "#{dir}/lib/java"
   system "jar -c com > rdb4o.jar"
   puts "JAR file created"
 end
@@ -59,32 +63,29 @@ task :install => :package do
   system "jruby -S gem install pkg/#{GEM_NAME}-#{GEM_VERSION}-java.gem --no-rdoc --no-ri"
 end
 
-
 namespace :spec do
   desc "Run specs"
   task :run do
-    dir = File.dirname(__FILE__)
-    
     if ENV['file']
       specs = "#{dir}/spec/#{ENV['file']}_spec.rb"
     else
       specs = Dir["#{dir}/spec/**/*_spec.rb"].join(" ")
     end
 
-    c = "CLASSPATH=#{dir}/lib/java/db4o.jar:#{dir}/lib/java/rdb4o.jar:#{dir}/spec jruby -S spec -O spec/spec.opts #{specs}"
-    puts c
+    system "jruby -S spec -O spec/spec.opts #{specs}"
   end
   
   desc "Generate and compile spec models"  
   task :gen do
-    Dir.chdir(File.dirname(__FILE__) + "/spec")
+    Dir.chdir(dir + "/spec")
+    ENV["DEV"] = "true"
     system "../bin/rdb4o generate app/models"
+    system "../bin/rdb4o compile app/models"
   end
 
   desc "Console"
   task :console do
-    dir = File.dirname(__FILE__)
-    system "CLASSPATH='#{dir}/lib/java/db4o.jar:#{dir}/lib/java/rdb4o.jar:#{dir}/spec' jruby -S irb -r #{dir}/spec/console.rb"
+    system "jruby -S irb -r #{dir}/spec/console.rb"
   end
 end
 
@@ -93,7 +94,7 @@ end
 
 desc 'Strip trailing whitespace from source files'
 task :strip do
-  Dir["#{File.dirname(__FILE__)}/**/*.rb"].each do |path|
+  Dir["#{dir}/**/*.rb"].each do |path|
     content = File.open(path, 'r') do |f|
       f.map { |line| line.gsub(/\G\s/, ' ').rstrip + "\n" }.join.rstrip
     end + "\n"

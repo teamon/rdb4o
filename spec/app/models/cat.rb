@@ -20,8 +20,4 @@ class Kitty
   field :age, "int"
   field :person, "Person"
   
-  def say
-    puts "meow"
-  end
-  
 end
