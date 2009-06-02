@@ -5,8 +5,8 @@ import com.rdb4o.Rdb4oModel;
 public class Person extends Rdb4oModel {
   public Person() {}
 
-  String name;
-  int age;
+  private String name;
+  private int age;
 
   public void setName(String name) { this.name = name; }
   public String getName() { return this.name; }

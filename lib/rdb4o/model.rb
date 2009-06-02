@@ -60,6 +60,69 @@ module Rdb4o
         end
       end 
       
+      
+      # Save object to database
+      #
+      # ==== Returns
+      # true/false
+      #
+      # :api: public
+      def save
+        _dump_attributes
+        # return false if opts[:validate] != false && !valid?
+        self.class._database.set(self)
+        true
+      end
+      
+      
+      # Delete object from database
+      #
+      # :api: public
+      def destroy
+        self.class._database.delete(self)
+      end
+      
+      
+      # Returns false if object is stored in database, otherwize true
+      #
+      # :api: public
+      def new?
+        # not sure..
+        self.db4o_id == 0
+        # or maby it should be
+        # self.uuid.nil?
+      end
+
+      # Object`s db4o id
+      #
+      # ==== Returns
+      # Fixnum :: db4o id
+      # :api: public
+      def db4o_id
+        self.class._database.ext.getID(self)
+      end
+      
+      
+      
+      
+      # Set java attributes with appropriate types
+      #
+      # :api: private
+      def _dump_attributes
+        self.class.fields.each_pair do |name, field|
+          send(:"set#{name.to_s.camel_case}", field.dump(attributes[:name]))
+        end
+      end
+      
+      # Load java attributes with appropriate types
+      #
+      # :api: private
+      def _load_attributes
+        self.class.fields.each_pair do |name, field|
+          send(:"#{name}=", send(:"get#{name.to_s.camel_case}"))
+        end
+      end
+
     end
 
     module ClassMethods
@@ -112,23 +175,81 @@ module Rdb4o
         instance
       end
       
-      
-      # Set java attributes with appropriate types
+      # Create new object and save it to database
       #
-      # :api: private
-      def _dump_attributes
-        self.class.fields.each_pair do |name, field|
-          send(:"set#{name.camel_case}", field.dump(attributes[:name]))
-        end
+      # ==== Parameters
+      # attrs<Hash>:: Hash of attributes that will apply to object
+      #
+      # ==== Returns
+      # Instance of model
+      #
+      # :api: public
+      def create(attrs = {})
+        instance = self.new(attrs)
+        instance.save
+        instance
       end
       
-      # Load java attributes with appropriate types
+      # Returns all models matching conditions hash *OR* proc
+      #
+      # ==== Parameters
+      # conditions<Hash>:: Hash of conditions that will filter the database
+      # proc<Proc>:: Filter proc
+      #
+      # ==== Returns
+      # Array :: Collection of objects
+      #
+      # ==== Examples
+      # Person.all
+      # Person.all(:name => "Stan")
+      # Person.all {|p| p.age > 30 }
+      #
+      # :api: public
+      def all(conditions = {}, &proc)
+        if proc
+          self._database.query Finder.new(proc, self)
+        elsif !conditions.empty?
+          match = self.new(conditions)
+          match._dump_attributes
+          self._database.get(match)
+        else
+          self._database.get(self.java_class)
+        end.to_a
+      end
+      
+      
+      # Destroy all objects
+      #
+      # :api: public
+      def destroy_all!
+        all.each {|o| o.destroy}
+      end
+      
+      
+      # Find object with db4o_id
+      #
+      # ==== Parameters
+      # id<Fixnum>:: Object db4o id
+      #
+      # ==== Returns
+      # Object with that id
+      #
+      # :api: public
+      def get_by_db4o_id(id)
+        obj = _database.ext.getByID(id.to_i)
+        # NOTE: Activate depth should be configurable
+        _database.activate(obj, 5)
+        obj
+      end
+      
+      # Database connection
+      #
+      # ==== Returns
+      # Java::ComDb4oInternal::IoAdaptedObjectContainer
       #
       # :api: private
-      def _load_attributes
-        self.class.fields.each_pair do |name, field|
-          send(:"#{name}=", send(:"get#{name.camel_case}"))
-        end
+      def _database
+        Rdb4o::Database[:default]
       end
       
     end
@@ -156,22 +277,9 @@ end
 
 
 
-      # def create(attrs = {})
-      #   instance = self.new(attrs)
-      #   instance.save
-      #   instance
-      # end
 
-      # Returns all models matching conditions hash *OR* proc
-      # def all(conditions = {}, &proc)
-      #   if proc
-      #     self.database.query Finder.new(proc, self)
-      #   elsif !conditions.empty?
-      #     self.database.get(self.new conditions)
-      #   else
-      #     self.database.get(self.java_class)
-      #   end.to_a
-      # end
+
+
 
       # FIXME - this is LAME!
       # def count(conditions = {}, &proc)
@@ -179,26 +287,14 @@ end
       #   all(conditions, &proc).size
       # end
 
-      # Destroys all objects
-      # def destroy_all
-      #   all.each {|o| o.destroy}
-      # end
 
-      # def get_by_db4o_id(id)
-      #   obj = database.ext.getByID(id.to_i)
-      #   # Activate depth should be configurable
-      #   database.activate(obj, 5)
-      #   obj
-      # end
+
 
       # def get_by_uuid(uuid)
       #   database.ext.getByUUID(uuid)
       # end
 
-      # Returns database connection
-      # def database(name = :default)
-      #   Rdb4o::Database[name]
-      # end
+
 
     # end
 
@@ -207,11 +303,6 @@ end
 
 
       # Update object attributes
-      # def update(attrs = {})
-      #   attrs.each do |key, value|
-      #     self.send("#{key}=", value)
-      #   end
-      # end
 
       # Returns false if object is stored in database, otherwize true
       # def new?
@@ -229,9 +320,7 @@ end
       # end
 
       # Deletes object form database
-      # def destroy
-      #   self.class.database.delete(self)
-      # end
+
 
       # def db4o_id
       #   self.class.database.ext.getID(self)

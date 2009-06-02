@@ -1,23 +1,13 @@
 class Cat
   include Rdb4o::Model
   
-  field :name, "String"
-  field :color, "String"
-  field :age, "int"
-  field :person, "Person"
+  field :name, String
+  field :color, String
+  field :age, Fixnum
+  # field :person, "Person"
   
   def say
-    puts "meow"
+    puts "meow #{name}, meow!"
   end
-  
-end
-
-class Kitty
-  include Rdb4o::Model
-  
-  field :name, "String"
-  field :color, "String"
-  field :age, "int"
-  field :person, "Person"
   
 end
