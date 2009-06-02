@@ -2,10 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper.rb'
 
 describe Rdb4o::Model do
   before(:all) do
-    # Rdb4o::Db4o.configure.generateUUIDs(Java::JavaLang::Integer::MAX_VALUE)
-    # Rdb4o::Db4o.configure.objectClass(Person).generateUUIDs(true);
-    Rdb4o::Database.close rescue nil
-    Rdb4o::Database.setup(:dbfile => "model_spec.db")
+    reconnect_database
   end
   
   before(:each) do
@@ -37,14 +34,18 @@ describe Rdb4o::Model do
     specify "#all" do
       Person.all.should == []
       stan = Person.create(:name => 'Stan')
-      Person.all.should == [stan]
+      reconnect_database
+      
+      p = Person.all.first
+      p.name.should == stan.name
+      p.age.should == stan.age
     end
     
     specify "#all with conditions" do
       Person.create(:name => 'Timmy')
       Person.create(:name => 'Timmy')
       Person.create(:name => 'Eric')
-      
+      reconnect_database
       Person.all(:name => 'Timmy').size.should == 2
       Person.all(:name => 'Eric').size.should == 1
     end
@@ -53,7 +54,7 @@ describe Rdb4o::Model do
       Person.create(:name => 'Jimmy', :age => 35)
       Person.create(:name => 'Jimmy', :age => 40)
       Person.create(:name => 'Timmy', :age => 45)
-    
+      reconnect_database
       Person.all {|p| p.name == 'Jimmy'}.size.should == 2
       Person.all {|p| p.name == 'Timmy'}.size.should == 1
       Person.all {|p| p.age > 38}.size.should == 2
@@ -65,14 +66,19 @@ describe Rdb4o::Model do
       Person.create(:name => 'Kenny')
       Cat.create(:name => 'Foo')
       Cat.create(:name => 'Bar')
-          
+      reconnect_database
       Person.all { true }.size.should == 3
       Cat.all { true }.size.should == 2
     end
     
     specify "#get_by_db4o_id" do
       jimmy = Person.create(:name => 'Jimmy', :age => 8)
-      Person.get_by_db4o_id(jimmy.db4o_id).should == jimmy
+      id = jimmy.db4o_id
+      reconnect_database
+      
+      p = Person.get_by_db4o_id(id)
+      p.name.should == jimmy.name
+      p.age.should == jimmy.age
     end
   end
   
@@ -95,13 +101,25 @@ describe Rdb4o::Model do
       eric.save.should == true
       eric.new?.should == false
       
-      Person.all.should == [eric]
+      reconnect_database
+      
+      p = Person.all.first
+      p.name.should == eric.name
+      p.age.should == eric.age
     end
     
     specify "#destroy should delete object form database" do
       kyle = Person.create(:name => 'Kyle')
       kyle.destroy
+      reconnect_database
       Person.all.size.should == 0
+    end
+    
+    it "should dump attributes" do
+      eric = Person.create(:name => "Eric", :age => "8")
+      reconnect_database
+      Person.all.first.name.should == "Eric"
+      Person.all.first.age.should == 8
     end
     
   end

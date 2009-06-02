@@ -13,10 +13,9 @@ module Rdb4o
       end
 
       class << self
-        alias :orig_new :new
         def new(proc, klazz = nil)
-          finder = Finder.orig_new
-          finder.proc = proc
+          finder = super()
+          finder.proc = Proc.new {|obj| obj._load_attributes; proc.call(obj) }
           finder.klazz = klazz
           finder
         end
@@ -102,7 +101,11 @@ module Rdb4o
         self.class._database.ext.getID(self)
       end
       
-      
+      def ==(other)
+        i self.db4o_id
+        i other.db4o_id
+        
+      end
       
       
       # Set java attributes with appropriate types
@@ -110,7 +113,7 @@ module Rdb4o
       # :api: private
       def _dump_attributes
         self.class.fields.each_pair do |name, field|
-          send(:"set#{name.to_s.camel_case}", field.dump(attributes[:name]))
+          send(:"set#{name.to_s.camel_case}", field.dump(attributes[name])) if respond_to? :"set#{name.to_s.camel_case}"
         end
       end
       
@@ -119,7 +122,7 @@ module Rdb4o
       # :api: private
       def _load_attributes
         self.class.fields.each_pair do |name, field|
-          send(:"#{name}=", send(:"get#{name.to_s.camel_case}"))
+          send(:"#{name}=", send(:"get#{name.to_s.camel_case}")) if respond_to? :"get#{name.to_s.camel_case}"
         end
       end
 
@@ -171,6 +174,7 @@ module Rdb4o
       # :api: public
       def new(attrs = {})
         instance = super()
+        instance._load_attributes
         instance.update(attrs)
         instance
       end
@@ -214,7 +218,7 @@ module Rdb4o
           self._database.get(match)
         else
           self._database.get(self.java_class)
-        end.to_a
+        end.to_a.each {|e| e._load_attributes }
       end
       
       
@@ -239,6 +243,7 @@ module Rdb4o
         obj = _database.ext.getByID(id.to_i)
         # NOTE: Activate depth should be configurable
         _database.activate(obj, 5)
+        obj._load_attributes
         obj
       end
       
@@ -275,17 +280,6 @@ end
       
       
 
-
-
-
-
-
-
-      # FIXME - this is LAME!
-      # def count(conditions = {}, &proc)
-      #   puts "I AM LAME COUNT METHOD PLEASE FIX ME"
-      #   all(conditions, &proc).size
-      # end
 
 
 
