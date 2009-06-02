@@ -13,10 +13,6 @@ module Rdb4o
     
   class Type
     class << self
-      def types_map
-        @types_map ||= {}
-      end
-      
       def java_type(type = nil)
         @java_type = type if type
         @java_type
@@ -104,5 +100,3 @@ module Rdb4o
     end
   end
 end
-
-require File.dirname(__FILE__) / :types / :primitives

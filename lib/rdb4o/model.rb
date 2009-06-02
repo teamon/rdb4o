@@ -2,8 +2,6 @@ module Rdb4o
 
   module Model
     
-    if jruby?
-      
     class Finder < Java::com::rdb4o::RubyPredicate
       attr_accessor :proc, :klazz
       def rubyMatch(obj)
@@ -23,8 +21,6 @@ module Rdb4o
           finder
         end
       end
-    end
-    
     end
 
     def self.included(base)
@@ -117,15 +113,28 @@ module Rdb4o
       end
       
       
-      # Set java attributes with properiate types
+      # Set java attributes with appropriate types
       #
       # :api: private
       def _dump_attributes
         self.class.fields.each_pair do |name, field|
-          self.send("set#{name.camel_case}", field.dump(attributes[:name]))
+          send(:"set#{name.camel_case}", field.dump(attributes[:name]))
         end
       end
       
+      # Load java attributes with appropriate types
+      #
+      # :api: private
+      def _load_attributes
+        self.class.fields.each_pair do |name, field|
+          send(:"#{name}=", send(:"get#{name.camel_case}"))
+        end
+      end
+      
+    end
+    
+  end
+end
       
       
       
@@ -191,7 +200,7 @@ module Rdb4o
       #   Rdb4o::Database[name]
       # end
 
-    end
+    # end
 
     # module InstanceMethods
       # include ValidationHelpers
@@ -252,6 +261,6 @@ module Rdb4o
       # end
 
     # end
-  end
-
-end
+#   end
+# 
+# end

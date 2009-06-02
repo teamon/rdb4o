@@ -9,14 +9,8 @@ def i(obj)
   STDOUT.puts "\033[0;36m%s\033[0m" % obj.inspect
 end
 
-def jruby?
-  RUBY_PLATFORM =~ /java/
-end
-
 $: << File.dirname(__FILE__)
 
-if jruby?
-  
 include Java
 
 begin
@@ -31,11 +25,9 @@ end
 
 require 'java/rdb4o.jar'
 
-end
-
 
 module Rdb4o
-  Db4o = com.db4o.Db4o if jruby?
+  Db4o = com.db4o.Db4o
 
 
   # global config
@@ -48,16 +40,11 @@ module Rdb4o
   end
   
   def self.load_models(dir = ".")
-    if jruby?
-      
     Dir["#{dir}/**/*.class"].each do |class_file|
       class_name = File.basename(class_file).sub('.class', '')
       package = File.dirname(class_file).gsub("#{dir}/", "").gsub("/", ".")
       model_class = eval("Java.#{package}.#{class_name}")
       Object.const_set(class_name, model_class)
-    end
-    
-    
     end
   end
 
@@ -70,3 +57,4 @@ require :rdb4o / :model
 require :rdb4o / :model / :generator
 require :rdb4o / :model / :field
 require :rdb4o / :type
+require :rdb4o / :types / :primitives

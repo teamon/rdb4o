@@ -33,11 +33,11 @@ describe Rdb4o::Model::Generator do
     file.should include("public class Eric extends Rdb4oModel")
     file.should include("public Eric() {}")
     
-    file.should include("int age;")
+    file.should include("private int age;")
     file.should include("public void setAge(int age) { this.age = age; }")
     file.should include("public int getAge() { return this.age; }")
     
-    file.should include("String name;")
+    file.should include("private String name;")
     file.should include("public void setName(String name) { this.name = name; }")
     file.should include("public String getName() { return this.name; }")
     
@@ -49,11 +49,11 @@ describe Rdb4o::Model::Generator do
     file.should include("public class Kyle extends Rdb4oModel")
     file.should include("public Kyle() {}")
     
-    file.should include("float age;")
+    file.should include("private float age;")
     file.should include("public void setAge(float age) { this.age = age; }")
     file.should include("public float getAge() { return this.age; }")
     
-    file.should include("String name;")
+    file.should include("private String name;")
     file.should include("public void setName(String name) { this.name = name; }")
     file.should include("public String getName() { return this.name; }")
     
