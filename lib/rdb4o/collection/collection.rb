@@ -2,6 +2,15 @@ module Rdb4o
   class Collection
     attr_accessor :model, :items
     
+    # Initialize collection with specified model class
+    #
+    # ==== Parameters
+    # model<Class>:: Class representing database model
+    #
+    # ==== Examples
+    # Collection.new(Fish)
+    #     
+    # :api: public
     def initialize(model)
       self.model = model
     end

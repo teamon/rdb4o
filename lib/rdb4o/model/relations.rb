@@ -18,7 +18,6 @@ module Rdb4o
       # :api: public
       def belongs_to(name, options = {})
         type = options.delete(:class) || name.to_s.capitalize
-        
         field(name, type, options)
       end
       
@@ -54,7 +53,14 @@ module Rdb4o
       #
       # :api: public
       def has_many(name, options = {})
+        type = options.delete(:class) || name.to_s.singularize.capitalize
+        fields[name] = Field.new(name, [type], options)
         
+        class_eval <<-FIELD, __FILE__, __LINE__
+          def #{name}
+            @__#{name}_collection ||= Rdb4o::OneToManyCollection.new(self, #{type}, :#{name})
+          end
+        FIELD
       end
     end
   end
