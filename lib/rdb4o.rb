@@ -58,3 +58,5 @@ require :rdb4o / :model / :generator
 require :rdb4o / :model / :field
 require :rdb4o / :type
 require :rdb4o / :types / :primitives
+require :rdb4o / :collection
+require :rdb4o / :finder

@@ -1,27 +1,6 @@
 module Rdb4o
 
   module Model
-    
-    class Finder < Java::com::rdb4o::RubyPredicate
-      attr_accessor :proc, :klazz
-      def rubyMatch(obj)
-        if klazz.nil? || obj.is_a?(klazz)
-          !!@proc.call(obj) # make sure we pass boolean
-        else
-          false
-        end
-      end
-
-      class << self
-        def new(proc, klazz = nil)
-          finder = super()
-          finder.proc = Proc.new {|obj| obj._load_attributes; proc.call(obj) }
-          finder.klazz = klazz
-          finder
-        end
-      end
-    end
-
     def self.included(base)
       base.extend(ClassMethods)
       base.send(:include, InstanceMethods)
@@ -210,15 +189,7 @@ module Rdb4o
       #
       # :api: public
       def all(conditions = {}, &proc)
-        if proc
-          self._database.query Finder.new(proc, self)
-        elsif !conditions.empty?
-          match = self.new(conditions)
-          match._dump_attributes
-          self._database.get(match)
-        else
-          self._database.get(self.java_class)
-        end.to_a.each {|e| e._load_attributes }
+        _collection.all(conditions, &proc)
       end
       
       
@@ -255,6 +226,16 @@ module Rdb4o
       # :api: private
       def _database
         Rdb4o::Database[:default]
+      end
+      
+      # Model class collection
+      #
+      # ==== Returns
+      # Rdb4o::Collection
+      #
+      # :api: private
+      def _collection
+        @_collection ||= Rdb4o::Collection.new(self)
       end
       
     end

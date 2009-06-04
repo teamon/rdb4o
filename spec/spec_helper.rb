@@ -21,7 +21,7 @@ Spec::Runner.configure do |config|
   end
 
   config.after(:all) do
-    # Rdb4o::Database.close
+    Rdb4o::Database.close rescue nil
     # Dir["*.db"].each {|path| File.delete(path) }
   end
 end
