@@ -62,7 +62,14 @@ module Rdb4o
         end
       
         def dump(value)
-          value.map {|e| Rdb4o::Type.dump(type, e) }.to_java(type.java_type) if value
+          if value
+            jtype = type.java_type rescue type
+            value.map do |e|
+              e = Rdb4o::Type.dump(type, e)
+              e.save if e.respond_to?(:save)
+              e
+            end.to_java(jtype)
+          end
         end
       end
     end

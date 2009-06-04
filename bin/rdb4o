@@ -23,6 +23,10 @@ def cp
   "#{Rdb4o.jar_classpath}/db4o.jar:#{Rdb4o.jar_classpath}/rdb4o.jar:."
 end
 
+ENV["CLASSPATH"] = cp
+
+puts "CLASSPATH=#{cp}"
+
 usage if ARGV.empty?
 
 case ARGV[0]  
@@ -52,7 +56,10 @@ when "compile"
     system(cmd)
   end  
 when "run"
-  system "CLASSPATH=#{cp} jruby #{ARGV[1]}"
+  system "jruby #{ARGV[1]}"
+when "irb"
+  r = ARGV[1] ? "-r #{ARGV[1]}" : ""
+  system "jirb #{r}"
 else
   usage
 end

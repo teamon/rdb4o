@@ -1,3 +1,6 @@
+# Copyright (c) 2007-2008 Sharon Rosner
+# Copyright (c) 2008-2009 Jeremy Evans
+# 
 # This is mostly port of sequel validation helpers
 
 module Rdb4o
