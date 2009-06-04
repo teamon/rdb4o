@@ -104,7 +104,7 @@ module Rdb4o
           send(:"#{name}=", field.load(send(:"get_#{name}"))) if respond_to? :"get_#{name}"
         end
       end
-
+    
     end
 
     module ClassMethods

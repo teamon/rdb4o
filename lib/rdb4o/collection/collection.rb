@@ -40,7 +40,8 @@ module Rdb4o
     #
     # :api: public
     def destroy_all!
-      self.each {|o| o.destroy}
+      each {|o| o.destroy}
+      all
     end
     
     
@@ -67,7 +68,9 @@ module Rdb4o
     #
     # :api: public
     def create(attrs = {})
-      model.create _new_attributes.merge(attrs)
+      instance = model.create _new_attributes.merge(attrs)
+      self << instance
+      instance
     end
     
     

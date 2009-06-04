@@ -30,7 +30,7 @@ describe Rdb4o::Collection do
   
   specify "#new should not raise error when trying to set undefined attribute, just ignore that" do
     lambda {
-      stan = @collection.new(:name => "Stan", :age => 8, :color => "blue")
+      stan = @collection.new(:name => "Stan", :age => 8, :not_existing => "blue")
       stan.age.should == 8
     }.should_not raise_error
   end
@@ -40,6 +40,12 @@ describe Rdb4o::Collection do
     stan.should be_an(Person)
     stan.name.should == 'Stan'
     stan.new?.should == false
+  end
+  
+  it "should add created item to collection" do
+    @collection.size.should == 0
+    person = @collection.create(:name => "Stan")
+    @collection.size.should == 1
   end
   
   specify "#all" do
@@ -89,9 +95,9 @@ describe Rdb4o::Collection do
     @collection.create(:name => 'Jimmy', :age => 35)
     @collection.create(:name => 'Jimmy', :age => 40)
     @collection.create(:name => 'Timmy', :age => 45)
-    @collection.all.size.should == 3
+    @collection.size.should == 3
     @collection.destroy_all!
-    @collection.all.size.should == 0
+    @collection.size.should == 0
   end
   
 

@@ -51,12 +51,13 @@ module Rdb4o
 end
 
 require :rdb4o / :database
+require :rdb4o / :finder
 # require 'rdb4o/errors'
 # require 'rdb4o/validation_helpers'
-require :rdb4o / :model
-require :rdb4o / :model / :generator
+require :rdb4o / :model / :model
 require :rdb4o / :model / :field
+require :rdb4o / :model / :generator
 require :rdb4o / :type
 require :rdb4o / :types / :primitives
-require :rdb4o / :collection
-require :rdb4o / :finder
+require :rdb4o / :collection / :collection
+require :rdb4o / :collection / :one_to_many
