@@ -1,6 +1,6 @@
 module Rdb4o
   class Collection
-    attr_accessor :model
+    attr_accessor :model, :items
     
     def initialize(model)
       self.model = model
@@ -22,7 +22,7 @@ module Rdb4o
     #
     # :api: public
     def all(conditions = {}, &proc)
-      if proc
+      self.items = if proc
         model._database.query Finder.new(proc, model)
       elsif !conditions.empty?
         match = model.new(conditions)
@@ -31,6 +31,16 @@ module Rdb4o
       else
         model._database.get(model.java_class)
       end.to_a.each {|e| e._load_attributes }
+      
+      self
+    end
+    
+    
+    # Destroy all objects in collection
+    #
+    # :api: public
+    def destroy_all!
+      self.each {|o| o.destroy}
     end
     
     
@@ -72,6 +82,14 @@ module Rdb4o
     # :api: private
     def _new_attributes
       {}
+    end
+    
+    
+    # Pass all undefined methods into set
+    #
+    # :api: private
+    def method_missing(method, *args, &proc)
+      items.send(method, *args, &proc)
     end
   end
 end

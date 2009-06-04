@@ -38,7 +38,7 @@ describe Rdb4o::Model do
     end
     
     specify "#all" do
-      Person.all.should == []
+      Person.all.size.should == 0
       stan = Person.create(:name => 'Stan')
       reconnect_database
       
@@ -77,6 +77,15 @@ describe Rdb4o::Model do
       Cat.all { true }.size.should == 2
     end
     
+    specify "#destroy_all! should destroy all objects" do
+      Person.create(:name => 'Jimmy', :age => 35)
+      Person.create(:name => 'Jimmy', :age => 40)
+      Person.create(:name => 'Timmy', :age => 45)
+      Person.all.size.should == 3
+      Person.destroy_all!
+      Person.all.size.should == 0
+    end
+    
     specify "#get_by_db4o_id" do
       jimmy = Person.create(:name => 'Jimmy', :age => 8)
       id = jimmy.db4o_id
@@ -100,7 +109,7 @@ describe Rdb4o::Model do
     end
     
     specify "#save should save record" do
-      Person.all.should == []
+      Person.all.size.should == 0
     
       eric = Person.new(:name => 'Eric Cartman')
       eric.new?.should == true

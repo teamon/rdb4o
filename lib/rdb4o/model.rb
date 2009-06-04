@@ -197,9 +197,9 @@ module Rdb4o
       #
       # :api: public
       def destroy_all!
-        all.each {|o| o.destroy}
+        all.destroy_all!
       end
-      
+        
       
       # Find object with db4o_id
       #

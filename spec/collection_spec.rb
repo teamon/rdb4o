@@ -12,7 +12,10 @@ describe Rdb4o::Collection do
     @collection = Person._collection
   end
   
-
+  it "should return collection" do
+    Person.all.should be_an(Rdb4o::Collection)
+  end
+  
   it "should create new collection with correct model class" do
     @collection.model.should == Person 
   end
@@ -40,7 +43,7 @@ describe Rdb4o::Collection do
   end
   
   specify "#all" do
-    @collection.all.should == []
+    @collection.all.size.should == 0
     stan = @collection.create(:name => 'Stan')
     reconnect_database
     
@@ -79,6 +82,16 @@ describe Rdb4o::Collection do
     reconnect_database
     @collection.all { true }.size.should == 3
     cats.all { true }.size.should == 2
+  end
+  
+    
+  specify "#destroy_all! should destroy all objects" do
+    @collection.create(:name => 'Jimmy', :age => 35)
+    @collection.create(:name => 'Jimmy', :age => 40)
+    @collection.create(:name => 'Timmy', :age => 45)
+    @collection.all.size.should == 3
+    @collection.destroy_all!
+    @collection.all.size.should == 0
   end
   
 
