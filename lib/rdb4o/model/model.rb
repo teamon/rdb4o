@@ -10,104 +10,9 @@ module Rdb4o
       Generator.classes << base
     end
     
-    module InstanceMethods
-      
-      # Object attributes
-      #
-      # ==== Returns
-      # Hash:: List of all attributes with values
-      # :api: public
-      def attributes
-        @attributes ||= {}
-      end
-      
-      
-      # Update object attributes
-      #
-      # ==== Parameters
-      # attrs<Hash>:: Hash of attributes that will apply to object
-      #
-      # ==== Returns
-      # self
-      #
-      # :api: public
-      def update(attrs)
-        attrs.each_pair do |key, value|
-          send(:"#{key}=", value) if respond_to?(:"#{key}=")
-          # attributes[key] = value <- lets make use of virtual attributes too
-        end
-      end 
-      
-      
-      # Save object to database
-      #
-      # ==== Returns
-      # true/false
-      #
-      # :api: public
-      def save
-        _dump_attributes
-        # return false if opts[:validate] != false && !valid?
-        self.class._database.set(self)
-        true
-      end
-      
-      
-      # Delete object from database
-      #
-      # :api: public
-      def destroy
-        self.class._database.delete(self)
-      end
-      
-      
-      # Returns false if object is stored in database, otherwize true
-      #
-      # :api: public
-      def new?
-        # not sure..
-        self.db4o_id == 0
-        # or maby it should be
-        # self.uuid.nil?
-      end
-
-      # Object`s db4o id
-      #
-      # ==== Returns
-      # Fixnum :: db4o id
-      # :api: public
-      def db4o_id
-        self.class._database.ext.getID(self)
-      end
-      
-      def ==(other)
-        i self.db4o_id
-        i other.db4o_id
-        
-      end
-      
-      
-      # Set java attributes with appropriate types
-      #
-      # :api: private
-      def _dump_attributes
-        self.class.fields.each_pair do |name, field|
-          send(:"set_#{name}", field.dump(attributes[name])) if respond_to? :"set_#{name}"
-        end
-      end
-      
-      # Load java attributes with appropriate types
-      #
-      # :api: private
-      def _load_attributes
-        self.class.fields.each_pair do |name, field|
-          send(:"#{name}=", field.load(send(:"get_#{name}"))) if respond_to? :"get_#{name}"
-        end
-      end
     
-    end
-
     module ClassMethods
+      include Relations
       
       # Add field to the model
       #
@@ -240,28 +145,103 @@ module Rdb4o
       
     end
     
+    module InstanceMethods
+      
+      # Object attributes
+      #
+      # ==== Returns
+      # Hash:: List of all attributes with values
+      # :api: public
+      def attributes
+        @attributes ||= {}
+      end
+      
+      
+      # Update object attributes
+      #
+      # ==== Parameters
+      # attrs<Hash>:: Hash of attributes that will apply to object
+      #
+      # ==== Returns
+      # self
+      #
+      # :api: public
+      def update(attrs)
+        attrs.each_pair do |key, value|
+          send(:"#{key}=", value) if respond_to?(:"#{key}=")
+          # attributes[key] = value <- lets make use of virtual attributes too
+        end
+      end 
+      
+      
+      # Save object to database
+      #
+      # ==== Returns
+      # true/false
+      #
+      # :api: public
+      def save
+        _dump_attributes
+        # return false if opts[:validate] != false && !valid?
+        self.class._database.set(self)
+        true
+      end
+      
+      
+      # Delete object from database
+      #
+      # :api: public
+      def destroy
+        self.class._database.delete(self)
+      end
+      
+      
+      # Returns false if object is stored in database, otherwize true
+      #
+      # :api: public
+      def new?
+        # not sure..
+        self.db4o_id == 0
+        # or maby it should be
+        # self.uuid.nil?
+      end
+
+      # Object`s db4o id
+      #
+      # ==== Returns
+      # Fixnum :: db4o id
+      # :api: public
+      def db4o_id
+        self.class._database.ext.getID(self)
+      end
+      
+      
+      # Set java attributes with appropriate types
+      #
+      # :api: private
+      def _dump_attributes
+        self.class.fields.each_pair do |name, field|
+          send(:"set_#{name}", field.dump(attributes[name])) if respond_to? :"set_#{name}"
+        end
+      end
+      
+      # Load java attributes with appropriate types
+      #
+      # :api: private
+      def _load_attributes
+        self.class.fields.each_pair do |name, field|
+          send(:"#{name}=", field.load(send(:"get_#{name}"))) if respond_to? :"get_#{name}"
+        end
+      end
+    
+    end
+    
+    
   end
 end
       
       
       
-
-      # def has_many(name, opts = {})
-      #   options = {
-      #     :class_name => name.to_s.singular.capitalize,
-      #     :key => Extlib::Inflection.demodulize(self).downcase
-      #   }.merge(opts)
-      # 
-      #   class_eval <<-METHODS
-      #     def #{name}
-      #       #{options[:class_name]}.all(:#{options[:key]} => self)
-      #     end
-      #   METHODS
-      # end
-      
-      
-
-
 
 
 

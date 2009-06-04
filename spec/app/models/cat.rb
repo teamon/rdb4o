@@ -6,6 +6,8 @@ class Cat
   field :age, Fixnum
   # field :person, "Person"
   
+  belongs_to :person
+  
   def say
     puts "meow #{name}, meow!"
   end

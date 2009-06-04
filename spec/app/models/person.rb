@@ -6,4 +6,6 @@ class Person
   
   field :colors, [String]
   
+  has_many :cats
+  
 end
