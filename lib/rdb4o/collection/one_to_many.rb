@@ -82,11 +82,11 @@ module Rdb4o
     # Destroy all objects in collection
     #
     # :api: public
-    def destroy_all!
-      each {|o| o.destroy}
-      @items = []
-      @parent.save
-    end
+    # def destroy_all!
+    #   each {|o| o.destroy}
+    #   # @items = []
+    #   # @parent.save
+    # end
 
     # Attributes for new object
     #

@@ -8,7 +8,6 @@ describe Rdb4o::OneToManyCollection do
   before(:each) do
     Person.destroy_all!
     Cat.destroy_all!
-
     @eric = Person.create(:name => "Eric Cartman", :age => 8)
   end
 
@@ -133,6 +132,7 @@ describe Rdb4o::OneToManyCollection do
     @eric.cats.create(:name => 'Jimmy', :age => 35)
     @eric.cats.create(:name => 'Jimmy', :age => 40)
     @eric.cats.create(:name => 'Timmy', :age => 45)
+    Cat.all.size.should == 3
     reconnect_database
 
     eric = Person.all.first
@@ -141,7 +141,25 @@ describe Rdb4o::OneToManyCollection do
     reconnect_database
 
     eric = Person.all.first
-    eric.cats.size.should == 0
+    # eric.cats.size.should == 0
+    Cat.all.size.should == 0
+  end
+
+  specify "#destroy should remove object form collection" do
+    @eric.cats.create(:name => 'Jimmy', :age => 35)
+    @eric.cats.create(:name => 'Jimmy', :age => 40)
+    @eric.cats.create(:name => 'Timmy', :age => 45)
+    reconnect_database
+
+    eric = Person.all.first
+    eric.cats.size.should == 3
+    cat = Cat.all.first
+    cat.destroy
+    eric.cats.size.should == 2
+    reconnect_database
+
+    eric = Person.all.first
+    eric.cats.size.should == 2
   end
 
 end

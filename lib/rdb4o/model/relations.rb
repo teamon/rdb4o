@@ -31,9 +31,15 @@ module Rdb4o
             attributes[:#{name}] = value
           end
 
-          before :save do
+          after :save do
             if attributes[:#{name}]
               attributes[:#{name}].#{options[:foreign_name]} << self
+            end
+          end
+
+          before :destroy do
+            if attributes[:#{name}]
+              attributes[:#{name}].#{options[:foreign_name]}.delete(self)
               attributes[:#{name}].save
             end
           end

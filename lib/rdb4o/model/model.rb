@@ -197,10 +197,12 @@ module Rdb4o
       #
       # :api: public
       def save
-        _dump_attributes
-        # return false if opts[:validate] != false && !valid?
-        self.class._database.set(self)
-        true
+        unless @__destroyed
+          _dump_attributes
+          # return false if opts[:validate] != false && !valid?
+          self.class._database.set(self)
+          true
+        end
       end
 
 
@@ -208,6 +210,7 @@ module Rdb4o
       #
       # :api: public
       def destroy
+        @__destroyed = true
         self.class._database.delete(self)
       end
 
@@ -246,7 +249,6 @@ module Rdb4o
       # :api: private
       def _load_attributes
         self.class.fields.each_pair do |name, field|
-          # send(:"#{name}=", field.load(send(:"get_#{name}"))) if respond_to? :"get_#{name}"
           attributes[name] = field.load(send(:"get_#{name}")) if respond_to? :"get_#{name}"
         end
       end

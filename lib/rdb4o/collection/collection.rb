@@ -12,8 +12,8 @@ module Rdb4o
     #
     # :api: public
     def initialize(model)
-      self.model = model
-      self.items = []
+      @model = model
+      @items = []
     end
 
     # Returns all models matching conditions hash *OR* proc
@@ -32,7 +32,7 @@ module Rdb4o
     #
     # :api: public
     def all(conditions = {}, &proc)
-      self.items = if proc
+      @items = if proc
         model._database.query Finder.new(proc, model)
       elsif !conditions.empty?
         match = model.new(conditions)
@@ -50,7 +50,9 @@ module Rdb4o
     #
     # :api: public
     def destroy_all!
-      each {|o| o.destroy}
+      until @items.empty?
+        @items.pop.destroy
+      end
       all
     end
 
@@ -100,7 +102,7 @@ module Rdb4o
     # :api: private
     def method_missing(method, *args, &proc)
       # x "method passing to items: #{method}(#{args.inspect}, #{proc.inspect})"
-      items.send(method, *args, &proc)
+      @items.send(method, *args, &proc)
     end
   end
 end
