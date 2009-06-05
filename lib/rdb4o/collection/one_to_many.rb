@@ -17,6 +17,7 @@ module Rdb4o
     def initialize(parent, model, relation_name, foreign_name)
       @parent, @model, @relation_name, @foreign_name = parent, model, relation_name, foreign_name
       @items = @parent.attributes[@relation_name] ||= []
+      @items.each {|i| i._load_attributes }
     end
 
 
@@ -30,7 +31,23 @@ module Rdb4o
       unless items.include?(object)
         items << object
         object.attributes[@foreign_name] = @parent
+        @parent.save unless object.new?
       end
+    end
+
+
+    # Create new @model object and save it
+    #
+    # ==== Parameters
+    # attrs<Hash>:: Hash of attributes that will apply to object
+    #
+    # ==== Returns
+    # Instance of model
+    #
+    # :api: public
+    def create(attrs = {})
+      instance = model.create _new_attributes.merge(attrs)
+      instance
     end
 
 

@@ -40,6 +40,8 @@ describe Rdb4o::OneToManyCollection do
   it "should update relations" do
     kitty = Cat.new(:name => "Kitty")
     kitty.person = @eric
+    @eric.cats.should_not include(kitty)
+    kitty.save
     @eric.cats.should include(kitty)
   end
 
@@ -76,7 +78,7 @@ describe Rdb4o::OneToManyCollection do
     @eric.cats.size.should == 0
     kitty = @eric.cats.create(:name => 'Kitty')
     reconnect_database
-
+    @eric = Person.all.first
     c = @eric.cats.first
     c.name.should == kitty.name
     c.age.should == kitty.age
@@ -88,6 +90,7 @@ describe Rdb4o::OneToManyCollection do
     @eric.cats.create(:name => 'Kitty')
     @eric.cats.create(:name => 'Ozzy')
     reconnect_database
+    @eric = Person.all.first
     @eric.cats.all(:name => 'Kitty').size.should == 2
     @eric.cats.all(:name => 'Ozzy').size.should == 1
   end
@@ -97,6 +100,7 @@ describe Rdb4o::OneToManyCollection do
     @eric.cats.create(:name => 'Kitty', :age => 4)
     @eric.cats.create(:name => 'Ozzy', :age => 5)
     reconnect_database
+    @eric = Person.all.first
     @eric.cats.all {|p| p.name == 'Kitty'}.size.should == 2
     @eric.cats.all {|p| p.name == 'Ozzy'}.size.should == 1
     @eric.cats.all {|p| p.age > 3}.size.should == 2
@@ -109,6 +113,7 @@ describe Rdb4o::OneToManyCollection do
     Cat.create(:name => 'Foo')
     Cat.create(:name => 'Bar')
     reconnect_database
+    @eric = Person.all.first
     @eric.cats.size.should == 3
     Cat.all.size.should == 5
   end

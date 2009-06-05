@@ -18,7 +18,7 @@ module Rdb4o
       #
       # :api: public
       def belongs_to(name, options = {})
-        type = options.delete(:class) || name.to_s.capitalize
+        type = options.delete(:class) || Object.const_get(name.to_s.capitalize) rescue name.to_s.capitalize
         options[:foreign_name] ||= Extlib::Inflection.demodulize(self.to_s).downcase.pluralize.to_sym
         fields[name] = Field.new(name, type, options)
 
@@ -28,8 +28,14 @@ module Rdb4o
           end
 
           def #{name}=(value)
-            value.#{options[:foreign_name]}.items << self
             attributes[:#{name}] = value
+          end
+
+          before :save do
+            if attributes[:#{name}]
+              attributes[:#{name}].#{options[:foreign_name]} << self
+              attributes[:#{name}].save
+            end
           end
         FIELD
       end
@@ -52,7 +58,7 @@ module Rdb4o
       #
       # :api: public
       def has_many(name, options = {})
-        type = options.delete(:class) || name.to_s.singularize.capitalize
+        type = options.delete(:class) || Object.const_get(name.to_s.singularize.capitalize) rescue name.to_s.singularize.capitalize
         options[:foreign_name] ||= Extlib::Inflection.demodulize(self.to_s).downcase.to_sym
         fields[name] = Field.new(name, [type], options)
 

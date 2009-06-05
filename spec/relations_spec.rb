@@ -65,7 +65,7 @@ describe "Relations" do
 
     it "should create correct field" do
       Genius.fields.should have_key(:songs)
-      Genius.fields[:songs].type.should == ["Song"]
+      Genius.fields[:songs].type.should == [Song]
       Genius.fields[:songs].options[:foreign_name].should == :genius
     end
 

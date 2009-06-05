@@ -95,6 +95,10 @@ describe Rdb4o::Model do
       p.name.should == jimmy.name
       p.age.should == jimmy.age
     end
+
+    it "should hava java_type" do
+      Person.java_type.should == "app.models.java.Person"
+    end
   end
 
   describe "Instance" do

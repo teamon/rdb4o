@@ -44,7 +44,8 @@ module Rdb4o
       class_name = File.basename(class_file).sub('.class', '')
       package = File.dirname(class_file).gsub("#{dir}/", "").gsub("/", ".")
       model_class = eval("Java.#{package}.#{class_name}")
-      Object.const_set(class_name, model_class)
+      klazz = Object.const_set(class_name, model_class)
+      Model.type_map[klazz] = "#{package}.#{class_name}"
     end
   end
 

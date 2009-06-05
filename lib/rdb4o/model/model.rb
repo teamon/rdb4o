@@ -5,9 +5,14 @@ module Rdb4o
       base.extend(ClassMethods)
       base.send(:include, InstanceMethods)
       base.send(:include, Rdb4o::Types)
+      base.send(:include, Extlib::Hook)
 
       Generator.classes ||= []
       Generator.classes << base
+    end
+
+    def self.type_map
+      @type_map ||= {}
     end
 
 
@@ -122,6 +127,17 @@ module Rdb4o
         obj._load_attributes
         obj
       end
+
+      # Java type
+      #
+      # ==== Returns
+      # String
+      #
+      # :api: private
+      def java_type
+        Rdb4o::Model.type_map[self]
+      end
+
 
       # Database connection
       #
