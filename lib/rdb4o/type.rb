@@ -4,23 +4,23 @@ module Rdb4o
   # To prevent errors like:
   # class Foo
   #   include Rdb4o::Model
-  #   
+  #
   #   field :num, Fixnum
   # end
-  # 
+  #
   # f = Foo.new
   # f.num = "4" # => type error
-    
+
   class Type
     class << self
-      
+
       # Type class for specified name
       #
       # ==== Parameters
       # type<Class,String>:: type name
       #
       # ==== Returns
-      # Class,String 
+      # Class,String
       #
       # If type class exist returns that class, otherwise returns type name
       #
@@ -37,8 +37,8 @@ module Rdb4o
           end
         end
       end
-      
-      
+
+
       # Java type for specified type name
       #
       # ==== Parameters
@@ -56,8 +56,8 @@ module Rdb4o
           type
         end
       end
-      
-      
+
+
       # Dumped value for specified type name
       #
       # ==== Parameters
@@ -76,8 +76,8 @@ module Rdb4o
           value
         end
       end
-        
-        
+
+
       # Loaded value for specified type name
       #
       # ==== Parameters
@@ -96,7 +96,7 @@ module Rdb4o
           value
         end
       end
-        
+
     end
   end
 end

@@ -34,11 +34,11 @@ module Rdb4o
   # class << self
   #   attr_accessor :use_validations
   # end
-  
+
   def self.jar_classpath
     File.join(File.dirname(File.expand_path(__FILE__)), "java")
   end
-  
+
   def self.load_models(dir = ".")
     Dir["#{dir}/**/*.class"].each do |class_file|
       class_name = File.basename(class_file).sub('.class', '')

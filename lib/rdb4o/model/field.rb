@@ -5,7 +5,7 @@ module Rdb4o
       def initialize(name, type, opts ={})
         self.name, self.type, self.options = name, type, opts
       end
-      
+
       # Java type for field`s type
       #
       # ==== Returns
@@ -15,8 +15,8 @@ module Rdb4o
       def java_type
         Rdb4o::Type.java_type_for(type)
       end
-      
-      
+
+
       # Dumped value for field`s type
       #
       # ==== Parameters
@@ -29,8 +29,8 @@ module Rdb4o
       def dump(value)
         Rdb4o::Type.dump(type, value)
       end
-        
-        
+
+
       # Loaded value for field`s type
       #
       # ==== Parameters

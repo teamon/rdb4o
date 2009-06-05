@@ -7,58 +7,58 @@ module Rdb4o
       # name<Symbol>:: name of relation
       # options<Hash>:: options:
       #   :class - relation class
+      #   :foreign_name - name of 1->n relation
       #
       # ==== Examples
       # Cat.belongs_to :person
       # Cat.belongs_to :owner, :class => Person
-      # 
+      #
       # kitty = Cat.new
       # kitty.person
       #
       # :api: public
       def belongs_to(name, options = {})
         type = options.delete(:class) || name.to_s.capitalize
-        field(name, type, options)
+        options[:foreign_name] ||= Extlib::Inflection.demodulize(self.to_s).downcase.pluralize.to_sym
+        fields[name] = Field.new(name, type, options)
+
+        class_eval <<-FIELD, __FILE__, __LINE__
+          def #{name}
+            attributes[:#{name}]
+          end
+
+          def #{name}=(value)
+            value.#{options[:foreign_name]}.items << self
+            attributes[:#{name}] = value
+          end
+        FIELD
       end
-      
-      # fields[name] = Field.new(name, type, opts)
-      # 
-      # def field(name, type, opts = {})
-      #   fields[name] = Field.new(name, type, opts)
-      #   
-      #   class_eval <<-FIELD, __FILE__, __LINE__
-      #     def #{name}
-      #       attributes[:#{name}]
-      #     end
-      #     
-      #     def #{name}=(value)
-      #       attributes[:#{name}] = value
-      #     end
-      #   FIELD
-      # end
-      
+
       # "Has many" relation
       #
       # ==== Parameters
       # name<Symbol>:: name of relation
       # options<Hash>:: options:
-      #   :class - relation class
+      #   :class        - relation class
+      #   :foreign_name - name of n->1 relation
       #
       # ==== Examples
       # Person.has_many :cats
       # Person.has_many :kitties, :class => Cat
-      # 
+      # Person.has_many :kitties, :class => Cat, :foreign_name => :owner
+      #
       # person = Person.new
       # person.cats
       #
       # :api: public
       def has_many(name, options = {})
         type = options.delete(:class) || name.to_s.singularize.capitalize
+        options[:foreign_name] ||= Extlib::Inflection.demodulize(self.to_s).downcase.to_sym
         fields[name] = Field.new(name, [type], options)
-        
+
         class_eval <<-FIELD, __FILE__, __LINE__
           def #{name}
-            @__#{name}_collection ||= Rdb4o::OneToManyCollection.new(self, #{type}, :#{name})
+            @__#{name}_collection ||= Rdb4o::OneToManyCollection.new(self, #{type}, :#{name}, :#{options[:foreign_name]})
           end
         FIELD
       end
@@ -71,7 +71,7 @@ end
 #     :class_name => name.to_s.singular.capitalize,
 #     :key => Extlib::Inflection.demodulize(self).downcase
 #   }.merge(opts)
-# 
+#
 #   class_eval <<-METHODS
 #     def #{name}
 #       #{options[:class_name]}.all(:#{options[:key]} => self)

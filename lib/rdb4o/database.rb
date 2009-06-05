@@ -9,8 +9,8 @@ module Rdb4o
       def databases
         @databases ||= {}
       end
-      
-      
+
+
       # Select database
       #
       # ==== Parameters
@@ -47,7 +47,7 @@ module Rdb4o
          end
       end
 
-      # Sets up the database. 
+      # Sets up the database.
       # Depending on the config it opens a dbfile or connects
       #
       # ==== Parameters
@@ -60,7 +60,7 @@ module Rdb4o
       #   :name     - if empty, use :default
       #
       # TODO: error handling
-      # 
+      #
       # :api: public
       def setup(config)
          config = DEFAULT_CONFIG.merge config
@@ -72,16 +72,16 @@ module Rdb4o
          end
       end
 
-      # Close the database. 
+      # Close the database.
       #
       # ==== Parameters
       # name<Symbol>:: Name of database
-      # 
+      #
       # :api: public
       def close(name = :default)
         databases[name].close if databases[name]
       end
     end
-    
+
   end
 end

@@ -18,5 +18,5 @@ module Rdb4o
       end
     end
   end
-  
+
 end

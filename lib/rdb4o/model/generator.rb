@@ -3,7 +3,7 @@ module Rdb4o
     class Generator
       class << self
         attr_accessor :classes
-        
+
         # Generate class file
         #
         # ==== Parameters
@@ -13,16 +13,16 @@ module Rdb4o
         # :api: public
         def generate!(klazz, package = nil)
           fields, accessors = [], []
-          
+
           klazz.fields.each_pair do |name, field|
             camel = name.to_s.camel_case
-            fields << "  private #{field.java_type} #{name};" 
+            fields << "  private #{field.java_type} #{name};"
             accessors << "  public void set#{camel}(#{field.java_type} #{name}) { this.#{name} = #{name}; }"
             accessors << "  public #{field.java_type} get#{camel}() { return this.#{name}; }"
           end
-          
+
           package = "package #{package}.java;" if package
-          
+
           java = <<-JAVA
 #{package}
 
@@ -38,8 +38,8 @@ public class #{klazz} extends Rdb4oModel {
 }
           JAVA
         end
-        
-        
+
+
         # May not be usefull at al
         # # Generate all class files that include Rdb4o::Model
         # #
@@ -47,7 +47,7 @@ public class #{klazz} extends Rdb4oModel {
         # def generate_all!
         #   classes.map {|c| generate!(c) }
         # end
-        
+
       end
     end
   end

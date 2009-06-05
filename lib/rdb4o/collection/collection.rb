@@ -1,7 +1,7 @@
 module Rdb4o
   class Collection
     attr_accessor :model, :items
-    
+
     # Initialize collection with specified model class
     #
     # ==== Parameters
@@ -9,12 +9,13 @@ module Rdb4o
     #
     # ==== Examples
     # Collection.new(Fish)
-    #     
+    #
     # :api: public
     def initialize(model)
       self.model = model
+      self.items = []
     end
-    
+
     # Returns all models matching conditions hash *OR* proc
     #
     # ==== Parameters
@@ -40,11 +41,11 @@ module Rdb4o
       else
         model._database.get(model.java_class)
       end.to_a.each {|e| e._load_attributes }
-      
+
       self
     end
-    
-    
+
+
     # Destroy all objects in collection
     #
     # :api: public
@@ -52,9 +53,9 @@ module Rdb4o
       each {|o| o.destroy}
       all
     end
-    
-    
-    # Create new @model object 
+
+
+    # Create new @model object
     #
     # ==== Parameters
     # attrs<Hash>:: Hash of attributes that will apply to object
@@ -66,7 +67,7 @@ module Rdb4o
     def new(attrs = {})
       model.new _new_attributes.merge(attrs)
     end
-    
+
     # Create new @model object and save it
     #
     # ==== Parameters
@@ -81,12 +82,9 @@ module Rdb4o
       self << instance
       instance
     end
-    
-    
+
+
     # Attributes for new object
-    #
-    # ==== Parameters
-    # attrs<Hash>:: Hash of attributes that will apply to object
     #
     # ==== Returns
     # Hash :: attributes
@@ -95,12 +93,13 @@ module Rdb4o
     def _new_attributes
       {}
     end
-    
-    
+
+
     # Pass all undefined methods into set
     #
     # :api: private
     def method_missing(method, *args, &proc)
+      # x "method passing to items: #{method}(#{args.inspect}, #{proc.inspect})"
       items.send(method, *args, &proc)
     end
   end

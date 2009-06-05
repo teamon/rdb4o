@@ -5,15 +5,15 @@ module Rdb4o
       base.extend(ClassMethods)
       base.send(:include, InstanceMethods)
       base.send(:include, Rdb4o::Types)
-      
+
       Generator.classes ||= []
       Generator.classes << base
     end
-    
-    
+
+
     module ClassMethods
       include Relations
-      
+
       # Add field to the model
       #
       # ==== Parameters
@@ -24,18 +24,18 @@ module Rdb4o
       # :api: public
       def field(name, type, opts = {})
         fields[name] = Field.new(name, type, opts)
-        
+
         class_eval <<-FIELD, __FILE__, __LINE__
           def #{name}
             attributes[:#{name}]
           end
-          
+
           def #{name}=(value)
             attributes[:#{name}] = value
           end
         FIELD
       end
-      
+
       # All fields
       #
       # ==== Returns
@@ -45,8 +45,8 @@ module Rdb4o
       def fields
         @fields ||= {}
       end
-      
-      
+
+
       # Create new object
       #
       # ==== Parameters
@@ -62,7 +62,7 @@ module Rdb4o
         instance.update(attrs)
         instance
       end
-      
+
       # Create new object and save it to database
       #
       # ==== Parameters
@@ -77,7 +77,7 @@ module Rdb4o
         instance.save
         instance
       end
-      
+
       # Returns all models matching conditions hash *OR* proc
       #
       # ==== Parameters
@@ -96,16 +96,16 @@ module Rdb4o
       def all(conditions = {}, &proc)
         _collection.all(conditions, &proc)
       end
-      
-      
+
+
       # Destroy all objects
       #
       # :api: public
       def destroy_all!
         all.destroy_all!
       end
-        
-      
+
+
       # Find object with db4o_id
       #
       # ==== Parameters
@@ -122,7 +122,7 @@ module Rdb4o
         obj._load_attributes
         obj
       end
-      
+
       # Database connection
       #
       # ==== Returns
@@ -132,7 +132,7 @@ module Rdb4o
       def _database
         Rdb4o::Database[:default]
       end
-      
+
       # Model class collection
       #
       # ==== Returns
@@ -142,11 +142,11 @@ module Rdb4o
       def _collection
         @_collection ||= Rdb4o::Collection.new(self)
       end
-      
+
     end
-    
+
     module InstanceMethods
-      
+
       # Object attributes
       #
       # ==== Returns
@@ -155,8 +155,8 @@ module Rdb4o
       def attributes
         @attributes ||= {}
       end
-      
-      
+
+
       # Update object attributes
       #
       # ==== Parameters
@@ -171,9 +171,9 @@ module Rdb4o
           send(:"#{key}=", value) if respond_to?(:"#{key}=")
           # attributes[key] = value <- lets make use of virtual attributes too
         end
-      end 
-      
-      
+      end
+
+
       # Save object to database
       #
       # ==== Returns
@@ -186,16 +186,16 @@ module Rdb4o
         self.class._database.set(self)
         true
       end
-      
-      
+
+
       # Delete object from database
       #
       # :api: public
       def destroy
         self.class._database.delete(self)
       end
-      
-      
+
+
       # Returns false if object is stored in database, otherwize true
       #
       # :api: public
@@ -214,8 +214,8 @@ module Rdb4o
       def db4o_id
         self.class._database.ext.getID(self)
       end
-      
-      
+
+
       # Set java attributes with appropriate types
       #
       # :api: private
@@ -224,24 +224,25 @@ module Rdb4o
           send(:"set_#{name}", field.dump(attributes[name])) if respond_to? :"set_#{name}"
         end
       end
-      
+
       # Load java attributes with appropriate types
       #
       # :api: private
       def _load_attributes
         self.class.fields.each_pair do |name, field|
-          send(:"#{name}=", field.load(send(:"get_#{name}"))) if respond_to? :"get_#{name}"
+          # send(:"#{name}=", field.load(send(:"get_#{name}"))) if respond_to? :"get_#{name}"
+          attributes[name] = field.load(send(:"get_#{name}")) if respond_to? :"get_#{name}"
         end
       end
-    
+
     end
-    
-    
+
+
   end
 end
-      
-      
-      
+
+
+
 
 
 
@@ -306,5 +307,5 @@ end
 
     # end
 #   end
-# 
+#
 # end
