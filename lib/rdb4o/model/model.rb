@@ -197,12 +197,10 @@ module Rdb4o
       #
       # :api: public
       def save
-        unless @__destroyed
-          _dump_attributes
-          # return false if opts[:validate] != false && !valid?
-          self.class._database.set(self)
-          true
-        end
+        _dump_attributes
+        # return false if opts[:validate] != false && !valid?
+        self.class._database.set(self)
+        true
       end
 
 
@@ -210,7 +208,6 @@ module Rdb4o
       #
       # :api: public
       def destroy
-        @__destroyed = true
         self.class._database.delete(self)
       end
 

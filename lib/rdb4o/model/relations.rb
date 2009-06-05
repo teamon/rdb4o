@@ -33,14 +33,14 @@ module Rdb4o
 
           after :save do
             if attributes[:#{name}]
-              attributes[:#{name}].#{options[:foreign_name]} << self
+              attributes[:#{name}].#{options[:foreign_name]}.items << self
+              attributes[:#{name}].save
             end
           end
 
           before :destroy do
             if attributes[:#{name}]
               attributes[:#{name}].#{options[:foreign_name]}.delete(self)
-              attributes[:#{name}].save
             end
           end
         FIELD
@@ -76,6 +76,15 @@ module Rdb4o
           before :save do
             if @__#{name}_collection
               attributes[:#{name}] = @__#{name}_collection.items
+            end
+          end
+
+          before :destroy do
+            if @__#{name}_collection
+              @__#{name}_collection.items.each {|e|
+                e.attributes[:#{options[:foreign_name]}] = nil
+                e.save
+              }
             end
           end
         FIELD

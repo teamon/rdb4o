@@ -20,22 +20,6 @@ module Rdb4o
       @items.each {|i| i._load_attributes }
     end
 
-
-    # Add object to collection and set it`s parent
-    #
-    # ==== Parameters
-    # object<Object>::
-    #
-    # :api: public
-    def <<(object)
-      unless items.include?(object)
-        items << object
-        object.attributes[@foreign_name] = @parent
-        @parent.save unless object.new?
-      end
-    end
-
-
     # Returns all models matching conditions hash *OR* proc
     #
     # ==== Parameters
@@ -74,19 +58,32 @@ module Rdb4o
     #
     # :api: public
     def create(attrs = {})
-      instance = model.create _new_attributes.merge(attrs)
-      instance
+      model.create _new_attributes.merge(attrs)
     end
 
 
-    # Destroy all objects in collection
+    # Delete object from collection
     #
     # :api: public
-    # def destroy_all!
-    #   each {|o| o.destroy}
-    #   # @items = []
-    #   # @parent.save
-    # end
+    def delete(object)
+      @items.delete(object)
+      object.attributes[@foreign_name] = nil
+      object.save
+      @parent.save
+    end
+
+    # Add object to collection and set it`s parent
+    #
+    # ==== Parameters
+    # object<Object>::
+    #
+    # :api: public
+    def <<(object)
+      unless @items.include?(object)
+        object.attributes[@foreign_name] = @parent
+        object.save
+      end
+    end
 
     # Attributes for new object
     #

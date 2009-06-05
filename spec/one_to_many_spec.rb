@@ -8,7 +8,8 @@ describe Rdb4o::OneToManyCollection do
   before(:each) do
     Person.destroy_all!
     Cat.destroy_all!
-    @eric = Person.create(:name => "Eric Cartman", :age => 8)
+
+    @eric = Person.create(:name => "Eric", :age => 8)
   end
 
   it "should return collection" do
@@ -17,31 +18,6 @@ describe Rdb4o::OneToManyCollection do
 
   it "should create new collection with correct model class" do
     @eric.cats.model.should == Cat
-  end
-
-  it "should update relations" do
-    kitty = Cat.new(:name => "Kitty")
-    kitty.person.should == nil
-    @eric.cats << kitty
-    @eric.cats.size.should == 1
-    kitty.person.should == @eric
-  end
-
-  it "should allow only unique objects" do
-    kitty = Cat.new(:name => "Kitty")
-    kitty.person.should == nil
-    @eric.cats << kitty
-    @eric.cats << kitty
-    @eric.cats << kitty
-    @eric.cats.size.should == 1
-  end
-
-  it "should update relations" do
-    kitty = Cat.new(:name => "Kitty")
-    kitty.person = @eric
-    @eric.cats.should_not include(kitty)
-    kitty.save
-    @eric.cats.should include(kitty)
   end
 
   specify "#new should create new object with parameters" do
@@ -161,5 +137,176 @@ describe Rdb4o::OneToManyCollection do
     eric = Person.all.first
     eric.cats.size.should == 2
   end
+
+  specify "collection.new" do
+    cat = @eric.cats.new
+
+    cat.person.should == @eric
+    @eric.cats.size.should == 0
+
+    reconnect_database
+
+    Cat.all.size.should == 0
+    @eric = Person.all.first
+    @eric.cats.size.should == 0
+  end
+
+  specify "collection.create" do
+    cat = @eric.cats.create(:name => "Kitty")
+
+    cat.should_not be_new
+    cat.person.should == @eric
+    @eric.cats.size.should == 1
+    @eric.cats.first.should == cat
+
+    reconnect_database
+
+    Cat.all.size.should == 1
+    cat = Cat.all.first
+    @eric = Person.all.first
+
+    cat.person.should == @eric
+    @eric.cats.size.should == 1
+    @eric.cats.first.should == cat
+  end
+
+  specify "collection << item" do
+    cat = Cat.new
+    @eric.cats << cat
+    @eric.cats << cat
+    @eric.cats << cat
+
+    cat.should_not be_new
+    cat.person.should == @eric
+    @eric.cats.size.should == 1
+    @eric.cats.first.should == cat
+
+    reconnect_database
+
+    Cat.all.size.should == 1
+    cat = Cat.all.first
+    @eric = Person.all.first
+
+    cat.person.should == @eric
+    @eric.cats.size.should == 1
+    @eric.cats.first.should == cat
+  end
+
+  specify "item.parent = parent" do
+    cat = Cat.new
+    cat.person = @eric
+    cat.save
+
+    cat.should_not be_new
+    cat.person.should == @eric
+    @eric.cats.size.should == 1
+    @eric.cats.first.should == cat
+
+    reconnect_database
+
+    Cat.all.size.should == 1
+    cat = Cat.all.first
+    @eric = Person.all.first
+
+    cat.person.should == @eric
+    @eric.cats.size.should == 1
+    @eric.cats.first.should == cat
+  end
+
+  specify "Item.create" do
+    cat = Cat.create(:person => @eric)
+
+    cat.should_not be_new
+    cat.person.should == @eric
+    @eric.cats.size.should == 1
+    @eric.cats.first.should == cat
+
+    reconnect_database
+
+    Cat.all.size.should == 1
+    cat = Cat.all.first
+    @eric = Person.all.first
+
+    cat.person.should == @eric
+    @eric.cats.size.should == 1
+    @eric.cats.first.should == cat
+  end
+
+  specify "item.parent = new_parent" do
+    pending
+    kyle = Person.create(:name => "Kyle", :age => 8)
+    cat = Cat.create(:person => @eric)
+
+    cat.person = kyle
+    cat.save
+
+    cat.person.should == kyle
+    @eric.cats.size.should == 0
+    kyle.cats.size.should == 1
+    kyle.cats.first.should == cat
+
+    reconnect_database
+
+    Cat.all.size.should == 1
+    cat = Cat.all.first
+    @eric = Person.all(:name => "Eric")
+    kyle = Person.all(:name => "Kyle")
+
+    cat.person.should == kyle
+    @eric.cats.size.should == 0
+    kyle.cats.size.should == 1
+    kyle.cats.first.should == cat
+  end
+
+  specify "collection.delete(item)" do
+    cat = Cat.create(:person => @eric)
+    @eric.cats.delete(cat)
+
+    @eric.cats.size.should == 0
+
+    reconnect_database
+
+    @eric = Person.all.first
+    cat = Cat.all.first
+
+    Cat.all.size.should == 1
+    cat.person.should == nil
+    @eric.cats.size.should == 0
+  end
+
+  specify "collection.destroy_all!" do
+    Cat.create(:person => @eric)
+    Cat.create(:person => @eric)
+    Cat.create(:person => @eric)
+
+    @eric.cats.size.should == 3
+
+    @eric.cats.destroy_all!
+
+    @eric.cats.size.should == 0
+
+    reconnect_database
+
+    @eric = Person.all.first
+
+    Cat.all.size.should == 0
+    @eric.cats.size.should == 0
+  end
+
+
+  specify "item.destroy" do
+    cat = Cat.create(:person => @eric)
+    cat.destroy
+
+    @eric.cats.size.should == 0
+
+    reconnect_database
+
+    @eric = Person.all.first
+
+    Cat.all.size.should == 0
+    @eric.cats.size.should == 0
+  end
+
 
 end

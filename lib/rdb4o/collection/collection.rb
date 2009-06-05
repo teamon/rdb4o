@@ -53,7 +53,6 @@ module Rdb4o
       until @items.empty?
         @items.pop.destroy
       end
-      all
     end
 
 
