@@ -66,6 +66,12 @@ module Rdb4o
           def #{name}
             @__#{name}_collection ||= Rdb4o::OneToManyCollection.new(self, #{type}, :#{name}, :#{options[:foreign_name]})
           end
+
+          before :save do
+            if @__#{name}_collection
+              attributes[:#{name}] = @__#{name}_collection.items
+            end
+          end
         FIELD
       end
     end

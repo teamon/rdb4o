@@ -36,6 +36,34 @@ module Rdb4o
     end
 
 
+    # Returns all models matching conditions hash *OR* proc
+    #
+    # ==== Parameters
+    # conditions<Hash>:: Hash of conditions that will filter the database
+    # proc<Proc>:: Filter proc
+    #
+    # ==== Returns
+    # Array :: Collection of objects
+    #
+    # ==== Examples
+    # collection.all
+    # collection.all(:name => "Stan")
+    # collection.all {|e| e.age > 30 }
+    #
+    # :api: public
+    def all(conditions = {}, &proc)
+      collection = self.dup
+      collection.items = if proc
+        self.items.select(&proc)
+      elsif !conditions.empty?
+        self.items.select {|e| conditions.all? {|key, value| e.send(key) == value } }
+      else
+        self.items
+      end.to_a.each {|e| e._load_attributes }
+
+      collection
+    end
+
     # Create new @model object and save it
     #
     # ==== Parameters
@@ -50,6 +78,15 @@ module Rdb4o
       instance
     end
 
+
+    # Destroy all objects in collection
+    #
+    # :api: public
+    def destroy_all!
+      each {|o| o.destroy}
+      @items = []
+      @parent.save
+    end
 
     # Attributes for new object
     #

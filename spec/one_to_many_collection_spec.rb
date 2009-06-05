@@ -71,15 +71,19 @@ describe Rdb4o::OneToManyCollection do
 
   it "should add created item to collection" do
     kitty = @eric.cats.create(:name => "Kitty")
-    @eric.cats.size.should == 1
+    reconnect_database
+
+    eric = Person.all.first
+    eric.cats.size.should == 1
   end
 
   specify "collection" do
     @eric.cats.size.should == 0
     kitty = @eric.cats.create(:name => 'Kitty')
     reconnect_database
-    @eric = Person.all.first
-    c = @eric.cats.first
+
+    eric = Person.all.first
+    c = eric.cats.first
     c.name.should == kitty.name
     c.age.should == kitty.age
     c.person.name.should == @eric.name
@@ -89,21 +93,27 @@ describe Rdb4o::OneToManyCollection do
     @eric.cats.create(:name => 'Kitty')
     @eric.cats.create(:name => 'Kitty')
     @eric.cats.create(:name => 'Ozzy')
+    Cat.create(:name => 'Kitty')
+    Cat.create(:name => 'Ozzy')
     reconnect_database
-    @eric = Person.all.first
-    @eric.cats.all(:name => 'Kitty').size.should == 2
-    @eric.cats.all(:name => 'Ozzy').size.should == 1
+
+    eric = Person.all.first
+    eric.cats.all(:name => 'Kitty').size.should == 2
+    eric.cats.all(:name => 'Ozzy').size.should == 1
   end
 
   specify "#all with proc" do
     @eric.cats.create(:name => 'Kitty', :age => 3)
     @eric.cats.create(:name => 'Kitty', :age => 4)
     @eric.cats.create(:name => 'Ozzy', :age => 5)
+    Cat.create(:name => 'Kitty')
+    Cat.create(:name => 'Ozzy', :age => 5)
     reconnect_database
-    @eric = Person.all.first
-    @eric.cats.all {|p| p.name == 'Kitty'}.size.should == 2
-    @eric.cats.all {|p| p.name == 'Ozzy'}.size.should == 1
-    @eric.cats.all {|p| p.age > 3}.size.should == 2
+
+    eric = Person.all.first
+    eric.cats.all {|p| p.name == 'Kitty'}.size.should == 2
+    eric.cats.all {|p| p.name == 'Ozzy'}.size.should == 1
+    eric.cats.all {|p| p.age > 3}.size.should == 2
   end
 
   specify "#all should return only objects that match class" do
@@ -113,8 +123,9 @@ describe Rdb4o::OneToManyCollection do
     Cat.create(:name => 'Foo')
     Cat.create(:name => 'Bar')
     reconnect_database
-    @eric = Person.all.first
-    @eric.cats.size.should == 3
+
+    eric = Person.all.first
+    eric.cats.size.should == 3
     Cat.all.size.should == 5
   end
 
@@ -122,9 +133,15 @@ describe Rdb4o::OneToManyCollection do
     @eric.cats.create(:name => 'Jimmy', :age => 35)
     @eric.cats.create(:name => 'Jimmy', :age => 40)
     @eric.cats.create(:name => 'Timmy', :age => 45)
-    @eric.cats.size.should == 3
-    @eric.cats.destroy_all!
-    @eric.cats.size.should == 0
+    reconnect_database
+
+    eric = Person.all.first
+    eric.cats.size.should == 3
+    eric.cats.destroy_all!
+    reconnect_database
+
+    eric = Person.all.first
+    eric.cats.size.should == 0
   end
 
 end
