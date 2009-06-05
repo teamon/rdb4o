@@ -4,7 +4,7 @@ title: Associations
 ---
 
 ### One to Many
-{% highlight bash %}
+{% highlight ruby %}
 class Cat
   include Rdb4o::Model
 
