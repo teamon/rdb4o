@@ -158,6 +158,13 @@ module Rdb4o
       def _collection
         @_collection ||= Rdb4o::Collection.new(self)
       end
+      
+      
+      def example_for(conditions)
+        obj = new(conditions)
+        obj._dump_attributes
+        obj
+      end
 
     end
 
@@ -249,6 +256,7 @@ module Rdb4o
           attributes[name] = field.load(send(:"get_#{name}")) if respond_to? :"get_#{name}"
         end
       end
+
 
     end
 

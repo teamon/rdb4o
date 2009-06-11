@@ -18,7 +18,7 @@ module Rdb4o
       #
       # :api: public
       def [](name)
-         databases[name]
+        databases[name]
       end
 
 
@@ -34,18 +34,17 @@ module Rdb4o
       #   :name     - if empty, use :default
       #
       # :api: public
-      def setup_server(config)
-         config = DEFAULT_CONFIG.merge(config)
-         if config[:type].to_s == 'remote'
-           puts "setting up server..."
-           raise ArgumentError.new(":dbfile not specified") unless config[:dbfile]
-           databases[config[:name]] = Db4o.open_server(config[:dbfile], config[:port].to_i)
-           databases[config[:name]].grant_access(config[:login], config[:password])
-           puts "done"
-         else
-           puts ":type must be set to :remote in odrder to start a server"
-         end
-      end
+      # def setup_server(config)
+      #    config = DEFAULT_CONFIG.merge(config)
+      #    if config[:type].to_s == 'remote'
+      #      puts "setting up server..."
+              # Db4o.open_server(config[:dbfile], config[:port].to_i)
+      #      databases[config[:name]] = Database.new(config)
+      #      puts "done"
+      #    else
+      #      puts ":type must be set to :remote in odrder to start a server"
+      #    end
+      # end
 
       # Sets up the database.
       # Depending on the config it opens a dbfile or connects
@@ -63,13 +62,17 @@ module Rdb4o
       #
       # :api: public
       def setup(config)
-         config = DEFAULT_CONFIG.merge config
+         config = DEFAULT_CONFIG.merge(config)
+         db = Database.new(config)
+         
          if config[:type].to_s == 'remote'
-           databases[config[:name]] = Db4o.open_client('localhost', config[:port].to_i, config[:login], config[:password])
+           db.client!
          else
-           raise ArgumentError.new(":dbfile not specified") unless config[:dbfile]
-           databases[config[:name]] = Db4o.open_file config[:dbfile]
+           db.file!
          end
+                  
+         databases[config[:name]] = db
+         db
       end
 
       # Close the database.
@@ -81,6 +84,59 @@ module Rdb4o
       def close(name = :default)
         databases[name].close if databases[name]
       end
+    end
+
+
+    attr_accessor :config, :connection
+
+    def initialize(config)
+      @config = config
+    end
+    
+    # Sets up the database as client
+    #
+    # :api: private
+    def client!
+      @connection = Db4o.open_client('localhost', config[:port].to_i, config[:login], config[:password])
+    end
+    
+    # Sets up the file database
+    #
+    # :api: private
+    def file!
+      raise ArgumentError.new(":dbfile not specified") unless config[:dbfile]
+      @connection = Db4o.open_file config[:dbfile]
+    end
+    
+    # Close database connection
+    #
+    # :api: private
+    def close
+      @connection.close
+    end
+    
+    
+    def query(model = nil, conditions = {}, procs = [])
+      if procs.empty?
+        if conditions.empty?
+          # query by class name
+          @connection.get model.java_class
+        else
+          # query by example
+          if model.nil?
+            @connection.get Finder.new(nil, conditions, [])
+          else
+            @connection.get model.example_for(conditions)
+          end
+        end
+      else
+        # query by rubyMatch
+        @connection.query Finder.new(model, conditions, procs)
+      end
+    end
+    
+    def store(object)
+      @connection.set(object)
     end
 
   end

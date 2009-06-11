@@ -1,8 +1,9 @@
 module Rdb4o
   class Finder < Java::com::rdb4o::RubyPredicate
-    attr_accessor :proc, :klazz
+    attr_accessor :proc, :model
+    
     def rubyMatch(obj)
-      if klazz.nil? || obj.is_a?(klazz)
+      if model.nil? || obj.is_a?(model)
         !!@proc.call(obj) # make sure we pass boolean
       else
         false
@@ -10,13 +11,23 @@ module Rdb4o
     end
 
     class << self
-      def new(proc, klazz = nil)
+      def new(model, conditions, procs)
         finder = super()
-        finder.proc = Proc.new {|obj| obj._load_attributes; proc.call(obj) }
-        finder.klazz = klazz
+        finder.model = model
+        
+        unless conditions.empty?
+          procs.push Proc.new {|obj| conditions.all? {|k, v| obj.attributes[k] == v } }
+        end
+        
+        finder.proc = Proc.new do |obj| 
+          obj._load_attributes
+          procs.all? {|p| p.call(obj) } 
+        end
+        
+        
         finder
       end
     end
+    
   end
-
 end

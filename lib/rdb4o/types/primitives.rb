@@ -39,7 +39,7 @@ module Rdb4o
        end
 
        def self.dump(value)
-         value.to_s
+         value.nil? ? nil : value.to_s
        end
     end
 
