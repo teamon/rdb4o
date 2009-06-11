@@ -39,3 +39,28 @@ jruby -S rake spec:compile
 rake spec:console
 
 rake spec:gen DEV=true
+
+
+sorting:
+# q = @db.query
+# i q
+# q.descend("name").orderAscending();
+# r = q.execute
+# while r.has_next
+#   x r.next.getName
+# end
+# 
+# q = @db.query
+# i q
+# q.descend("name").orderDescending();
+# r = q.execute
+# while r.has_next
+#   x r.next.getName
+# end
+
+
+delete all
+ObjectSet result=db.queryByExample(Pilot.class); 
+while(result.hasNext()) { 
+    db.delete(result.next()); 
+

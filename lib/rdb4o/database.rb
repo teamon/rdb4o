@@ -119,8 +119,12 @@ module Rdb4o
     def query(model = nil, conditions = {}, procs = [])
       if procs.empty?
         if conditions.empty?
-          # query by class name
-          @connection.get model.java_class
+          if model.nil?
+            @connection.query
+          else
+            # query by class name
+            @connection.get model.java_class
+          end
         else
           # query by example
           if model.nil?
@@ -137,6 +141,10 @@ module Rdb4o
     
     def store(object)
       @connection.set(object)
+    end
+    
+    def delete(object)
+      @connection.delete(object)
     end
 
   end

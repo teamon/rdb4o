@@ -48,6 +48,38 @@ describe Rdb4o::Database do
       @db.store(kyle)
       @db.query(Person).size.should == 2
       @db.query(Person)[1].getName.should == "Kyle"
+      
+    end
+    
+    it "should update object" do
+      eric = Person.new
+      eric.setName("Eric")
+      eric.setAge(8)
+      
+      @db.store(eric)
+      @db.query(Person).size.should == 1
+      
+      eric = @db.query(Person)[0]
+      @db.delete(eric)
+      
+      @db.query(Person).size.should == 0
+    end
+    
+    it "should delete object" do
+      eric = Person.new
+      eric.setName("Eric")
+      eric.setAge(8)
+      
+      @db.store(eric)
+      @db.query(Person).size.should == 1
+      
+      eric = @db.query(Person)[0]
+      eric.getName.should == "Eric"
+      
+      eric.setName("Eric Cartman")
+      @db.store(eric)
+      
+      @db.query(Person)[0].getName.should == "Eric Cartman"
     end
     
     it "should query by class name" do
@@ -135,6 +167,10 @@ describe Rdb4o::Database do
       @db.query(nil, {}, [lambda{|obj| obj.name =~ /^K/}]).size.should == 2
       @db.query(Person, {}, [lambda{|obj| obj.name =~ /^K/}]).size.should == 1
     end
+    
+    it "should use ORDER"
+    it "should use LIMIT"
+    it "should use OFFSET"
     
   end
 
