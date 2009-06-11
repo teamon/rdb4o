@@ -7,7 +7,6 @@ module Rdb4o
       base.send(:include, Rdb4o::Types)
       base.send(:include, Extlib::Hook)
 
-      Generator.classes ||= []
       Generator.classes << base
     end
 
@@ -63,7 +62,7 @@ module Rdb4o
       # :api: public
       def new(attrs = {})
         instance = super()
-        instance._load_attributes
+        instance.load_attributes!
         instance.update(attrs)
         instance
       end
@@ -99,7 +98,7 @@ module Rdb4o
       #
       # :api: public
       def all(conditions = {}, &proc)
-        _collection.all(conditions, &proc)
+        collection.all(conditions, &proc)
       end
 
 
@@ -107,7 +106,7 @@ module Rdb4o
       #
       # :api: public
       def destroy_all!
-        all.destroy_all!
+        collection.destroy_all!
       end
 
 
@@ -121,11 +120,10 @@ module Rdb4o
       #
       # :api: public
       def get_by_db4o_id(id)
-        obj = _database.ext.getByID(id.to_i)
+        obj = database.ext.getByID(id.to_i)
         # NOTE: Activate depth should be configurable
-        _database.activate(obj, 5)
-        obj._load_attributes
-        obj
+        database.activate(obj, 5)
+        obj.load_attributes!
       end
 
       # Java type
@@ -145,7 +143,7 @@ module Rdb4o
       # Java::ComDb4oInternal::IoAdaptedObjectContainer
       #
       # :api: private
-      def _database
+      def database
         Rdb4o::Database[:default]
       end
 
@@ -155,15 +153,16 @@ module Rdb4o
       # Rdb4o::Collection
       #
       # :api: private
-      def _collection
-        @_collection ||= Rdb4o::Collection.new(self)
+      def collection(force_new = false)
+        if force_new || !@collection
+          @collection = Rdb4o::Collection::Basic.new(self)
+        end
+        @collection
       end
       
       
       def example_for(conditions)
-        obj = new(conditions)
-        obj._dump_attributes
-        obj
+        new(conditions).dump_attributes!
       end
 
     end
@@ -204,9 +203,9 @@ module Rdb4o
       #
       # :api: public
       def save
-        _dump_attributes
+        dump_attributes!
         # return false if opts[:validate] != false && !valid?
-        self.class._database.set(self)
+        self.class.database.store(self)
         true
       end
 
@@ -215,7 +214,7 @@ module Rdb4o
       #
       # :api: public
       def destroy
-        self.class._database.delete(self)
+        self.class.database.delete(self)
       end
 
 
@@ -235,26 +234,30 @@ module Rdb4o
       # Fixnum :: db4o id
       # :api: public
       def db4o_id
-        self.class._database.ext.getID(self)
+        self.class.database.ext.getID(self)
       end
 
 
       # Set java attributes with appropriate types
       #
       # :api: private
-      def _dump_attributes
+      def dump_attributes!
+        Rdb4o.logger.debug "dump_attributes #{self.object_id}"
         self.class.fields.each_pair do |name, field|
           send(:"set_#{name}", field.dump(attributes[name])) if respond_to? :"set_#{name}"
         end
+        self
       end
 
       # Load java attributes with appropriate types
       #
       # :api: private
-      def _load_attributes
+      def load_attributes!
+        Rdb4o.logger.debug "load_attributes #{self.object_id}"
         self.class.fields.each_pair do |name, field|
           attributes[name] = field.load(send(:"get_#{name}")) if respond_to? :"get_#{name}"
         end
+        self
       end
 
 

@@ -20,7 +20,7 @@ module Rdb4o
         end
         
         finder.proc = Proc.new do |obj| 
-          obj._load_attributes
+          obj.load_attributes!
           procs.all? {|p| p.call(obj) } 
         end
         

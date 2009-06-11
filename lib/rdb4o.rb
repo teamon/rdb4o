@@ -29,7 +29,14 @@ require 'java/rdb4o.jar'
 module Rdb4o
   Db4o = com.db4o.Db4o
 
-
+  def self.logger
+    @@logger ||= begin
+      l = Extlib::Logger.new($stdout, :debug)
+      l.auto_flush = true
+      l
+    end
+  end
+  
   # global config
   # class << self
   #   attr_accessor :use_validations
@@ -48,7 +55,6 @@ module Rdb4o
       Model.type_map[klazz] = "#{package}.#{class_name}"
     end
   end
-
 end
 
 require :rdb4o / :database
@@ -61,5 +67,5 @@ require :rdb4o / :model / :generator
 require :rdb4o / :model / :model
 require :rdb4o / :type
 require :rdb4o / :types / :primitives
-require :rdb4o / :collection / :collection
+require :rdb4o / :collection / :basic
 require :rdb4o / :collection / :one_to_many

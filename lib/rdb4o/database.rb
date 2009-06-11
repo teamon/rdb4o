@@ -117,6 +117,8 @@ module Rdb4o
     
     
     def query(model = nil, conditions = {}, procs = [])
+      Rdb4o.logger.debug "QUERY: #{model}  #{conditions.inspect}  #{procs.size}"
+      
       if procs.empty?
         if conditions.empty?
           if model.nil?
@@ -140,11 +142,17 @@ module Rdb4o
     end
     
     def store(object)
+      Rdb4o.logger.debug "STORE: #{object}"
       @connection.set(object)
     end
     
     def delete(object)
+      Rdb4o.logger.debug "DELETE: #{object}"
       @connection.delete(object)
+    end
+    
+    def ext
+      @connection.ext
     end
 
   end

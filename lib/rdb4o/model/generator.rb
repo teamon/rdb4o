@@ -2,7 +2,9 @@ module Rdb4o
   module Model
     class Generator
       class << self
-        attr_accessor :classes
+        def classes
+          @classes ||= []
+        end
 
         # Generate class file
         #
