@@ -12,7 +12,7 @@ describe Rdb4o::Collection do
 
   before(:each) do
     Person.destroy_all!
-    # Cat.destroy_all!
+    Cat.destroy_all!
 
     @collection = Person.collection(true)
   end
@@ -81,40 +81,48 @@ describe Rdb4o::Collection do
     @collection.all(:name => 'Timmy').size.should == 2
     @collection.all(:name => 'Eric').size.should == 1
   end
-  # 
-  # specify "#all with proc" do
-  #   @collection.create(:name => 'Jimmy', :age => 35)
-  #   @collection.create(:name => 'Jimmy', :age => 40)
-  #   @collection.create(:name => 'Timmy', :age => 45)
-  #   reconnect_database
-  #   @collection.all {|p| p.name == 'Jimmy'}.size.should == 2
-  #   @collection.all {|p| p.name == 'Timmy'}.size.should == 1
-  #   @collection.all {|p| p.age > 38}.size.should == 2
-  # end
-  # 
-  # specify "#all should return only objects that match class" do
-  #   cats = Cat._collection
-  # 
-  #   @collection.create(:name => 'Kyle')
-  #   @collection.create(:name => 'Stan')
-  #   @collection.create(:name => 'Kenny')
-  #   cats.create(:name => 'Foo')
-  #   cats.create(:name => 'Bar')
-  #   reconnect_database
-  #   @collection.all { true }.size.should == 3
-  #   cats.all { true }.size.should == 2
-  # end
-  # 
-  # 
-  # specify "#destroy_all! should destroy all objects" do
-  #   @collection.create(:name => 'Jimmy', :age => 35)
-  #   @collection.create(:name => 'Jimmy', :age => 40)
-  #   @collection.create(:name => 'Timmy', :age => 45)
-  #   @collection.size.should == 3
-  #   @collection.destroy_all!
-  #   @collection.size.should == 0
-  # end
+  
+  specify "#all with proc" do
+    @collection.create(:name => 'Jimmy', :age => 35)
+    @collection.create(:name => 'Jimmy', :age => 40)
+    @collection.create(:name => 'Timmy', :age => 45)
+    
+    @collection.all {|p| p.name == 'Jimmy'}.size.should == 2
+    @collection.all {|p| p.name == 'Timmy'}.size.should == 1
+    @collection.all {|p| p.age > 38}.size.should == 2
+    
+    reload
+    
+    @collection.all {|p| p.name == 'Jimmy'}.size.should == 2
+    @collection.all {|p| p.name == 'Timmy'}.size.should == 1
+    @collection.all {|p| p.age > 38}.size.should == 2
+  end
+  
+  specify "#all should return only objects that match class" do
+    cats = Cat.collection
+  
+    @collection.create(:name => 'Kyle')
+    @collection.create(:name => 'Stan')
+    @collection.create(:name => 'Kenny')
+    cats.create(:name => 'Foo')
+    cats.create(:name => 'Bar')
+    
+    @collection.all { true }.size.should == 3
+    cats.all { true }.size.should == 2
+    
+    reload
+    
+    @collection.all { true }.size.should == 3
+    cats.all { true }.size.should == 2
+  end
 
-
+  specify "#destroy_all! should destroy all objects" do
+    @collection.create(:name => 'Jimmy', :age => 35)
+    @collection.create(:name => 'Jimmy', :age => 40)
+    @collection.create(:name => 'Timmy', :age => 45)
+    @collection.size.should == 3
+    @collection.destroy_all!
+    @collection.size.should == 0
+  end
 
 end

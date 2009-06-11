@@ -106,7 +106,7 @@ module Rdb4o
       #
       # :api: public
       def destroy_all!
-        collection.destroy_all!
+        collection(true).destroy_all!
       end
 
 
@@ -242,7 +242,7 @@ module Rdb4o
       #
       # :api: private
       def dump_attributes!
-        Rdb4o.logger.debug "dump_attributes #{self.object_id}"
+        # Rdb4o.logger.debug "dump_attributes #{self.object_id}"
         self.class.fields.each_pair do |name, field|
           send(:"set_#{name}", field.dump(attributes[name])) if respond_to? :"set_#{name}"
         end
@@ -253,16 +253,13 @@ module Rdb4o
       #
       # :api: private
       def load_attributes!
-        Rdb4o.logger.debug "load_attributes #{self.object_id}"
+        # Rdb4o.logger.debug "load_attributes #{self.object_id}"
         self.class.fields.each_pair do |name, field|
           attributes[name] = field.load(send(:"get_#{name}")) if respond_to? :"get_#{name}"
         end
         self
       end
-
-
     end
-
 
   end
 end

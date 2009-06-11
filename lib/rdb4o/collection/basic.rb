@@ -20,28 +20,23 @@ module Rdb4o
         
         load_with do |collection|
           Rdb4o.logger.debug "COLLECTION:LOAD"
-          # HACK! 
           collection.clear!
-          
           result = database.query(collection.model, collection.conditions, collection.procs)
           while result.has_next
             obj = result.next.load_attributes!
-            Rdb4o.logger.debug " -> #{obj}"
+            Rdb4o.logger.debug " -> #{obj.inspect}"
             collection << obj
           end
           
         end
       end
-      
-      
-      # HACK
+
       def clear!
         @head.clear
         @tail.clear
         clear
       end
-
-
+      
       # Returns all models matching conditions hash *OR* proc
       #
       # ==== Parameters
@@ -68,10 +63,9 @@ module Rdb4o
       #
       # :api: public
       def destroy_all!
-        each {|e| 
-          database.delete(e)
-          delete(e)
-        }
+        until empty?
+          pop.destroy
+        end
       end
 
 
