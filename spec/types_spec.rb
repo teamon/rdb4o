@@ -80,7 +80,7 @@ describe Rdb4o::Types do
       Rdb4o::Types::String.dump(:symbol).should == "symbol"
       Rdb4o::Types::String.dump(5.9).should == "5.9"
       Rdb4o::Types::String.dump(true).should == "true"
-      Rdb4o::Types::String.dump(nil).should == ""
+      Rdb4o::Types::String.dump(nil).should == nil
     end
 
     specify "Fixnum" do

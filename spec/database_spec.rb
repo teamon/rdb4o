@@ -21,7 +21,6 @@ describe Rdb4o::Database do
     Rdb4o::Database.close
   end
   
-  
   describe "Query" do
     before(:each) do
       reconnect_database

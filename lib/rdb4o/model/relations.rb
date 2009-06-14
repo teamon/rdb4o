@@ -40,7 +40,7 @@ module Rdb4o
       #
       # :api: public
       def has_many(name, options = {})
-        type = options.delete(:class) || Object.const_get(name.to_s.singularize.capitalize) rescue name.to_s.singularize.capitalize
+        type = options.delete(:class) || Object.const_get(name.to_s.singularize.comel_case) rescue name.to_s.singularize.camel_case
         options[:key] ||= Extlib::Inflection.demodulize(self.to_s).downcase.to_sym
 
         class_eval <<-FIELD, __FILE__, __LINE__

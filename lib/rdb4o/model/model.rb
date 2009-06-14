@@ -10,6 +10,9 @@ module Rdb4o
       Generator.classes << base
     end
 
+    # Hash with all models
+    #
+    # :api: private
     def self.type_map
       @type_map ||= {}
     end
@@ -40,6 +43,7 @@ module Rdb4o
         FIELD
       end
 
+
       # All fields
       #
       # ==== Returns
@@ -49,6 +53,7 @@ module Rdb4o
       def fields
         @fields ||= {}
       end
+      
       
       # Create named scope matching conditions hash *OR* proc
       #
@@ -90,6 +95,7 @@ module Rdb4o
         end
       end
       
+      
       # All scopes
       #
       # ==== Returns
@@ -117,6 +123,7 @@ module Rdb4o
         instance
       end
 
+
       # Create new object and save it to database
       #
       # ==== Parameters
@@ -131,6 +138,7 @@ module Rdb4o
         instance.save
         instance
       end
+
 
       # Returns all models matching conditions hash and proc
       #
@@ -172,7 +180,7 @@ module Rdb4o
       def get_by_db4o_id(id)
         obj = database.ext.getByID(id.to_i)
         # NOTE: Activate depth should be configurable
-        database.activate(obj, 5)
+        database.connection.activate(obj, 5)
         obj.load_attributes!
       end
 
@@ -208,10 +216,17 @@ module Rdb4o
       end
       
       
+      # Example model with dumped attributes for QueryByExample
+      #
+      # :api: private
       def example_for(conditions)
         new(conditions).dump_attributes!
       end
       
+      
+      # Pass not found methods to collection
+      #
+      # :api: private
       def method_missing(method_name, *args, &proc)
         collection.send(method_name, *args, &proc)
       end
@@ -224,6 +239,7 @@ module Rdb4o
       #
       # ==== Returns
       # Hash:: List of all attributes with values
+      # 
       # :api: public
       def attributes
         @attributes ||= {}
@@ -279,10 +295,12 @@ module Rdb4o
         # self.uuid.nil?
       end
 
+
       # Object`s db4o id
       #
       # ==== Returns
       # Fixnum :: db4o id
+      # 
       # :api: public
       def db4o_id
         self.class.database.ext.getID(self)
@@ -293,18 +311,17 @@ module Rdb4o
       #
       # :api: private
       def dump_attributes!
-        # Rdb4o.logger.debug "dump_attributes #{self.object_id}"
         self.class.fields.each_pair do |name, field|
           send(:"set_#{name}", field.dump(attributes[name])) if respond_to? :"set_#{name}"
         end
         self
       end
 
+
       # Load java attributes with appropriate types
       #
       # :api: private
       def load_attributes!
-        # Rdb4o.logger.debug "load_attributes #{self.object_id}"
         self.class.fields.each_pair do |name, field|
           attributes[name] = field.load(send(:"get_#{name}")) if respond_to? :"get_#{name}"
         end
