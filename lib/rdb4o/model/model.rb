@@ -47,7 +47,57 @@ module Rdb4o
       #
       # :api: public
       def fields
-        @fields ||= {}
+        @@fields ||= {}
+      end
+      
+      # Create named scope matching conditions hash *OR* proc
+      #
+      # ==== Parameters
+      # conditions<Hash>:: Hash of conditions that will filter the database
+      # proc<Proc>:: Filter proc
+      #
+      # ==== Examples
+      # Person.scope :stans, :name => "Stan"
+      # Person.scope(:young) {|p| p.age < 18 }
+      #
+      # When using several scopes:
+      # class Cat
+      #   scope(:young) {|c| c.age <= 2}
+      #   scope(:old) {|c| c.age > 4}
+      #   scope :black, :color => "black"
+      #   scope :white, :color => "white"
+      # end
+      # 
+      # Cat.white => {:color => "white"}
+      # Cat.black => {:color => "black"}
+      # Cat.white.black => {:color => "white"}.merge!(:color => "black") => {:color => "black"} # overwritten conditions!
+      # 
+      # but
+      # 
+      # Cat.young => Proc#1
+      # Cat.old => Proc#2
+      # Cat.old.young => Proc#1 + Proc#2
+      #
+      #
+      # :api: public
+      def scope(name, conditions = {}, &proc)
+        if !conditions.empty?
+          scopes[name] = conditions
+        elsif proc
+          scopes[name] = proc
+        else
+          raise ArgumentError.new("Please specify conditions or proc")
+        end
+      end
+      
+      # All scopes
+      #
+      # ==== Returns
+      # Hash:: List of all model scopes
+      #
+      # :api: public
+      def scopes
+        @@scopes ||= {}
       end
 
 
@@ -82,7 +132,7 @@ module Rdb4o
         instance
       end
 
-      # Returns all models matching conditions hash *OR* proc
+      # Returns all models matching conditions hash and proc
       #
       # ==== Parameters
       # conditions<Hash>:: Hash of conditions that will filter the database
@@ -106,7 +156,7 @@ module Rdb4o
       #
       # :api: public
       def destroy_all!
-        collection(true).destroy_all!
+        collection.destroy_all!
       end
 
 
@@ -153,16 +203,17 @@ module Rdb4o
       # Rdb4o::Collection
       #
       # :api: private
-      def collection(force_new = false)
-        if force_new || !@collection
-          @collection = Rdb4o::Collection::Basic.new(self)
-        end
-        @collection
+      def collection
+        Rdb4o::Collection::Basic.new(self)
       end
       
       
       def example_for(conditions)
         new(conditions).dump_attributes!
+      end
+      
+      def method_missing(method_name, *args, &proc)
+        collection.send(method_name, *args, &proc)
       end
 
     end

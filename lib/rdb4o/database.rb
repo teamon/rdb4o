@@ -128,10 +128,11 @@ module Rdb4o
             @connection.get model.java_class
           end
         else
-          # query by example
           if model.nil?
+            # query by rubyMatch
             @connection.get Finder.new(nil, conditions, [])
           else
+            # query by example
             @connection.get model.example_for(conditions)
           end
         end

@@ -1,10 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 
-def reload
-  reconnect_database
-  @collection = Person.collection(true)
-end
-
 describe Rdb4o::Collection do
   before(:all) do
     reconnect_database
@@ -14,7 +9,7 @@ describe Rdb4o::Collection do
     Person.destroy_all!
     Cat.destroy_all!
 
-    @collection = Person.collection(true)
+    @collection = Person.collection
   end
 
   it "should return collection" do
@@ -61,7 +56,7 @@ describe Rdb4o::Collection do
     p.name.should == stan.name
     p.age.should == stan.age
     
-    reload
+    reconnect_database
     
     p = @collection.first
     p.name.should == stan.name
@@ -76,7 +71,7 @@ describe Rdb4o::Collection do
     @collection.all(:name => 'Timmy').size.should == 2
     @collection.all(:name => 'Eric').size.should == 1
      
-    reload
+    reconnect_database
      
     @collection.all(:name => 'Timmy').size.should == 2
     @collection.all(:name => 'Eric').size.should == 1
@@ -91,7 +86,7 @@ describe Rdb4o::Collection do
     @collection.all {|p| p.name == 'Timmy'}.size.should == 1
     @collection.all {|p| p.age > 38}.size.should == 2
     
-    reload
+    reconnect_database
     
     @collection.all {|p| p.name == 'Jimmy'}.size.should == 2
     @collection.all {|p| p.name == 'Timmy'}.size.should == 1
@@ -110,7 +105,7 @@ describe Rdb4o::Collection do
     @collection.all { true }.size.should == 3
     cats.all { true }.size.should == 2
     
-    reload
+    reconnect_database
     
     @collection.all { true }.size.should == 3
     cats.all { true }.size.should == 2
@@ -122,6 +117,10 @@ describe Rdb4o::Collection do
     @collection.create(:name => 'Timmy', :age => 45)
     @collection.size.should == 3
     @collection.destroy_all!
+    @collection.size.should == 0
+    
+    reconnect_database
+    
     @collection.size.should == 0
   end
 

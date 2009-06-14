@@ -23,8 +23,7 @@ module Rdb4o
           obj.load_attributes!
           procs.all? {|p| p.call(obj) } 
         end
-        
-        
+
         finder
       end
     end

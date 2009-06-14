@@ -126,6 +126,20 @@ module Rdb4o
       def database
         Rdb4o::Database[:default]
       end
+      
+      
+      
+      def method_missing(method_name, *args, &proc)
+        if scope = model.scopes[method_name]
+          if scope.is_a?(Hash)
+            all(scope)
+          elsif scope.is_a?(Proc)
+            all(&scope)
+          end
+        else
+          super
+        end
+      end
     end
   end
 end
