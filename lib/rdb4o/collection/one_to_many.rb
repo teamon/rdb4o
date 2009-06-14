@@ -20,7 +20,7 @@ module Rdb4o
         @parent, @relation_name, @foreign_key = parent, relation_name, foreign_key
         conditions.merge!(@foreign_key => @parent)
       end
-      
+
       # Destroy object from collection - set parent to nil
       #
       # :api: public

@@ -1,7 +1,7 @@
 module Rdb4o
   class Database
     Db4o = com.db4o.Db4o
-    
+
     class << self
       DEFAULT_CONFIG = {:type => 'local', :port => 0, :login => '', :password => '', :name => :default}
 
@@ -66,13 +66,13 @@ module Rdb4o
       def setup(config)
          config = DEFAULT_CONFIG.merge(config)
          db = Database.new(config)
-         
+
          if config[:type].to_s == 'remote'
            db.client!
          else
            db.file!
          end
-                  
+
          databases[config[:name]] = db
          db
       end
@@ -94,14 +94,14 @@ module Rdb4o
     def initialize(config)
       @config = config
     end
-    
+
     # Sets up the database as client
     #
     # :api: private
     def client!
       @connection = Db4o.open_client('localhost', config[:port].to_i, config[:login], config[:password])
     end
-    
+
     # Sets up the file database
     #
     # :api: private
@@ -109,18 +109,18 @@ module Rdb4o
       raise ArgumentError.new(":dbfile not specified") unless config[:dbfile]
       @connection = Db4o.open_file config[:dbfile]
     end
-    
+
     # Close database connection
     #
     # :api: private
     def close
       @connection.close
     end
-    
-    
+
+
     def query(model = nil, conditions = {}, procs = [])
       Rdb4o.logger.debug "QUERY: #{model}  #{conditions.inspect}  #{procs.size}"
-      
+
       if procs.empty?
         if conditions.empty?
           if model.nil?
@@ -143,17 +143,17 @@ module Rdb4o
         @connection.query Finder.new(model, conditions, procs)
       end
     end
-    
+
     def store(object)
       Rdb4o.logger.debug "STORE: #{object}"
       @connection.set(object)
     end
-    
+
     def delete(object)
       Rdb4o.logger.debug "DELETE: #{object}"
       @connection.delete(object)
     end
-    
+
     def ext
       @connection.ext
     end

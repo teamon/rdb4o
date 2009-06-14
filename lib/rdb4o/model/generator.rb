@@ -2,9 +2,14 @@ module Rdb4o
   module Model
     class Generator
       class << self
+
+        # All registered classes
+        #
+        # :api: private
         def classes
           @classes ||= []
         end
+
 
         # Generate class file
         #
@@ -40,15 +45,6 @@ public class #{klazz} extends Rdb4oModel {
 }
           JAVA
         end
-
-
-        # May not be usefull at al
-        # # Generate all class files that include Rdb4o::Model
-        # #
-        # # :api: public
-        # def generate_all!
-        #   classes.map {|c| generate!(c) }
-        # end
 
       end
     end

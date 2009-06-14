@@ -22,6 +22,7 @@ module Rdb4o
         field(name, type, options)
       end
 
+
       # "Has many" relation
       #
       # ==== Parameters

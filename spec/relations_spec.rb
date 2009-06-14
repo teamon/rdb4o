@@ -2,10 +2,10 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 
 describe "Relations" do
   before(:all) do
-    
+
     class CoolSong; end
     class Fish; end
-    
+
     class Genius
       include Rdb4o::Model
 
@@ -15,7 +15,7 @@ describe "Relations" do
       has_many :cool_songs, :key => :composer
       has_many :friends, :class => Fish
     end
-    
+
     class Song
       include Rdb4o::Model
 
@@ -65,7 +65,7 @@ describe "Relations" do
     it "should respect :key option" do
       Genius.new.cool_songs.foreign_key.should == :composer
     end
-    
+
     it "should respect :class option" do
       Genius.new.friends.model.should == Fish
     end

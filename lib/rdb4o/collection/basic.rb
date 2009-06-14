@@ -14,10 +14,10 @@ module Rdb4o
       # :api: public
       def initialize(model = nil, conditions = {}, procs = [])
         super()
-        @model = model 
+        @model = model
         @conditions = conditions
         @procs = procs
-        
+
         load_with do |collection|
           Rdb4o.logger.debug "COLLECTION:LOAD"
           collection.clear!
@@ -27,10 +27,10 @@ module Rdb4o
             collection << obj
           end
         end
-        
+
       end
-      
-    
+
+
       # Returns all models matching conditions hash *OR* proc
       #
       # ==== Parameters
@@ -91,7 +91,7 @@ module Rdb4o
         self << instance
         instance
       end
-      
+
       protected
 
       # Attributes for new object
@@ -103,8 +103,8 @@ module Rdb4o
       def default_attributes
         conditions
       end
-          
-      
+
+
       # Database object
       #
       # ==== Returns
@@ -114,8 +114,8 @@ module Rdb4o
       def database
         Rdb4o::Database[:default]
       end
-      
-      
+
+
       # Try to use scope
       # TODO: some cache?
       #
@@ -131,8 +131,8 @@ module Rdb4o
           super
         end
       end
-      
-      
+
+
       # Clear collection
       #
       # :api: private
@@ -141,7 +141,7 @@ module Rdb4o
         @tail.clear
         clear
       end
-      
+
     end
   end
 end

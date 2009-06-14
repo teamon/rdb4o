@@ -34,22 +34,22 @@ module Rdb4o
         def debug(msg)
           debug!("\033[0;36m%s\033[0m" % msg) if @do_log
         end
-                
+
         def off!
           @do_log = false
         end
-        
+
         def on!
           @do_log = true
         end
-        
+
       end
-      
+
       logger.on!
       logger
     end
   end
-  
+
   # global config
   # class << self
   #   attr_accessor :use_validations

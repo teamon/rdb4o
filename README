@@ -1,4 +1,4 @@
-Rdb4o v. 0.0.1
+Rdb4o
 ===============
 
 see http://teamon.github.com/rdb4o
@@ -27,18 +27,10 @@ require 'rdb4o'
 Rdb4o::Database.setup :dbfile => 'simple.db'
 
 
-blah blah
-
-example: http://gist.github.com/93771
-
-
 SPEC CONSOLE
 ============
-jruby -S rake spec:generate
-jruby -S rake spec:compile
+rake spec:gen
 rake spec:console
-
-rake spec:gen DEV=true
 
 
 sorting:
@@ -57,10 +49,4 @@ sorting:
 # while r.has_next
 #   x r.next.getName
 # end
-
-
-delete all
-ObjectSet result=db.queryByExample(Pilot.class); 
-while(result.hasNext()) { 
-    db.delete(result.next()); 
 

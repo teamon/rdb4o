@@ -10,6 +10,7 @@ module Rdb4o
       Generator.classes << base
     end
 
+
     # Hash with all models
     #
     # :api: private
@@ -53,8 +54,8 @@ module Rdb4o
       def fields
         @fields ||= {}
       end
-      
-      
+
+
       # Create named scope matching conditions hash *OR* proc
       #
       # ==== Parameters
@@ -72,13 +73,13 @@ module Rdb4o
       #   scope :black, :color => "black"
       #   scope :white, :color => "white"
       # end
-      # 
+      #
       # Cat.white => {:color => "white"}
       # Cat.black => {:color => "black"}
       # Cat.white.black => {:color => "white"}.merge!(:color => "black") => {:color => "black"} # overwritten conditions!
-      # 
+      #
       # but
-      # 
+      #
       # Cat.young => Proc#1
       # Cat.old => Proc#2
       # Cat.old.young => Proc#1 + Proc#2
@@ -94,8 +95,8 @@ module Rdb4o
           raise ArgumentError.new("Please specify conditions or proc")
         end
       end
-      
-      
+
+
       # All scopes
       #
       # ==== Returns
@@ -184,6 +185,7 @@ module Rdb4o
         obj.load_attributes!
       end
 
+
       # Java type
       #
       # ==== Returns
@@ -205,6 +207,7 @@ module Rdb4o
         Rdb4o::Database[:default]
       end
 
+
       # Model class collection
       #
       # ==== Returns
@@ -214,16 +217,16 @@ module Rdb4o
       def collection
         Rdb4o::Collection::Basic.new(self)
       end
-      
-      
+
+
       # Example model with dumped attributes for QueryByExample
       #
       # :api: private
       def example_for(conditions)
         new(conditions).dump_attributes!
       end
-      
-      
+
+
       # Pass not found methods to collection
       #
       # :api: private
@@ -239,7 +242,7 @@ module Rdb4o
       #
       # ==== Returns
       # Hash:: List of all attributes with values
-      # 
+      #
       # :api: public
       def attributes
         @attributes ||= {}
@@ -300,7 +303,7 @@ module Rdb4o
       #
       # ==== Returns
       # Fixnum :: db4o id
-      # 
+      #
       # :api: public
       def db4o_id
         self.class.database.ext.getID(self)
