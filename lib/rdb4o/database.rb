@@ -1,5 +1,7 @@
 module Rdb4o
   class Database
+    Db4o = com.db4o.Db4o
+    
     class << self
       DEFAULT_CONFIG = {:type => 'local', :port => 0, :login => '', :password => '', :name => :default}
 
@@ -122,7 +124,7 @@ module Rdb4o
       if procs.empty?
         if conditions.empty?
           if model.nil?
-            @connection.query
+            raise ArgumentError.new("You must specify either model, conditions, or proc")
           else
             # query by class name
             @connection.get model.java_class

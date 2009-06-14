@@ -24,19 +24,13 @@ module Rdb4o
           result = database.query(collection.model, collection.conditions, collection.procs)
           while result.has_next
             obj = result.next.load_attributes!
-            Rdb4o.logger.debug " -> #{obj.inspect}"
             collection << obj
           end
-          
         end
-      end
-
-      def clear!
-        @head.clear
-        @tail.clear
-        clear
+        
       end
       
+    
       # Returns all models matching conditions hash *OR* proc
       #
       # ==== Parameters
@@ -82,6 +76,7 @@ module Rdb4o
         model.new default_attributes.merge(attrs)
       end
 
+
       # Create new @model object and save it
       #
       # ==== Parameters
@@ -96,6 +91,8 @@ module Rdb4o
         self << instance
         instance
       end
+      
+      protected
 
       # Attributes for new object
       #
@@ -104,18 +101,9 @@ module Rdb4o
       #
       # :api: private
       def default_attributes
-        {}
+        conditions
       end
-
-
-      # Pass all undefined methods into set
-      #
-      # :api: private
-      # def method_missing(method, *args, &proc)
-      #   # x "method passing to items: #{method}(#{args.inspect}, #{proc.inspect})"
-      #   @items.send(method, *args, &proc)
-      # end
-      
+          
       
       # Database object
       #
@@ -128,7 +116,10 @@ module Rdb4o
       end
       
       
-      
+      # Try to use scope
+      # TODO: some cache?
+      #
+      # :api: private
       def method_missing(method_name, *args, &proc)
         if scope = model.scopes[method_name]
           if scope.is_a?(Hash)
@@ -140,6 +131,17 @@ module Rdb4o
           super
         end
       end
+      
+      
+      # Clear collection
+      #
+      # :api: private
+      def clear!
+        @head.clear
+        @tail.clear
+        clear
+      end
+      
     end
   end
 end

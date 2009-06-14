@@ -1,5 +1,12 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 
+def with_reconnect
+  yield
+  @collection = Person.collection
+  reconnect_database
+  yield
+end
+
 describe Rdb4o::Collection do
   before(:all) do
     reconnect_database
@@ -52,15 +59,11 @@ describe Rdb4o::Collection do
     @collection.size.should == 0
     stan = @collection.create(:name => 'Stan')
     
-    p = @collection.first
-    p.name.should == stan.name
-    p.age.should == stan.age
-    
-    reconnect_database
-    
-    p = @collection.first
-    p.name.should == stan.name
-    p.age.should == stan.age
+    with_reconnect {
+      p = @collection.first
+      p.name.should == stan.name
+      p.age.should == stan.age      
+    }
   end
   
   specify "#all with conditions" do
@@ -68,13 +71,10 @@ describe Rdb4o::Collection do
     @collection.create(:name => 'Timmy')
     @collection.create(:name => 'Eric')
     
-    @collection.all(:name => 'Timmy').size.should == 2
-    @collection.all(:name => 'Eric').size.should == 1
-     
-    reconnect_database
-     
-    @collection.all(:name => 'Timmy').size.should == 2
-    @collection.all(:name => 'Eric').size.should == 1
+    with_reconnect {
+      @collection.all(:name => 'Timmy').size.should == 2
+      @collection.all(:name => 'Eric').size.should == 1
+    }
   end
   
   specify "#all with proc" do
@@ -82,15 +82,11 @@ describe Rdb4o::Collection do
     @collection.create(:name => 'Jimmy', :age => 40)
     @collection.create(:name => 'Timmy', :age => 45)
     
-    @collection.all {|p| p.name == 'Jimmy'}.size.should == 2
-    @collection.all {|p| p.name == 'Timmy'}.size.should == 1
-    @collection.all {|p| p.age > 38}.size.should == 2
-    
-    reconnect_database
-    
-    @collection.all {|p| p.name == 'Jimmy'}.size.should == 2
-    @collection.all {|p| p.name == 'Timmy'}.size.should == 1
-    @collection.all {|p| p.age > 38}.size.should == 2
+    with_reconnect {
+      @collection.all {|p| p.name == 'Jimmy'}.size.should == 2
+      @collection.all {|p| p.name == 'Timmy'}.size.should == 1
+      @collection.all {|p| p.age > 38}.size.should == 2
+    }
   end
   
   specify "#all should return only objects that match class" do
@@ -102,13 +98,10 @@ describe Rdb4o::Collection do
     cats.create(:name => 'Foo')
     cats.create(:name => 'Bar')
     
-    @collection.all { true }.size.should == 3
-    cats.all { true }.size.should == 2
-    
-    reconnect_database
-    
-    @collection.all { true }.size.should == 3
-    cats.all { true }.size.should == 2
+    with_reconnect {
+      @collection.all { true }.size.should == 3
+      cats.all { true }.size.should == 2
+    }
   end
 
   specify "#destroy_all! should destroy all objects" do
@@ -117,11 +110,10 @@ describe Rdb4o::Collection do
     @collection.create(:name => 'Timmy', :age => 45)
     @collection.size.should == 3
     @collection.destroy_all!
-    @collection.size.should == 0
     
-    reconnect_database
-    
-    @collection.size.should == 0
+    with_reconnect {
+      @collection.size.should == 0
+    }
   end
 
 end

@@ -16,6 +16,12 @@ def reconnect_database
   Rdb4o::Database.setup(:dbfile => "test.db")
 end
 
+def with_reconnect
+  yield
+  reconnect_database
+  yield
+end
+
 Spec::Runner.configure do |config|
   config.before(:all) do
   end

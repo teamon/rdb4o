@@ -1,7 +1,7 @@
 module Rdb4o
   module Collection
     class OneToMany < Basic
-      attr_accessor :parent, :relation_name, :foreign_name
+      attr_accessor :parent, :relation_name, :foreign_key
 
       # Initialize collection with specified parent
       #
@@ -12,66 +12,24 @@ module Rdb4o
       # foreign_name<Class>:: Name of n->1 relation
       #
       # ==== Examples
-      # OneToManyCollection.new(genius, Fish, :fishes, :owner)
+      # OneToManyCollection.new(person, Cat, :cats, :owner)
       #
       # :api: public
-      def initialize(parent, model, relation_name, foreign_name)
-        @parent, @model, @relation_name, @foreign_name = parent, model, relation_name, foreign_name
-        @items = @parent.attributes[@relation_name] ||= []
-        @items.each {|i| i._load_attributes }
+      def initialize(parent, model, relation_name, foreign_key)
+        super(model)
+        @parent, @relation_name, @foreign_key = parent, relation_name, foreign_key
+        conditions.merge!(@foreign_key => @parent)
       end
-
-      # Returns all models matching conditions hash *OR* proc
-      #
-      # ==== Parameters
-      # conditions<Hash>:: Hash of conditions that will filter the database
-      # proc<Proc>:: Filter proc
-      #
-      # ==== Returns
-      # Array :: Collection of objects
-      #
-      # ==== Examples
-      # collection.all
-      # collection.all(:name => "Stan")
-      # collection.all {|e| e.age > 30 }
-      #
-      # :api: public
-      def all(conditions = {}, &proc)
-        collection = self.dup
-        collection.items = if proc
-          self.items.select(&proc)
-        elsif !conditions.empty?
-          self.items.select {|e| conditions.all? {|key, value| e.send(key) == value } }
-        else
-          self.items
-        end.to_a.each {|e| e.load_attributes! }
-
-        collection
-      end
-
-      # Create new @model object and save it
-      #
-      # ==== Parameters
-      # attrs<Hash>:: Hash of attributes that will apply to object
-      #
-      # ==== Returns
-      # Instance of model
-      #
-      # :api: public
-      def create(attrs = {})
-        model.create _new_attributes.merge(attrs)
-      end
-
-
-      # Delete object from collection
+      
+      # Destroy object from collection - set parent to nil
       #
       # :api: public
       def delete(object)
-        @items.delete(object)
-        object.attributes[@foreign_name] = nil
+        object.send(:"#{@foreign_key}=", nil)
         object.save
-        @parent.save
+        super
       end
+
 
       # Add object to collection and set it`s parent
       #
@@ -80,23 +38,13 @@ module Rdb4o
       #
       # :api: public
       def <<(object)
-        unless @items.include?(object)
-          object.attributes[@foreign_name] = @parent
+        unless include?(object)
+          object.send(:"#{@foreign_key}=", @parent)
           object.save
+          super
         end
       end
 
-      # Attributes for new object
-      #
-      # ==== Returns
-      # Hash :: attributes
-      #
-      # :api: private
-      def _new_attributes
-        attrs = {}
-        attrs[@foreign_name] = @parent
-        attrs
-      end
     end
   end
 end

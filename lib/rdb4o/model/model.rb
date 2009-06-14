@@ -47,7 +47,7 @@ module Rdb4o
       #
       # :api: public
       def fields
-        @@fields ||= {}
+        @fields ||= {}
       end
       
       # Create named scope matching conditions hash *OR* proc

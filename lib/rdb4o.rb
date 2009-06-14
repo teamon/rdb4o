@@ -6,7 +6,7 @@ def x(msg)
 end
 
 def i(obj)
-  STDOUT.puts "\033[0;36m%s\033[0m" % obj.inspect
+  STDOUT.puts "\033[0;35m%s\033[0m" % obj.inspect
 end
 
 $: << File.dirname(__FILE__)
@@ -27,13 +27,26 @@ require 'java/rdb4o.jar'
 
 
 module Rdb4o
-  Db4o = com.db4o.Db4o
-
   def self.logger
     @@logger ||= begin
-      l = Extlib::Logger.new($stdout, :debug)
-      l.auto_flush = true
-      l
+      logger = Extlib::Logger.new($stdout, :debug)
+      class << logger
+        def debug(msg)
+          debug!("\033[0;36m%s\033[0m" % msg) if @do_log
+        end
+                
+        def off!
+          @do_log = false
+        end
+        
+        def on!
+          @do_log = true
+        end
+        
+      end
+      
+      logger.on!
+      logger
     end
   end
   
