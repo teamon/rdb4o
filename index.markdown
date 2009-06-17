@@ -19,3 +19,7 @@ You can also clone the project with [Git](http://git-scm.com) by running:
 {% highlight bash %}
 $ git clone git://github.com/teamon/rdb4o
 {% endhighlight %}
+
+### TODO
+- scope
+- update one_to_many

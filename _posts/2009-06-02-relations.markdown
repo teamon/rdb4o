@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Associations
+title: Relations
 ---
 
 ### One to Many
@@ -12,7 +12,7 @@ class Cat
   field :age, Fixnum
 
   belongs_to :person
-  belongs_to :owner, :class => Person, :foreign_name => :friends
+  belongs_to :owner, :class => Person
 end
 
 class Person
@@ -21,7 +21,7 @@ class Person
   field :name, String
 
   has_many :cats
-  has_many :friends, :class => Cat, :foreign_name => :owner
+  has_many :friends, :class => Cat, :key => :owner
 end
 
 p = Person.create(:name => "Foo")
