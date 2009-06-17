@@ -43,6 +43,12 @@ module Rdb4o
       def load(value)
         Rdb4o::Type.load(type, value)
       end
+
+      # Generate accessors
+      def add_accessors(klazz)
+        klazz.class_eval Rdb4o::Type.accessors_for(type, name)
+      end
+
     end
   end
 end

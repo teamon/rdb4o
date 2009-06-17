@@ -58,6 +58,26 @@ module Rdb4o
       end
 
 
+      # Class accessors for specified type
+      #
+      # ==== Parameters
+      # type<Class,String>:: type name
+      # name<String,Sybol>:: field name
+      #
+      # ==== Returns
+      # String :: class accessors
+      #
+      # :api: public
+      def accessors_for(type, name)
+        type = self.for(type)
+        if type.respond_to?(:accessors)
+          type.accessors(name)
+        else
+          Rdb4o::Types::Generic.accessors(name)
+        end
+      end
+
+
       # Dumped value for specified type name
       #
       # ==== Parameters

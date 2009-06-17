@@ -110,6 +110,14 @@ describe Rdb4o::Types do
       Rdb4o::Types::Boolean.dump(true).should == true
       Rdb4o::Types::Boolean.dump(false).should == false
       Rdb4o::Types::Boolean.dump(nil).should == false
+
+      c = Chef.new
+      c.dead = nil
+      c.dead?.should == false
+      c.dead = true
+      c.dead?.should == true
+      c.dead = 1
+      c.dead?.should == true
     end
   end
 

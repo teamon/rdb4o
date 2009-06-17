@@ -35,6 +35,11 @@ end
 dir = File.dirname(__FILE__)
 ENV["CLASSPATH"] = "#{dir}/lib/java/db4o.jar:#{dir}/lib/java/rdb4o.jar:#{dir}/spec"
 
+if ENV['file']
+  files = "#{dir}/spec/#{ENV['file']}_spec.rb"
+else
+  files = Dir["#{dir}/spec/**/*_spec.rb"].join(" ")
+end
 
 desc "Create a gemspec file"
 task :gemspec do
@@ -66,13 +71,7 @@ end
 namespace :spec do
   desc "Run specs"
   task :run do
-    if ENV['file']
-      specs = "#{dir}/spec/#{ENV['file']}_spec.rb"
-    else
-      specs = Dir["#{dir}/spec/**/*_spec.rb"].join(" ")
-    end
-
-    system "jruby -S spec -O spec/spec.opts #{specs}"
+    system "jruby -S spec -O spec/spec.opts #{files}"
   end
   
   desc "Generate and compile spec models"  
@@ -86,6 +85,11 @@ namespace :spec do
   desc "Console"
   task :console do
     system "jruby -S irb -r #{dir}/spec/console.rb"
+  end
+  
+  desc "rcov"
+  task :rcov do
+    system "jruby -S rcov #{files}"
   end
 end
 

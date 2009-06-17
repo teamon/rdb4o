@@ -141,6 +141,13 @@ describe Rdb4o::Model do
       Person.all.first.age.should == 8
     end
 
+    specify "#db4o_id" do
+      eric = Person.new
+      eric.db4o_id.should == 0
+      eric.save
+      eric.db4o_id.should_not == 0
+    end
+
   end
 
 end
@@ -166,10 +173,6 @@ end
 
 #
 
-#     it "#get_by_db4o_id" do
-#       jimmy = Person.create(:name => 'Jimmy', :age => 35)
-#       Person.get_by_db4o_id(jimmy.db4o_id).should == jimmy
-#     end
 #
 #     it "#get_by_uuid" do
 #       jimmy = Person.create(:name => 'Jimmy', :age => 35)
@@ -186,12 +189,6 @@ end
 #
 
 #
-#     it "#db4o_id" do
-#       john = Person.new
-#       john.db4o_id.should == 0
-#       john.save
-#       john.db4o_id.should_not == 0
-#     end
 #
 #     it "#uuid" do
 #       john = Person.new
@@ -201,48 +198,5 @@ end
 #     end
 #
 #   end
-#
-#   describe "One to many" do
-#     it "should work without parameters" do
-#       class Person
-#         has_many :cats
-#       end
-#
-#       john = Person.create(:name => 'John')
-#       john.cats.size.should == 0
-#
-#       kitty = Cat.create(:name => 'Foo', :person => john)
-#       kitty.person.should == john
-#       john.cats.size.should == 1
-#       john.cats.should == [kitty]
-#     end
-#
-#     it "should work with :key parameter" do
-#       class Person
-#         has_many :dogs, :key => :owner
-#       end
-#
-#       john = Person.create(:name => 'John')
-#       john.dogs.size.should == 0
-#
-#       puppy = Dog.create(:name => 'Foo', :owner => john)
-#       puppy.owner.should == john
-#       john.dogs.size.should == 1
-#       john.dogs.should == [puppy]
-#     end
-#
-#     it "should work with :class_name parameter" do
-#       class Person
-#         has_many :pets, :class_name => Cat
-#       end
-#
-#       john = Person.create(:name => 'John')
-#       john.pets.size.should == 0
-#
-#       kitty = Cat.create(:name => 'Foo', :person => john)
-#       kitty.person.should == john
-#       john.pets.size.should == 1
-#       john.pets.should == [kitty]
-#     end
-#   end
+
 # end

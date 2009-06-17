@@ -154,8 +154,12 @@ module Rdb4o
       @connection.delete(object)
     end
 
-    def ext
-      @connection.ext
+    def id_for(object)
+      @connection.ext.getID(object)
+    end
+
+    def get_by_id(id)
+      @connection.ext.getByID(id)
     end
 
   end

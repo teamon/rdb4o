@@ -32,7 +32,7 @@ module Rdb4o
       logger = Extlib::Logger.new($stdout, :debug)
       class << logger
         def debug(msg)
-          debug!("\033[0;36m%s\033[0m" % msg) if @do_log
+          # debug!("\033[0;36m%s\033[0m" % msg) if @do_log
         end
 
         def off!

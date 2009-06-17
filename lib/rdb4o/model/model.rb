@@ -32,16 +32,7 @@ module Rdb4o
       # :api: public
       def field(name, type, opts = {})
         fields[name] = Field.new(name, type, opts)
-
-        class_eval <<-FIELD, __FILE__, __LINE__
-          def #{name}
-            attributes[:#{name}]
-          end
-
-          def #{name}=(value)
-            attributes[:#{name}] = value
-          end
-        FIELD
+        fields[name].add_accessors(self)
       end
 
 
@@ -179,7 +170,7 @@ module Rdb4o
       #
       # :api: public
       def get_by_db4o_id(id)
-        obj = database.ext.getByID(id.to_i)
+        obj = database.get_by_id(id.to_i)
         # NOTE: Activate depth should be configurable
         database.connection.activate(obj, 5)
         obj.load_attributes!
@@ -306,7 +297,7 @@ module Rdb4o
       #
       # :api: public
       def db4o_id
-        self.class.database.ext.getID(self)
+        self.class.database.id_for(self)
       end
 
 

@@ -1,7 +1,29 @@
 module Rdb4o
   module Types
 
-    class Fixnum
+    class Generic
+      def self.accessors(name)
+        <<-FIELD
+          def #{name}
+            attributes[:#{name}]
+          end
+
+          def #{name}=(value)
+            attributes[:#{name}] = value
+          end
+        FIELD
+      end
+
+      def self.dump(value)
+        value
+      end
+
+      def self.load(value)
+        value
+      end
+    end
+
+    class Fixnum < Generic
       def self.java_type
         "int" # Integer?
       end
@@ -13,7 +35,7 @@ module Rdb4o
 
     Integer = Fixnum
 
-    class Float
+    class Float < Generic
        def self.java_type
          "float"
        end
@@ -23,7 +45,7 @@ module Rdb4o
        end
     end
 
-    class Boolean
+    class Boolean < Generic
        def self.java_type
          "boolean"
        end
@@ -31,9 +53,17 @@ module Rdb4o
        def self.dump(value)
          !!value
        end
+
+       def self.accessors(name)
+         super + <<-FIELD
+           def #{name}?
+             !!attributes[:#{name}]
+           end
+         FIELD
+       end
     end
 
-    class String
+    class String < Generic
        def self.java_type
          "String"
        end
@@ -43,7 +73,7 @@ module Rdb4o
        end
     end
 
-    class Array
+    class Array < Generic
       class << self
         attr_accessor :type
 
@@ -72,6 +102,7 @@ module Rdb4o
             value
           end
         end
+
       end
     end
 
