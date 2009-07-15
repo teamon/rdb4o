@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Filtering & scope
+title: Filtering, scope & ordering
 ---
 
 {% highlight ruby %}
@@ -31,5 +31,12 @@ p = Person.create(:name => "Eric")
 
 p.cats.black
 p.cats.black.old.new
+
+{% endhighlight %}
+
+{% highlight ruby %}
+Cat.all.order(:name)
+Cat.all.order(:name, :age)
+Cat.all.order {|a,b| a.name.size <=> b.name.size }
 
 {% endhighlight %}
