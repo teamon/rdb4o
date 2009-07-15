@@ -71,7 +71,8 @@ module Rdb4o
 end
 
 require :rdb4o / :database
-require :rdb4o / :finder
+require :rdb4o / :comparator
+require :rdb4o / :predicate
 # require 'rdb4o/errors'
 # require 'rdb4o/validation_helpers'
 require :rdb4o / :model / :relations
