@@ -109,7 +109,7 @@ describe Rdb4o::Database do
       @db.store(eric)
       @db.store(kyle)
 
-      @db.query(Person, {:name => nil}).size.should == 2
+      @db.query(Person, {:name => nil}).size.should == 0
       @db.query(Person, :name => "Eric").size.should == 1
       @db.query(Person, :name => "Kyle").size.should == 1
       @db.query(Person, :name => "Stan").size.should == 0
@@ -166,8 +166,58 @@ describe Rdb4o::Database do
       @db.query(nil, {}, [lambda{|obj| obj.name =~ /^K/}]).size.should == 2
       @db.query(Person, {}, [lambda{|obj| obj.name =~ /^K/}]).size.should == 1
     end
+    
+    it "should raise argument error" do
+      lambda {
+        @db.query(nil, {}, [], [:name], lambda{})
+      }.should raise_error(ArgumentError)
+    end
+    
+    it "should return objects in order using order_fields" do
+      eric = Person.new
+      eric.setName("Eric")
+      eric.setAge(8)
 
-    it "should use ORDER"
+      kyle = Person.new
+      kyle.setName("Kyle")
+      kyle.setAge(4)
+
+      kyle2 = Person.new
+      kyle2.setName("Kyle")
+      kyle2.setAge(2)
+      
+      @db.store(eric)
+      @db.store(kyle)
+      @db.store(kyle2)
+      
+      @db.query(nil, {}, [], [:name]).map{|e| e.name}.should == ["Eric", "Kyle", "Kyle"]
+      @db.query(nil, {}, [], [:age]).map{|e| e.name}.should == ["Kyle", "Kyle", "Eric"]
+      @db.query(nil, {}, [], [:name, :age]).map{|e| e.name}.should == ["Eric", "Kyle", "Kyle"]
+      @db.query(nil, {}, [], [:name, :age]).map{|e| e.age}.should == [8, 2, 4]
+    end
+
+    it "should return objects in order" do
+      eric = Person.new
+      eric.setName("Eric")
+      eric.setAge(8)
+
+      kyle = Person.new
+      kyle.setName("Kyle")
+      kyle.setAge(4)
+
+      kitty = Cat.new
+      kitty.setName("Kitty")
+      kitty.setAge(1)
+
+      @db.store(eric)
+      @db.store(kyle)
+      @db.store(kitty)
+      
+      @db.query(nil, {}, [], [], lambda{|a,b| a.age <=> b.age}).map{|e| e.name}.should == ["Kitty", "Kyle", "Eric"]
+      @db.query(nil, {}, [], [], lambda{|a,b| b.age <=> a.age}).map{|e| e.name}.should == ["Eric", "Kyle", "Kitty"]
+      @db.query(Person, {}, [], [], lambda{|a,b| a.age <=> b.age}).map{|e| e.name}.should == ["Kyle", "Eric"]
+    end
+    
     it "should use LIMIT"
     it "should use OFFSET"
 

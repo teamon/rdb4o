@@ -7,15 +7,14 @@ see http://teamon.github.com/rdb4o
 Author: Kacper Cieśla, Tymon Tobolski
 
 Small library I wrote for fun too have even more fun with db4o and jruby :)
-
 Lots of thanks for Marcin Mielżyński (lopex) for helping me with this.
-
-It was mainly used for merd_rdb4o, so you may want to take a look at http://github.com/comboy/merb_rdb4o
 
 
 Instalation
-===============
-jruby -S gem install rdb4o
+============
+    $ git clone git://github.com/teamon/rdb4o.git
+    $ cd rdb4o
+    $ rake install
 
 
 Usage

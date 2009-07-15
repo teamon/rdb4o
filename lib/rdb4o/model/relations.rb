@@ -16,7 +16,7 @@ module Rdb4o
       # kitty = Cat.new
       # kitty.person
       #
-      # :api: public
+      # @api public
       def belongs_to(name, options = {})
         type = options.delete(:class) || Object.const_get(name.to_s.capitalize) rescue name.to_s.capitalize
         field(name, type, options)
@@ -39,7 +39,7 @@ module Rdb4o
       # person = Person.new
       # person.cats
       #
-      # :api: public
+      # @api public
       def has_many(name, options = {})
         type = options.delete(:class) || Object.const_get(name.to_s.singularize.comel_case) rescue name.to_s.singularize.camel_case
         options[:key] ||= Extlib::Inflection.demodulize(self.to_s).downcase.to_sym

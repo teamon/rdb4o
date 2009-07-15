@@ -5,7 +5,7 @@ module Rdb4o
 
         # All registered classes
         #
-        # :api: private
+        # @api private
         def classes
           @classes ||= []
         end
@@ -17,7 +17,7 @@ module Rdb4o
         # klazz<Class>:: Class object
         # package<String>:: Java class package
         #
-        # :api: public
+        # @api public
         def generate!(klazz, package = nil)
           fields, accessors = [], []
 

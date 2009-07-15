@@ -13,7 +13,7 @@ module Rdb4o
 
     # Hash with all models
     #
-    # :api: private
+    # @api private
     def self.type_map
       @type_map ||= {}
     end
@@ -29,7 +29,7 @@ module Rdb4o
       # type<Rdb4o::Type>:: Type of field (see Types section)
       # opts<Hash>:: An options hash (for the future)
       #
-      # :api: public
+      # @api public
       def field(name, type, opts = {})
         fields[name] = Field.new(name, type, opts)
         fields[name].add_accessors(self)
@@ -41,7 +41,7 @@ module Rdb4o
       # ==== Returns
       # Hash:: List of all model fields
       #
-      # :api: public
+      # @api public
       def fields
         @fields ||= {}
       end
@@ -76,7 +76,7 @@ module Rdb4o
       # Cat.old.young => Proc#1 + Proc#2
       #
       #
-      # :api: public
+      # @api public
       def scope(name, conditions = {}, &proc)
         if !conditions.empty?
           scopes[name] = conditions
@@ -93,7 +93,7 @@ module Rdb4o
       # ==== Returns
       # Hash:: List of all model scopes
       #
-      # :api: public
+      # @api public
       def scopes
         @@scopes ||= {}
       end
@@ -107,7 +107,7 @@ module Rdb4o
       # ==== Returns
       # Instance of model
       #
-      # :api: public
+      # @api public
       def new(attrs = {})
         instance = super()
         instance.load_attributes!
@@ -124,7 +124,7 @@ module Rdb4o
       # ==== Returns
       # Instance of model
       #
-      # :api: public
+      # @api public
       def create(attrs = {})
         instance = self.new(attrs)
         instance.save
@@ -146,7 +146,7 @@ module Rdb4o
       # Person.all(:name => "Stan")
       # Person.all {|p| p.age > 30 }
       #
-      # :api: public
+      # @api public
       def all(conditions = {}, &proc)
         collection.all(conditions, &proc)
       end
@@ -154,7 +154,7 @@ module Rdb4o
 
       # Destroy all objects
       #
-      # :api: public
+      # @api public
       def destroy_all!
         collection.destroy_all!
       end
@@ -168,7 +168,7 @@ module Rdb4o
       # ==== Returns
       # Object with that id
       #
-      # :api: public
+      # @api public
       def get_by_db4o_id(id)
         obj = database.get_by_id(id.to_i)
         # NOTE: Activate depth should be configurable
@@ -182,7 +182,7 @@ module Rdb4o
       # ==== Returns
       # String
       #
-      # :api: private
+      # @api private
       def java_type
         Rdb4o::Model.type_map[self]
       end
@@ -193,7 +193,7 @@ module Rdb4o
       # ==== Returns
       # Java::ComDb4oInternal::IoAdaptedObjectContainer
       #
-      # :api: private
+      # @api private
       def database
         Rdb4o::Database[:default]
       end
@@ -204,7 +204,7 @@ module Rdb4o
       # ==== Returns
       # Rdb4o::Collection
       #
-      # :api: private
+      # @api private
       def collection
         Rdb4o::Collection::Basic.new(self)
       end
@@ -212,7 +212,7 @@ module Rdb4o
 
       # Example model with dumped attributes for QueryByExample
       #
-      # :api: private
+      # @api private
       def example_for(conditions)
         new(conditions).dump_attributes!
       end
@@ -220,7 +220,7 @@ module Rdb4o
 
       # Pass not found methods to collection
       #
-      # :api: private
+      # @api private
       def method_missing(method_name, *args, &proc)
         collection.send(method_name, *args, &proc)
       end
@@ -234,7 +234,7 @@ module Rdb4o
       # ==== Returns
       # Hash:: List of all attributes with values
       #
-      # :api: public
+      # @api public
       def attributes
         @attributes ||= {}
       end
@@ -248,10 +248,10 @@ module Rdb4o
       # ==== Returns
       # self
       #
-      # :api: public
+      # @api public
       def update(attrs)
         attrs.each_pair do |key, value|
-          send(:"#{key}=", value) if respond_to?(:"#{key}=")
+          send("#{key}=", value) if respond_to?("#{key}=")
           # attributes[key] = value <- lets make use of virtual attributes too
         end
       end
@@ -262,7 +262,7 @@ module Rdb4o
       # ==== Returns
       # true/false
       #
-      # :api: public
+      # @api public
       def save
         dump_attributes!
         # return false if opts[:validate] != false && !valid?
@@ -273,7 +273,7 @@ module Rdb4o
 
       # Delete object from database
       #
-      # :api: public
+      # @api public
       def destroy
         self.class.database.delete(self)
       end
@@ -281,7 +281,7 @@ module Rdb4o
 
       # Returns false if object is stored in database, otherwize true
       #
-      # :api: public
+      # @api public
       def new?
         # not sure..
         self.db4o_id == 0
@@ -295,7 +295,7 @@ module Rdb4o
       # ==== Returns
       # Fixnum :: db4o id
       #
-      # :api: public
+      # @api public
       def db4o_id
         self.class.database.id_for(self)
       end
@@ -303,10 +303,10 @@ module Rdb4o
 
       # Set java attributes with appropriate types
       #
-      # :api: private
+      # @api private
       def dump_attributes!
         self.class.fields.each_pair do |name, field|
-          send(:"set_#{name}", field.dump(attributes[name])) if respond_to? :"set_#{name}"
+          send("set_#{name}", field.dump(attributes[name])) if respond_to? "set_#{name}"
         end
         self
       end
@@ -314,10 +314,10 @@ module Rdb4o
 
       # Load java attributes with appropriate types
       #
-      # :api: private
+      # @api private
       def load_attributes!
         self.class.fields.each_pair do |name, field|
-          attributes[name] = field.load(send(:"get_#{name}")) if respond_to? :"get_#{name}"
+          attributes[name] = field.load(send("get_#{name}")) if respond_to? "get_#{name}"
         end
         self
       end
@@ -385,7 +385,6 @@ end
 
       # Validates the object and returns true if no errors are reported.
       # def valid?
-      #   errors.clear
       #   validate
       #   errors.empty?
       # end

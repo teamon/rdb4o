@@ -11,7 +11,7 @@ module Rdb4o
       # ==== Returns
       # String :: java type
       #
-      # :api: public
+      # @api public
       def java_type
         Rdb4o::Type.java_type_for(type)
       end
@@ -25,7 +25,7 @@ module Rdb4o
       # ==== Returns
       # Dumped value
       #
-      # :api: public
+      # @api public
       def dump(value)
         Rdb4o::Type.dump(type, value)
       end
@@ -39,7 +39,7 @@ module Rdb4o
       # ==== Returns
       # Loaded value
       #
-      # :api: public
+      # @api public
       def load(value)
         Rdb4o::Type.load(type, value)
       end

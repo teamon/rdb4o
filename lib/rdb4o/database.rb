@@ -7,7 +7,7 @@ module Rdb4o
 
       # List of created databases
       #
-      # :api: public
+      # @api public
       def databases
         @databases ||= {}
       end
@@ -18,7 +18,7 @@ module Rdb4o
       # ==== Parameters
       # name<Symbol>:: Namo of database
       #
-      # :api: public
+      # @api public
       def [](name)
         databases[name]
       end
@@ -35,7 +35,7 @@ module Rdb4o
       #   :password
       #   :name     - if empty, use :default
       #
-      # :api: public
+      # @api public
       # def setup_server(config)
       #    config = DEFAULT_CONFIG.merge(config)
       #    if config[:type].to_s == 'remote'
@@ -62,7 +62,7 @@ module Rdb4o
       #
       # TODO: error handling
       #
-      # :api: public
+      # @api public
       def setup(config)
          config = DEFAULT_CONFIG.merge(config)
          db = Database.new(config)
@@ -82,7 +82,7 @@ module Rdb4o
       # ==== Parameters
       # name<Symbol>:: Name of database
       #
-      # :api: public
+      # @api public
       def close(name = :default)
         databases[name].close if databases[name]
       end
@@ -97,14 +97,14 @@ module Rdb4o
 
     # Sets up the database as client
     #
-    # :api: private
+    # @api private
     def client!
       @connection = Db4o.open_client('localhost', config[:port].to_i, config[:login], config[:password])
     end
 
     # Sets up the file database
     #
-    # :api: private
+    # @api private
     def file!
       raise ArgumentError.new(":dbfile not specified") unless config[:dbfile]
       @connection = Db4o.open_file config[:dbfile]
@@ -112,35 +112,40 @@ module Rdb4o
 
     # Close database connection
     #
-    # :api: private
+    # @api private
     def close
       @connection.close
     end
 
 
-    def query(model = nil, conditions = {}, procs = [])
+    def query(model = nil, conditions = {}, procs = [], order_fields = [], comparator = nil)
       Rdb4o.logger.debug "QUERY: #{model}  #{conditions.inspect}  #{procs.size}"
+      
+      if !order_fields.empty? && !comparator.nil?
+        raise ArgumentError.new("You can`t specify both order_fields and order_proc")
+      end
+      
+      unless order_fields.empty?
+        comparator = Proc.new {|a,b| order_fields.map{|f| a.send(f)} <=> order_fields.map{|f| b.send(f)}}
+      end
 
-      if procs.empty?
-        if conditions.empty?
-          if model.nil?
-            raise ArgumentError.new("You must specify either model, conditions, or proc")
-          else
-            # query by class name
-            @connection.get model.java_class
-          end
-        else
-          if model.nil?
-            # query by rubyMatch
-            @connection.get Finder.new(nil, conditions, [])
-          else
-            # query by example
-            @connection.get model.example_for(conditions)
-          end
-        end
+      # if procs.empty? && conditions.empty? && model.nil?
+      #   raise ArgumentError.new("You must specify either model, conditions, or proc")
+      # end
+      
+      unless conditions.empty?
+        procs.push Proc.new {|obj| conditions.all? {|k, v| obj.attributes[k] == v } }
+      end
+
+      predicate = Proc.new do |obj|
+        obj.load_attributes!
+        procs.all? {|p| p.call(obj) }
+      end
+      
+      unless comparator.nil?
+        @connection.query Predicate.new(model, predicate), Comparator.new(comparator)
       else
-        # query by rubyMatch
-        @connection.query Finder.new(model, conditions, procs)
+        @connection.query Predicate.new(model, predicate)
       end
     end
 

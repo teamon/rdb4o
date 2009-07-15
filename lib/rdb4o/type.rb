@@ -24,7 +24,7 @@ module Rdb4o
       #
       # If type class exist returns that class, otherwise returns type name
       #
-      # :api: public
+      # @api public
       def for(type)
         if type.is_a?(Array)
           Rdb4o::Types::Array.with(type.first)
@@ -47,7 +47,7 @@ module Rdb4o
       # ==== Returns
       # String :: java type
       #
-      # :api: public
+      # @api public
       def java_type_for(type)
         type = self.for(type)
         if type.respond_to?(:java_type)
@@ -67,7 +67,7 @@ module Rdb4o
       # ==== Returns
       # String :: class accessors
       #
-      # :api: public
+      # @api public
       def accessors_for(type, name)
         type = self.for(type)
         if type.respond_to?(:accessors)
@@ -87,7 +87,7 @@ module Rdb4o
       # ==== Returns
       # Dumped value
       #
-      # :api: public
+      # @api public
       def dump(type, value)
         type = self.for(type)
         if type.respond_to?(:dump) && type.method(:dump).arity == 1
@@ -107,7 +107,7 @@ module Rdb4o
       # ==== Returns
       # Loaded value
       #
-      # :api: public
+      # @api public
       def load(type, value)
         type = self.for(type)
         if type.respond_to?(:load) && type.method(:dump).arity == 1

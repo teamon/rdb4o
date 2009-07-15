@@ -14,7 +14,7 @@ module Rdb4o
       # ==== Examples
       # OneToManyCollection.new(person, Cat, :cats, :owner)
       #
-      # :api: public
+      # @api public
       def initialize(parent, model, relation_name, foreign_key)
         super(model)
         @parent, @relation_name, @foreign_key = parent, relation_name, foreign_key
@@ -23,7 +23,7 @@ module Rdb4o
 
       # Destroy object from collection - set parent to nil
       #
-      # :api: public
+      # @api public
       def delete(object)
         object.send(:"#{@foreign_key}=", nil)
         object.save
@@ -36,7 +36,7 @@ module Rdb4o
       # ==== Parameters
       # object<Object>::
       #
-      # :api: public
+      # @api public
       def <<(object)
         unless include?(object)
           object.send(:"#{@foreign_key}=", @parent)

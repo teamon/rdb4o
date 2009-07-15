@@ -96,6 +96,16 @@ describe Rdb4o::Model do
       p.age.should == jimmy.age
     end
 
+    specify "#get_by_uuid" do
+      jimmy = Person.create(:name => 'Jimmy', :age => 35)
+      uuid = jimmy.uuid
+      reconnect_database
+      
+      p = Person.get_by_uuid(uuid)
+      p.name.should == jimmy.name
+      p.age.should == jimmy.age
+    end
+    
     it "should hava java_type" do
       Person.java_type.should == "app.models.java.Person"
     end
@@ -146,6 +156,13 @@ describe Rdb4o::Model do
       eric.db4o_id.should == 0
       eric.save
       eric.db4o_id.should_not == 0
+    end
+    
+    specify "#uuid" do
+      john = Person.new
+      john.uuid.should == 0
+      john.save
+      john.uuid.should_not == 0
     end
 
   end
