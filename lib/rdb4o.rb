@@ -83,3 +83,5 @@ require :rdb4o / :type
 require :rdb4o / :types / :primitives
 require :rdb4o / :collection / :basic
 require :rdb4o / :collection / :one_to_many
+require :rdb4o / :order_operator
+require :rdb4o / :symbol

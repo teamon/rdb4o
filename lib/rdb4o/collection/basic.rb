@@ -53,8 +53,8 @@ module Rdb4o
         procs << proc if proc
         Rdb4o::Collection::Basic.new(@model, @conditions.merge!(conditions), procs)
       end
-      
-      
+
+
       # Returns models in order
       #
       # ==== Parameters

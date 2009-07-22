@@ -3,7 +3,7 @@ require 'rake/gempackagetask'
 
 PLUGIN = "rdb4o"
 GEM_NAME = "rdb4o"
-GEM_VERSION = "0.0.2"
+GEM_VERSION = "0.1.0"
 AUTHOR = "Kacper Cieśla, Tymon Tobolski"
 EMAIL = "kacper.ciesla@gmail.com"
 HOMEPAGE = "http://blog.teamon.eu/projekty/"
@@ -14,7 +14,7 @@ spec = Gem::Specification.new do |s|
   s.version = GEM_VERSION
   s.platform = 'jruby'
   s.has_rdoc = true
-  s.extra_rdoc_files = ["README", "LICENSE", "TODO"]
+  s.extra_rdoc_files = ["README.markdown", "LICENSE", "TODO"]
   s.summary = SUMMARY
   s.description = s.summary
   s.author = AUTHOR
@@ -23,7 +23,7 @@ spec = Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables = %w( rdb4o )
-  s.files = %w( LICENSE README Rakefile TODO ) +  Dir["{bin,lib,spec}/**/*"]
+  s.files = %w( LICENSE README.markdown Rakefile TODO ) +  Dir["{bin,lib,spec}/**/*"]
   s.add_dependency('extlib', '>= 0.9')
 end
 

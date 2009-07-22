@@ -97,15 +97,16 @@ describe Rdb4o::Model do
     end
 
     specify "#get_by_uuid" do
+      pending
       jimmy = Person.create(:name => 'Jimmy', :age => 35)
       uuid = jimmy.uuid
       reconnect_database
-      
+
       p = Person.get_by_uuid(uuid)
       p.name.should == jimmy.name
       p.age.should == jimmy.age
     end
-    
+
     it "should hava java_type" do
       Person.java_type.should == "app.models.java.Person"
     end
@@ -157,8 +158,9 @@ describe Rdb4o::Model do
       eric.save
       eric.db4o_id.should_not == 0
     end
-    
+
     specify "#uuid" do
+      pending
       john = Person.new
       john.uuid.should == 0
       john.save
@@ -178,42 +180,3 @@ end
 #     Rdb4o::Db4o.configure.objectClass(Person).generateUUIDs(true);
 #     Rdb4o::Database.setup(:dbfile => "model_spec.db")
 #   end
-#
-#   before(:each) do
-#     Person.destroy_all
-#     Cat.destroy_all
-#     Dog.destroy_all
-#   end
-#
-#   describe "Class Methods" do
-#     # it "#[]"
-
-#
-
-#
-#     it "#get_by_uuid" do
-#       jimmy = Person.create(:name => 'Jimmy', :age => 35)
-#       Person.get_by_uuid(jimmy.uuid).should == jimmy
-#     end
-#
-#     # it "#first"
-#
-#
-#   end
-#
-#   describe "Instance Mathods" do
-
-#
-
-#
-#
-#     it "#uuid" do
-#       john = Person.new
-#       # john.db4o_id.should == 0
-#       john.save
-#       # john.db4o_id.should_not == 0
-#     end
-#
-#   end
-
-# end

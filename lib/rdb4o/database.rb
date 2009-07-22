@@ -120,19 +120,28 @@ module Rdb4o
 
     def query(model = nil, conditions = {}, procs = [], order_fields = [], comparator = nil)
       Rdb4o.logger.debug "QUERY: #{model}  #{conditions.inspect}  #{procs.size}"
-      
+
       if !order_fields.empty? && !comparator.nil?
         raise ArgumentError.new("You can`t specify both order_fields and order_proc")
       end
-      
+
       unless order_fields.empty?
-        comparator = Proc.new {|a,b| order_fields.map{|f| a.send(f)} <=> order_fields.map{|f| b.send(f)}}
+        comparator = Proc.new do |a,b|
+          order_fields.inject(0) do |result, operator|
+            result = operator.result(a.send(operator.field) <=> b.send(operator.field))
+            if result == 0
+              result
+            else
+              break result
+            end
+          end
+        end
       end
 
       # if procs.empty? && conditions.empty? && model.nil?
       #   raise ArgumentError.new("You must specify either model, conditions, or proc")
       # end
-      
+
       unless conditions.empty?
         procs.push Proc.new {|obj| conditions.all? {|k, v| obj.attributes[k] == v } }
       end
@@ -141,7 +150,7 @@ module Rdb4o
         obj.load_attributes!
         procs.all? {|p| p.call(obj) }
       end
-      
+
       unless comparator.nil?
         @connection.query Predicate.new(model, predicate), Comparator.new(comparator)
       else

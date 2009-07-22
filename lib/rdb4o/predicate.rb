@@ -9,7 +9,7 @@ module Rdb4o
         false
       end
     end
-    
+
     def self.new(model, proc)
       predicate = super()
       predicate.model = model
