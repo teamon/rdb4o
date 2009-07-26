@@ -47,6 +47,15 @@ module Rdb4o
       end
 
 
+      def enhance(string)
+        @_enhancement = string
+      end
+
+      def enhancement
+        @_enhancement || ""
+      end
+
+
       # Create named scope matching conditions hash *OR* proc
       #
       # ==== Parameters

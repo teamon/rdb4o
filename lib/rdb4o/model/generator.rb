@@ -42,6 +42,8 @@ public class #{klazz} extends Rdb4oModel {
 
 #{accessors.join("\n")}
 
+#{klazz.enhancement}
+
 }
           JAVA
         end
