@@ -35,6 +35,12 @@ module Rdb4o
 
     Integer = Fixnum
 
+    class Bignum < Integer
+      def self.java_type
+        "long"
+      end
+    end
+
     class Float < Generic
        def self.java_type
          "float"
