@@ -110,7 +110,7 @@ module Rdb4o
       # @api public
       def load(type, value)
         type = self.for(type)
-        if type.respond_to?(:load) && type.method(:dump).arity == 1
+        if type.respond_to?(:load) && type.method(:load).arity == 1
           type.load(value)
         else
           value
