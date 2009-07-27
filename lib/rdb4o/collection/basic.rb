@@ -23,7 +23,7 @@ module Rdb4o
         load_with do |collection|
           Rdb4o.logger.debug "COLLECTION:LOAD"
           collection.clear!
-          result = database.query(collection.model, collection.conditions, collection.procs, collection.order_fields, collection.comparator)
+          result = collection.result
           while result.has_next
             obj = result.next.load_attributes!
             collection << obj
@@ -114,6 +114,20 @@ module Rdb4o
         instance
       end
 
+
+      # Returns size of collection without loading objects
+      #
+      # ==== Returns
+      # Size of collection
+      #
+      # @api public
+      def size
+        result.size
+      end
+      alias_method :count, :size
+
+
+
       protected
 
       # Attributes for new object
@@ -155,12 +169,21 @@ module Rdb4o
       end
 
 
+      # db4o result set object
+      #
+      # @api private
+      def result
+        @result ||= database.query(@model, @conditions, @procs, @order_fields, @comparator)
+      end
+
+
       # Clear collection
       #
       # @api private
       def clear!
         @head.clear
         @tail.clear
+        @result = nil
         clear
       end
 
