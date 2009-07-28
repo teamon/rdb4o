@@ -56,8 +56,8 @@ module Rdb4o
       #   :type     - type of the databse can be remote or local options specific for remote type:
       #   :host     - if empty, use localhost
       #   :port     - can be 0 only for localhost
-      #   :username - if omitted, no autentication is used
-      #   :password
+      #   :user     - if omitted, no autentication is used
+      #   :pass
       #   :name     - if empty, use :default
       #
       # TODO: error handling
@@ -99,7 +99,7 @@ module Rdb4o
     #
     # @api private
     def client!
-      @connection = Db4o.open_client('localhost', config[:port].to_i, config[:login], config[:password])
+      @connection = Db4o.open_client('localhost', config[:port].to_i, config[:user], config[:pass])
     end
 
     # Sets up the file database

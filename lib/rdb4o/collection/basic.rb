@@ -26,7 +26,7 @@ module Rdb4o
           result = collection.result
           while result.has_next
             obj = result.next.load_attributes!
-            collection << obj
+            collection.add(obj)
           end
         end
 
