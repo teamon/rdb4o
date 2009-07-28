@@ -79,9 +79,8 @@ module Rdb4o
       #
       # @api public
       def destroy_all!
-        until empty?
-          pop.destroy
-        end
+        each {|e| e.destroy }
+        clear!
       end
 
 
@@ -111,6 +110,7 @@ module Rdb4o
       def create(attrs = {})
         instance = model.create default_attributes.merge(attrs)
         self << instance
+        mark_added
         instance
       end
 
@@ -122,7 +122,8 @@ module Rdb4o
       #
       # @api public
       def size
-        result.size
+        lazy_load if added?
+        loaded? ? super : result.size
       end
       alias_method :count, :size
 
@@ -187,10 +188,26 @@ module Rdb4o
       #
       # @api private
       def clear!
-        @head.clear
-        @tail.clear
+        @head.clear if @head
+        @tail.clear if @tail
         @result = nil
         clear
+      end
+
+
+      # Mark when new objects are added to collection
+      #
+      # @api private
+      def mark_added
+        @added = true
+      end
+
+
+      # Checks if there are new objects in collection
+      #
+      # @api private
+      def added?
+        @added == true
       end
 
     end
