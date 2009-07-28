@@ -7,11 +7,16 @@ describe Rdb4o::Collection do
     class Cat
       scope(:young) {|c| c.age <= 2}
       scope(:old) {|c| c.age > 4}
-      scope :black, :color => "black"
-      scope :white, :color => "white"
+      scope :black, :conditions => {:color => "black"}
+      scope :white, :conditions => {:color => "white"}
       scope(:colorful) {|c| c.color != "black" && c.color != "white"}
       scope(:four_letters) {|c| c.name.size == 4}
-      scope :kitties, :name => "Kitty"
+      scope :kitties, :conditions => {:name => "Kitty"}
+
+      scope :a2z, :order => [:name.asc]
+      scope :z2a, :order => [:name.desc]
+      scope :youngest_first, :order => [:age.asc]
+      scope :colors, :order => lambda {|a,b| a.color <=> b.color }
     end
   end
 
@@ -27,6 +32,14 @@ describe Rdb4o::Collection do
       @kitty2 = Cat.create(:name => "Kitty", :age => 1, :color => "black")
       @garfield = Cat.create(:name => "Garfield", :age => 2, :color => "orange")
       @miko = Cat.create(:name => "Miko", :age => 6, :color => "black")
+    end
+
+    specify "a2z" do
+      Cat.a2z.map{|e| e.name}.should == %w(Abby Aiko Bali Garfield Kitty Kitty Miko)
+    end
+
+    specify "z2a" do
+      Cat.z2a.map{|e| e.name}.should == %w(Miko Kitty Kitty Garfield Bali Aiko Abby)
     end
 
     specify "young" do

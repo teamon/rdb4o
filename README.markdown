@@ -110,11 +110,11 @@ Due to classpaths issue the best way to run this program is to use rdb4o executa
     class Cat
       scope(:young) {|c| c.age <= 2}
       scope(:old) {|c| c.age > 4}
-      scope :black, :color => "black"
-      scope :white, :color => "white"
+      scope :black, :conditions => {:color => "black"}
+      scope :white, :conditions => {:color => "white"}
       scope(:colorful) {|c| c.color != "black" && c.color != "white"}
       scope(:four_letters) {|c| c.name.size == 4}
-      scope :kitties, :name => "Kitty"
+      scope :kitties, :conditions => {:name => "Kitty"}
     end
 
     Cat.young

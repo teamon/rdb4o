@@ -158,11 +158,17 @@ module Rdb4o
       # @api private
       def method_missing(method_name, *args, &proc)
         if scope = model.scopes[method_name]
-          if scope.is_a?(Hash)
-            all(scope)
-          elsif scope.is_a?(Proc)
-            all(&scope)
+          result = all(scope[:conditions])
+          result = result.all(&scope[:conditions_proc]) if scope[:conditions_proc]
+
+          case scope[:order]
+          when Array
+            result = result.order(*scope[:order])
+          when Proc
+            result = result.order(&scope[:order])
           end
+
+          result
         else
           super
         end

@@ -86,14 +86,10 @@ module Rdb4o
       #
       #
       # @api public
-      def scope(name, conditions = {}, &proc)
-        if !conditions.empty?
-          scopes[name] = conditions
-        elsif proc
-          scopes[name] = proc
-        else
-          raise ArgumentError.new("Please specify conditions or proc")
-        end
+      def scope(name, opts = {}, &proc)
+        opts[:conditions] ||= {}
+        opts[:conditions_proc] = proc
+        scopes[name] = opts
       end
 
 
