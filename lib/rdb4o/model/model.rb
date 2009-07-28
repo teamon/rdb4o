@@ -321,11 +321,23 @@ module Rdb4o
       #
       # @api private
       def load_attributes!
+        return self if loaded?
         self.class.fields.each_pair do |name, field|
           attributes[name] = field.load(send("get_#{name}")) if respond_to? "get_#{name}"
         end
+        mark_loaded
         self
       end
+
+
+      def mark_loaded
+        @loaded = true
+      end
+
+      def loaded?
+        @loaded == true
+      end
+
     end
 
   end

@@ -127,6 +127,9 @@ module Rdb4o
 
       unless order_fields.empty?
         comparator = Proc.new do |a,b|
+          a.load_attributes!
+          b.load_attributes!
+
           order_fields.inject(0) do |result, operator|
             result = operator.result(a.send(operator.field) <=> b.send(operator.field))
             if result == 0

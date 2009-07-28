@@ -54,6 +54,9 @@ module Rdb4o
         Rdb4o::Collection::Basic.new(@model, @conditions.merge!(conditions), procs)
       end
 
+      def first(conditions = {}, &proc)
+        all(conditions, &proc)[0]
+      end
 
       # Returns models in order
       #
