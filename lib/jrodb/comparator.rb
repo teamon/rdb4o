@@ -1,5 +1,5 @@
 module Jrodb
-  class Comparator < Java::com::jrodb::RubyComparator
+  class Comparator < Java::eu::teamon::jrodb::RubyComparator
     attr_accessor :proc
 
     def rubyCompare(first, second)

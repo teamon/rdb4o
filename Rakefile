@@ -5,9 +5,9 @@ PLUGIN = "jrodb"
 GEM_NAME = "jrodb"
 GEM_VERSION = "0.2.0"
 AUTHOR = "Kacper Cieśla, Tymon Tobolski"
-EMAIL = "kacper.ciesla@gmail.com"
-HOMEPAGE = "http://blog.teamon.eu/projekty/"
-SUMMARY = "Small library for accessing db4o from jruby"
+EMAIL = "i@teamon.eu"
+HOMEPAGE = "http://github.com/teamon/jrodb"
+SUMMARY = "Small library for accessing neodatis and db4o from jruby"
 
 spec = Gem::Specification.new do |s|
   s.name = GEM_NAME
@@ -33,7 +33,12 @@ end
 
 
 dir = File.dirname(__FILE__)
-ENV["CLASSPATH"] = "#{dir}/lib/java/db4o.jar:#{dir}/lib/java/jrodb.jar:#{dir}/spec"
+jars = [
+  "#{dir}/lib/java/jrodb.jar",
+  "#{dir}/lib/java/db4o.jar",
+  "#{dir}/lib/java/neodatis.jar"
+].join(":")
+ENV["CLASSPATH"] = "#{jars}:#{dir}/spec"
 
 if ENV['file']
   files = "#{dir}/spec/#{ENV['file']}_spec.rb"
@@ -49,18 +54,18 @@ task :gemspec do
 end
 
 desc 'Compile lib'
-task :compile do
-  Dir["#{dir}/lib/java/com/jrodb/*.java"].each do |f|
-    puts "Compiling #{f}"
-    system "javac -cp #{dir}/lib/java/db4o.jar:#{dir}/lib/java #{f}"
+task :compile do  
+  Dir["#{dir}/lib/java/eu/teamon/jrodb/**/*.java"].each do |f|
+    sh "javac -cp #{jars}:#{dir}/lib/java #{f}"
   end
 end
 
 desc 'Make jar'
 task :jar => :compile do
   Dir.chdir "#{dir}/lib/java"
-  system "jar -c com > jrodb.jar"
+  sh "jar -c eu > jrodb.jar"
   puts "JAR file created"
+  Dir["#{dir}/lib/java/eu/teamon/jrodb/**/*.class"].each {|f| File.delete(f) }
 end
 
 desc "Run :package and install the resulting .gem with jruby"

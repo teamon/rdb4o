@@ -1,9 +1,11 @@
 require File.dirname(__FILE__) + '/../lib/jrodb.rb'
+# Jrodb.setup(:neodatis, "console.db")
 
-Jrodb.load_models(File.dirname(__FILE__))
-Dir["#{File.dirname(__FILE__)}/app/models/*.rb"].each {|f| require f }
+require File.dirname(__FILE__) + '/../lib/jrodb/adapters/neodatis'
+
+# Dir["#{File.dirname(__FILE__)}/app/models/*.rb"].each {|f| Jrodb.load_file(f) }
 
 
-Jrodb::Database::Db4o.configure.generateUUIDs(Java::JavaLang::Integer::MAX_VALUE)
-Jrodb::Database::Db4o.configure.objectClass(Person).generateUUIDs(true);
-Jrodb::Database.setup(:dbfile =>  "#{File.dirname(__FILE__)}/../console.db")
+# Jrodb::Database::Db4o.configure.generateUUIDs(Java::JavaLang::Integer::MAX_VALUE)
+# Jrodb::Database::Db4o.configure.objectClass(Person).generateUUIDs(true);
+# Jrodb::Adapter::Noedatis.setup("#{File.dirname(__FILE__)}/../console.db")
