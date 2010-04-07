@@ -1,26 +1,26 @@
 #!/usr/bin/env jruby
 
 if ENV["DEV"]
-  require File.dirname(__FILE__) + "/../lib/rdb4o"
+  require File.dirname(__FILE__) + "/../lib/jrodb"
 else
   require 'rubygems'
-  require 'rdb4o'
+  require 'jrodb'
 end
 
 def usage
   puts <<-USAGE
-  rdb4o generate [directory]
-  rdb4o compile [directory]
+  jrodb generate [directory]
+  jrodb compile [directory]
 
 For example:
-  rdb4o generate app/models
-  rdb4o compile app/models
+  jrodb generate app/models
+  jrodb compile app/models
 USAGE
     exit
 end
 
 def cp
-  "#{Rdb4o.jar_classpath}/db4o.jar:#{Rdb4o.jar_classpath}/rdb4o.jar:."
+  "#{Jrodb.jar_classpath}/db4o.jar:#{Jrodb.jar_classpath}/jrodb.jar:."
 end
 
 ENV["CLASSPATH"] = cp
@@ -39,12 +39,12 @@ when "generate"
     
     require file
     
-    until Rdb4o::Model::Generator.classes.empty?
-      klazz = Rdb4o::Model::Generator.classes.pop
+    until Jrodb::Model::Generator.classes.empty?
+      klazz = Jrodb::Model::Generator.classes.pop
       i klazz
       Dir.mkdir(dir) unless File.exists?(dir)
       File.open(dir + "/#{klazz}.java", "w") {|f| 
-        f.write Rdb4o::Model::Generator.generate!(klazz, package) 
+        f.write Jrodb::Model::Generator.generate!(klazz, package) 
       }
     end
   end

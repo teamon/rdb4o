@@ -1,7 +1,7 @@
-Rdb4o
+Jrodb
 ===============
 
-see http://teamon.github.com/rdb4o
+see http://teamon.github.com/jrodb
 
 
 Author: Kacper Cieśla, Tymon Tobolski
@@ -11,13 +11,13 @@ Lots of thanks for Marcin Mielżyński (lopex) for helping me with this.
 
 Requirements
 ============
-All you need to use rdb4o is [JRuby](http://jruby.codehaus.org/) 1.2.0.
+All you need to use jrodb is [JRuby](http://jruby.codehaus.org/) 1.2.0.
 
 
 Getting started
 ===============
-    git clone git://github.com/teamon/rdb4o.git
-    cd rdb4o
+    git clone git://github.com/teamon/jrodb.git
+    cd jrodb
     rake install
 
 
@@ -27,26 +27,26 @@ Usage
 #### Model file
     # app/models/cat.rb
     class Cat
-      include Rdb4o::Model
+      include Jrodb::Model
   
       field :name, String
       field :age, Fixnum
     end
     
 #### Generate and compile
-    rdb4o generate app/models
-    rdb4o compile app/models
+    jrodb generate app/models
+    jrodb compile app/models
 
-#### Require rdb4o
+#### Require jrodb
     require 'rubygems'
-    require 'rdb4o'
+    require 'jrodb'
     
 #### Load models
-    Rdb4o.load_models
+    Jrodb.load_models
     Dir["app/models/*.rb"].each {|f| require f }
     
 #### Connect to database
-    Rdb4o::Database.setup :dbfile => 'simple.db'
+    Jrodb::Database.setup :dbfile => 'simple.db'
     
 #### Create some objects
     Cat.create(:name => "Kitty", :age => 2)
@@ -57,18 +57,18 @@ Usage
 
 #### Close database
 This step is not necessary - database gets closed automaticly when process ends.
-    Rdb4o::Database.close
+    Jrodb::Database.close
     
     
 #### Run program
-Due to classpaths issue the best way to run this program is to use rdb4o executable.
-    rdb4o run main.rb
+Due to classpaths issue the best way to run this program is to use jrodb executable.
+    jrodb run main.rb
 
 ### Relations
 
 #### One to Many
     class Cat
-      include Rdb4o::Model
+      include Jrodb::Model
 
       field :name, String
       field :age, Fixnum
@@ -78,7 +78,7 @@ Due to classpaths issue the best way to run this program is to use rdb4o executa
     end
 
     class Person
-      include Rdb4o::Model
+      include Jrodb::Model
 
       field :name, String
 

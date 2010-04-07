@@ -1,5 +1,5 @@
-module Rdb4o
-  class Predicate < Java::com::rdb4o::RubyPredicate
+module Jrodb
+  class Predicate < Java::com::jrodb::RubyPredicate
     attr_accessor :proc, :model
 
     def rubyMatch(obj)

@@ -1,10 +1,10 @@
-module Rdb4o
+module Jrodb
 
   module Model
     def self.included(base)
       base.extend(ClassMethods)
       base.send(:include, InstanceMethods)
-      base.send(:include, Rdb4o::Types)
+      base.send(:include, Jrodb::Types)
       base.send(:include, Extlib::Hook)
 
       Generator.classes << base
@@ -26,7 +26,7 @@ module Rdb4o
       #
       # ==== Parameters
       # name<Symbol, String>:: Name of field
-      # type<Rdb4o::Type>:: Type of field (see Types section)
+      # type<Jrodb::Type>:: Type of field (see Types section)
       # opts<Hash>:: An options hash (for the future)
       #
       # @api public
@@ -189,7 +189,7 @@ module Rdb4o
       #
       # @api private
       def java_type
-        Rdb4o::Model.type_map[self]
+        Jrodb::Model.type_map[self]
       end
 
 
@@ -200,18 +200,18 @@ module Rdb4o
       #
       # @api private
       def database
-        Rdb4o::Database[:default]
+        Jrodb::Database[:default]
       end
 
 
       # Model class collection
       #
       # ==== Returns
-      # Rdb4o::Collection
+      # Jrodb::Collection
       #
       # @api private
       def collection
-        Rdb4o::Collection::Basic.new(self)
+        Jrodb::Collection::Basic.new(self)
       end
 
 

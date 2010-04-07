@@ -1,7 +1,7 @@
 # Copyright (c) 2007-2008 Sharon Rosner
 # Copyright (c) 2008-2009 Jeremy Evans
 
-module Rdb4o
+module Jrodb
   module Model
 
     # This is taken from sequel

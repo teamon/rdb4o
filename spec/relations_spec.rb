@@ -7,7 +7,7 @@ describe "Relations" do
     class Fish; end
 
     class Genius
-      include Rdb4o::Model
+      include Jrodb::Model
 
       field :name, String
 
@@ -17,7 +17,7 @@ describe "Relations" do
     end
 
     class Song
-      include Rdb4o::Model
+      include Jrodb::Model
 
       field :title, String
 
@@ -59,7 +59,7 @@ describe "Relations" do
   describe "has_many" do
 
     it "should create correct accessor" do
-      Genius.new.songs.should be_an(Rdb4o::Collection::OneToMany)
+      Genius.new.songs.should be_an(Jrodb::Collection::OneToMany)
     end
 
     it "should respect :key option" do

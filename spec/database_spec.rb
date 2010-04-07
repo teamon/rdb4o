@@ -1,30 +1,30 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe Rdb4o::Database do
+describe Jrodb::Database do
   it "should require dbfile" do
     lambda {
-      Rdb4o::Database.setup
+      Jrodb::Database.setup
     }.should raise_error(ArgumentError)
   end
 
   it "should create database" do
-    Rdb4o::Database.setup(:dbfile => "test.db")
+    Jrodb::Database.setup(:dbfile => "test.db")
     File.exists?("test.db").should == true
-    Rdb4o::Database.close
+    Jrodb::Database.close
   end
 
   it "should setup server"
 
   it "#[] should return database connection" do
-    Rdb4o::Database.setup(:dbfile => "test.db")
-    Rdb4o::Database[:default].connection.should be_a_kind_of(Java::ComDb4oInternal::IoAdaptedObjectContainer)
-    Rdb4o::Database.close
+    Jrodb::Database.setup(:dbfile => "test.db")
+    Jrodb::Database[:default].connection.should be_a_kind_of(Java::ComDb4oInternal::IoAdaptedObjectContainer)
+    Jrodb::Database.close
   end
 
   describe "Query" do
     before(:each) do
       reconnect_database
-      @db = Rdb4o::Database[:default]
+      @db = Jrodb::Database[:default]
     end
 
     after(:each) do

@@ -3,7 +3,7 @@
 #
 # This is mostly port of sequel validation helpers
 
-module Rdb4o
+module Jrodb
   module ValidationHelpers
 
     # Check that the attribute values are the given exact length or in the specified range.

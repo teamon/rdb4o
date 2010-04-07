@@ -1,5 +1,5 @@
 class Person
-  include Rdb4o::Model
+  include Jrodb::Model
 
   field :name, String
   field :age, Fixnum

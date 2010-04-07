@@ -1,4 +1,4 @@
-module Rdb4o
+module Jrodb
   module Model
     class Field
       attr_accessor :name, :type, :options
@@ -13,7 +13,7 @@ module Rdb4o
       #
       # @api public
       def java_type
-        Rdb4o::Type.java_type_for(type)
+        Jrodb::Type.java_type_for(type)
       end
 
 
@@ -27,7 +27,7 @@ module Rdb4o
       #
       # @api public
       def dump(value)
-        Rdb4o::Type.dump(type, value)
+        Jrodb::Type.dump(type, value)
       end
 
 
@@ -41,12 +41,12 @@ module Rdb4o
       #
       # @api public
       def load(value)
-        Rdb4o::Type.load(type, value)
+        Jrodb::Type.load(type, value)
       end
 
       # Generate accessors
       def add_accessors(klazz)
-        klazz.class_eval Rdb4o::Type.accessors_for(type, name)
+        klazz.class_eval Jrodb::Type.accessors_for(type, name)
       end
 
     end

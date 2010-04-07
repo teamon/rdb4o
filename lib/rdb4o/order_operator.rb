@@ -1,4 +1,4 @@
-module Rdb4o
+module Jrodb
   class OrderOperator
     attr_accessor :type, :field
 

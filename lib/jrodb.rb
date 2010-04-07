@@ -19,14 +19,14 @@ rescue LoadError
   begin
     require ENV['DB4O_JAR'].to_s
   rescue LoadError
-    raise "Rdb4o ERROR: Could not find db4objects library, put it in my lib/java dir, or try setting environment variable DB4O_JAR to db4objects jar location (You can get it at www.db4o.com)"
+    raise "Jrodb ERROR: Could not find db4objects library, put it in my lib/java dir, or try setting environment variable DB4O_JAR to db4objects jar location (You can get it at www.db4o.com)"
   end
 end
 
-require 'java/rdb4o.jar'
+require 'java/jrodb.jar'
 
 
-module Rdb4o
+module Jrodb
   def self.logger
     @@logger ||= begin
       logger = Extlib::Logger.new($stdout, :debug)
@@ -70,18 +70,18 @@ module Rdb4o
   end
 end
 
-require :rdb4o / :database
-require :rdb4o / :comparator
-require :rdb4o / :predicate
-# require 'rdb4o/errors'
-# require 'rdb4o/validation_helpers'
-require :rdb4o / :model / :relations
-require :rdb4o / :model / :field
-require :rdb4o / :model / :generator
-require :rdb4o / :model / :model
-require :rdb4o / :type
-require :rdb4o / :types / :primitives
-require :rdb4o / :collection / :basic
-require :rdb4o / :collection / :one_to_many
-require :rdb4o / :order_operator
-require :rdb4o / :symbol
+require :jrodb / :database
+require :jrodb / :comparator
+require :jrodb / :predicate
+# require 'jrodb/errors'
+# require 'jrodb/validation_helpers'
+require :jrodb / :model / :relations
+require :jrodb / :model / :field
+require :jrodb / :model / :generator
+require :jrodb / :model / :model
+require :jrodb / :type
+require :jrodb / :types / :primitives
+require :jrodb / :collection / :basic
+require :jrodb / :collection / :one_to_many
+require :jrodb / :order_operator
+require :jrodb / :symbol

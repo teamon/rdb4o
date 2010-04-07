@@ -2,11 +2,11 @@
 
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-Rdb4o.use_validations = true
+Jrodb.use_validations = true
 
-describe Rdb4o::Model::Errors do
+describe Jrodb::Model::Errors do
   before do
-    @errors = Rdb4o::Model::Errors.new
+    @errors = Jrodb::Model::Errors.new
   end
 
   it "should be clearable using #clear" do
@@ -79,7 +79,7 @@ describe Rdb4o::Model::Errors do
   end
 end
 
-describe Rdb4o::Model do
+describe Jrodb::Model do
   before do
     # class Person (see app/models/java/Person.java)
     class Person
@@ -114,7 +114,7 @@ end
 
 describe "Model#save" do
   before(:all) do
-    Rdb4o::Database.setup(:dbfile => "validation_spec.db")
+    Jrodb::Database.setup(:dbfile => "validation_spec.db")
 
     class Person
       def validate

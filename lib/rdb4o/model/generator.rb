@@ -1,4 +1,4 @@
-module Rdb4o
+module Jrodb
   module Model
     class Generator
       class << self
@@ -33,9 +33,9 @@ module Rdb4o
           java = <<-JAVA
 #{package}
 
-import com.rdb4o.Rdb4oModel;
+import com.jrodb.JrodbModel;
 
-public class #{klazz} extends Rdb4oModel {
+public class #{klazz} extends JrodbModel {
   public #{klazz}() {}
 
 #{fields.join("\n")}

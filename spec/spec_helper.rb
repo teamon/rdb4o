@@ -6,14 +6,14 @@ rescue LoadError
   require 'spec'
 end
 
-require File.dirname(__FILE__) + '/../lib/rdb4o'
+require File.dirname(__FILE__) + '/../lib/jrodb'
 
-Rdb4o.load_models(File.dirname(__FILE__))
+Jrodb.load_models(File.dirname(__FILE__))
 Dir["#{File.dirname(__FILE__)}/app/models/*.rb"].each {|f| require f }
 
 def reconnect_database
-  Rdb4o::Database.close rescue nil
-  Rdb4o::Database.setup(:dbfile => "test.db")
+  Jrodb::Database.close rescue nil
+  Jrodb::Database.setup(:dbfile => "test.db")
 end
 
 def with_reconnect
@@ -27,7 +27,7 @@ Spec::Runner.configure do |config|
   end
 
   config.after(:all) do
-    Rdb4o::Database.close rescue nil
+    Jrodb::Database.close rescue nil
     Dir["*.db"].each {|path| File.delete(path) }
   end
 end

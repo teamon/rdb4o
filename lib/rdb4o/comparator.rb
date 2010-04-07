@@ -1,5 +1,5 @@
-module Rdb4o
-  class Comparator < Java::com::rdb4o::RubyComparator
+module Jrodb
+  class Comparator < Java::com::jrodb::RubyComparator
     attr_accessor :proc
 
     def rubyCompare(first, second)

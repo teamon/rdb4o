@@ -1,13 +1,13 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe Rdb4o::Model::Field do
+describe Jrodb::Model::Field do
   before(:all) do
     class Kenny
-      include Rdb4o::Model
+      include Jrodb::Model
     end
 
     class Kyle
-      include Rdb4o::Model
+      include Jrodb::Model
 
       field :name, String
       field :age, Fixnum
@@ -31,13 +31,13 @@ describe Rdb4o::Model::Field do
   describe "Field" do
     # Isnt checking for class lame in ruby world?
     # it "should have correct class" do
-    #   Kyle.fields[:name].should be_a(Rdb4o::Model::Field)
-    #   Kyle.fields[:age].should be_a(Rdb4o::Model::Field)
+    #   Kyle.fields[:name].should be_a(Jrodb::Model::Field)
+    #   Kyle.fields[:age].should be_a(Jrodb::Model::Field)
     # end
 
     it "should have correct type" do
-      Kyle.fields[:name].type.should == Rdb4o::Types::String
-      Kyle.fields[:age].type.should == Rdb4o::Types::Fixnum
+      Kyle.fields[:name].type.should == Jrodb::Types::String
+      Kyle.fields[:age].type.should == Jrodb::Types::Fixnum
     end
 
     it "should respond to java type" do

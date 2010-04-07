@@ -1,9 +1,9 @@
-module Rdb4o
+module Jrodb
   # Type casting
   #
   # To prevent errors like:
   # class Foo
-  #   include Rdb4o::Model
+  #   include Jrodb::Model
   #
   #   field :num, Fixnum
   # end
@@ -27,11 +27,11 @@ module Rdb4o
       # @api public
       def for(type)
         if type.is_a?(Array)
-          Rdb4o::Types::Array.with(type.first)
+          Jrodb::Types::Array.with(type.first)
         else
           type = Extlib::Inflection.demodulize(type.to_s)
-          if Rdb4o::Types.constants.include?(type)
-            Rdb4o::Types.const_get(type)
+          if Jrodb::Types.constants.include?(type)
+            Jrodb::Types.const_get(type)
           else
             type
           end
@@ -73,7 +73,7 @@ module Rdb4o
         if type.respond_to?(:accessors)
           type.accessors(name)
         else
-          Rdb4o::Types::Generic.accessors(name)
+          Jrodb::Types::Generic.accessors(name)
         end
       end
 

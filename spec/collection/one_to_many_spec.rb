@@ -1,21 +1,21 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 
-describe Rdb4o::Collection::OneToMany do
+describe Jrodb::Collection::OneToMany do
   before(:all) do
     reconnect_database
   end
 
   before(:each) do
-    Rdb4o.logger.off!
+    Jrodb.logger.off!
     Person.destroy_all!
     Cat.destroy_all!
 
     @eric = Person.create(:name => "Eric", :age => 8)
-    Rdb4o.logger.on!
+    Jrodb.logger.on!
   end
 
   it "should return collection" do
-    @eric.cats.should be_an(Rdb4o::Collection::OneToMany)
+    @eric.cats.should be_an(Jrodb::Collection::OneToMany)
   end
 
   it "should create new collection with correct model class" do

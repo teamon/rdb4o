@@ -1,4 +1,4 @@
-module Rdb4o
+module Jrodb
   module Collection
     class OneToMany < Basic
       attr_accessor :parent, :relation_name, :foreign_key

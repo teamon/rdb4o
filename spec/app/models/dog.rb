@@ -1,5 +1,5 @@
 class Dog
-  include Rdb4o::Model
+  include Jrodb::Model
 
   field :name, String
   # field :owner, "Person"

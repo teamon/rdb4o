@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe Rdb4o::Model do
+describe Jrodb::Model do
   before(:all) do
     reconnect_database
   end
@@ -176,7 +176,7 @@ end
 
 #
 #   before(:all) do
-#     Rdb4o::Db4o.configure.generateUUIDs(Java::JavaLang::Integer::MAX_VALUE)
-#     Rdb4o::Db4o.configure.objectClass(Person).generateUUIDs(true);
-#     Rdb4o::Database.setup(:dbfile => "model_spec.db")
+#     Jrodb::Db4o.configure.generateUUIDs(Java::JavaLang::Integer::MAX_VALUE)
+#     Jrodb::Db4o.configure.objectClass(Person).generateUUIDs(true);
+#     Jrodb::Database.setup(:dbfile => "model_spec.db")
 #   end

@@ -1,4 +1,4 @@
-module Rdb4o
+module Jrodb
   module Collection
     class Basic < LazyArray
       attr_accessor :model, :conditions, :procs, :order_fields, :comparator
@@ -21,7 +21,7 @@ module Rdb4o
         @comparator = comparator
 
         load_with do |collection|
-          Rdb4o.logger.debug "COLLECTION:LOAD"
+          Jrodb.logger.debug "COLLECTION:LOAD"
           collection.clear!
           result = collection.result
           while result.has_next
@@ -40,7 +40,7 @@ module Rdb4o
       # proc<Proc>:: Filter proc
       #
       # ==== Returns
-      # Rdb4o::Collection::Basic :: Collection of objects
+      # Jrodb::Collection::Basic :: Collection of objects
       #
       # ==== Examples
       # collection.all
@@ -51,7 +51,7 @@ module Rdb4o
       def all(conditions = {}, &proc)
         procs = @procs.dup
         procs << proc if proc
-        Rdb4o::Collection::Basic.new(@model, @conditions.merge!(conditions), procs)
+        Jrodb::Collection::Basic.new(@model, @conditions.merge!(conditions), procs)
       end
 
       def first(conditions = {}, &proc)
@@ -64,7 +64,7 @@ module Rdb4o
       # symbols or comparator proc
       #
       # ==== Returns
-      # Rdb4o::Collection::Basic :: Collection of objects
+      # Jrodb::Collection::Basic :: Collection of objects
       #
       # ==== Examples
       # Person.all.order(:name)
@@ -74,7 +74,7 @@ module Rdb4o
       # @api public
       def order(*fields, &comparator)
         fields = [] unless comparator.nil?
-        Rdb4o::Collection::Basic.new(@model, @conditions, @procs, fields, comparator)
+        Jrodb::Collection::Basic.new(@model, @conditions, @procs, fields, comparator)
       end
 
 
@@ -152,7 +152,7 @@ module Rdb4o
       #
       # @api private
       def database
-        Rdb4o::Database[:default]
+        Jrodb::Database[:default]
       end
 
 

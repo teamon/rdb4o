@@ -7,7 +7,7 @@ def with_reconnect
   yield
 end
 
-describe Rdb4o::Collection do
+describe Jrodb::Collection do
   before(:all) do
     reconnect_database
   end
@@ -20,7 +20,7 @@ describe Rdb4o::Collection do
   end
 
   it "should return collection" do
-    Person.all.should be_an(Rdb4o::Collection::Basic)
+    Person.all.should be_an(Jrodb::Collection::Basic)
   end
 
   it "should create new collection with correct model class" do

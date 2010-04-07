@@ -1,4 +1,4 @@
-module Rdb4o
+module Jrodb
   module Model
     module Relations
       # "Belongs to" relation
@@ -46,7 +46,7 @@ module Rdb4o
 
         class_eval <<-FIELD, __FILE__, __LINE__
           def #{name}
-            Rdb4o::Collection::OneToMany.new(self, #{type}, :#{name}, :#{options[:key]})
+            Jrodb::Collection::OneToMany.new(self, #{type}, :#{name}, :#{options[:key]})
           end
         FIELD
       end

@@ -1,8 +1,8 @@
 package app.models.java;
 
-import com.rdb4o.Rdb4oModel;
+import com.jrodb.JrodbModel;
 
-public class Cat extends Rdb4oModel {
+public class Cat extends JrodbModel {
   public Cat() {}
 
   private String name;

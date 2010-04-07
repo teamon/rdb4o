@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe Rdb4o::Types do
+describe Jrodb::Types do
   before(:all) do
     class Chef
-      include Rdb4o::Model
+      include Jrodb::Model
 
       field :name, String
       field :age, Fixnum
@@ -20,43 +20,43 @@ describe Rdb4o::Types do
   describe "Type" do
 
     it "should return correct type for name" do
-      Rdb4o::Type.for(String).should == Rdb4o::Types::String
-      Rdb4o::Type.for(Fixnum).should == Rdb4o::Types::Fixnum
-      Rdb4o::Type.for(Integer).should == Rdb4o::Types::Fixnum
-      Rdb4o::Type.for(Float).should == Rdb4o::Types::Float
+      Jrodb::Type.for(String).should == Jrodb::Types::String
+      Jrodb::Type.for(Fixnum).should == Jrodb::Types::Fixnum
+      Jrodb::Type.for(Integer).should == Jrodb::Types::Fixnum
+      Jrodb::Type.for(Float).should == Jrodb::Types::Float
 
-      Rdb4o::Type.for("String").should == Rdb4o::Types::String
-      Rdb4o::Type.for("Fixnum").should == Rdb4o::Types::Fixnum
-      Rdb4o::Type.for("Integer").should == Rdb4o::Types::Fixnum
-      Rdb4o::Type.for("Float").should == Rdb4o::Types::Float
-      Rdb4o::Type.for("Boolean").should == Rdb4o::Types::Boolean
+      Jrodb::Type.for("String").should == Jrodb::Types::String
+      Jrodb::Type.for("Fixnum").should == Jrodb::Types::Fixnum
+      Jrodb::Type.for("Integer").should == Jrodb::Types::Fixnum
+      Jrodb::Type.for("Float").should == Jrodb::Types::Float
+      Jrodb::Type.for("Boolean").should == Jrodb::Types::Boolean
 
-      Rdb4o::Type.for("int").should == "int"
-      Rdb4o::Type.for("char").should == "char"
+      Jrodb::Type.for("int").should == "int"
+      Jrodb::Type.for("char").should == "char"
 
-      Rdb4o::Type.for([String]).superclass.should == Rdb4o::Types::Array
-      Rdb4o::Type.for([String]).type.should == String
-      Rdb4o::Type.for(["int"]).superclass.should == Rdb4o::Types::Array
-      Rdb4o::Type.for(["int"]).type.should == "int"
+      Jrodb::Type.for([String]).superclass.should == Jrodb::Types::Array
+      Jrodb::Type.for([String]).type.should == String
+      Jrodb::Type.for(["int"]).superclass.should == Jrodb::Types::Array
+      Jrodb::Type.for(["int"]).type.should == "int"
     end
 
     it "should return correct java_type" do
-      Rdb4o::Type.java_type_for(String).should == "String"
-      Rdb4o::Type.java_type_for(Fixnum).should == "int"
-      Rdb4o::Type.java_type_for(Integer).should == "int"
-      Rdb4o::Type.java_type_for(Float).should == "float"
+      Jrodb::Type.java_type_for(String).should == "String"
+      Jrodb::Type.java_type_for(Fixnum).should == "int"
+      Jrodb::Type.java_type_for(Integer).should == "int"
+      Jrodb::Type.java_type_for(Float).should == "float"
 
-      Rdb4o::Type.java_type_for("String").should == "String"
-      Rdb4o::Type.java_type_for("Fixnum").should == "int"
-      Rdb4o::Type.java_type_for("Integer").should == "int"
-      Rdb4o::Type.java_type_for("Float").should == "float"
-      Rdb4o::Type.java_type_for("Boolean").should == "boolean"
+      Jrodb::Type.java_type_for("String").should == "String"
+      Jrodb::Type.java_type_for("Fixnum").should == "int"
+      Jrodb::Type.java_type_for("Integer").should == "int"
+      Jrodb::Type.java_type_for("Float").should == "float"
+      Jrodb::Type.java_type_for("Boolean").should == "boolean"
 
-      Rdb4o::Type.java_type_for("int").should == "int"
-      Rdb4o::Type.java_type_for("char").should == "char"
+      Jrodb::Type.java_type_for("int").should == "int"
+      Jrodb::Type.java_type_for("char").should == "char"
 
-      Rdb4o::Type.java_type_for([String]).should == "String[]"
-      Rdb4o::Type.java_type_for(["int"]).should == "int[]"
+      Jrodb::Type.java_type_for([String]).should == "String[]"
+      Jrodb::Type.java_type_for(["int"]).should == "int[]"
     end
 
   end
@@ -75,41 +75,41 @@ describe Rdb4o::Types do
 
   describe "dump" do
     specify "String" do
-      Rdb4o::Types::String.dump("some string").should == "some string"
-      Rdb4o::Types::String.dump(4).should == "4"
-      Rdb4o::Types::String.dump(:symbol).should == "symbol"
-      Rdb4o::Types::String.dump(5.9).should == "5.9"
-      Rdb4o::Types::String.dump(true).should == "true"
-      Rdb4o::Types::String.dump(nil).should == nil
+      Jrodb::Types::String.dump("some string").should == "some string"
+      Jrodb::Types::String.dump(4).should == "4"
+      Jrodb::Types::String.dump(:symbol).should == "symbol"
+      Jrodb::Types::String.dump(5.9).should == "5.9"
+      Jrodb::Types::String.dump(true).should == "true"
+      Jrodb::Types::String.dump(nil).should == nil
     end
 
     specify "Fixnum" do
-      Rdb4o::Types::Fixnum.dump("some string").should == 0
-      Rdb4o::Types::Fixnum.dump("3").should == 3
-      Rdb4o::Types::Fixnum.dump(4).should == 4
-      Rdb4o::Types::Fixnum.dump(:symbol).should == 0
-      Rdb4o::Types::Fixnum.dump(5.9).should == 5
-      Rdb4o::Types::Fixnum.dump(true).should == 0
-      Rdb4o::Types::Fixnum.dump(nil).should == 0
+      Jrodb::Types::Fixnum.dump("some string").should == 0
+      Jrodb::Types::Fixnum.dump("3").should == 3
+      Jrodb::Types::Fixnum.dump(4).should == 4
+      Jrodb::Types::Fixnum.dump(:symbol).should == 0
+      Jrodb::Types::Fixnum.dump(5.9).should == 5
+      Jrodb::Types::Fixnum.dump(true).should == 0
+      Jrodb::Types::Fixnum.dump(nil).should == 0
     end
 
     specify "Float" do
-      Rdb4o::Types::Float.dump("some string").should == 0.0
-      Rdb4o::Types::Float.dump(4).should == 4.0
-      Rdb4o::Types::Float.dump(:symbol).should == 0.0
-      Rdb4o::Types::Float.dump(5.9).should == be_approx_equal(5.9, 0.00000000001)
-      Rdb4o::Types::Float.dump(true).should == 0.0
-      Rdb4o::Types::Float.dump(nil).should == 0.0
+      Jrodb::Types::Float.dump("some string").should == 0.0
+      Jrodb::Types::Float.dump(4).should == 4.0
+      Jrodb::Types::Float.dump(:symbol).should == 0.0
+      Jrodb::Types::Float.dump(5.9).should == be_approx_equal(5.9, 0.00000000001)
+      Jrodb::Types::Float.dump(true).should == 0.0
+      Jrodb::Types::Float.dump(nil).should == 0.0
     end
 
     specify "Boolean" do
-      Rdb4o::Types::Boolean.dump("some string").should == true
-      Rdb4o::Types::Boolean.dump(4).should == true
-      Rdb4o::Types::Boolean.dump(:symbol).should == true
-      Rdb4o::Types::Boolean.dump(5.9).should == true
-      Rdb4o::Types::Boolean.dump(true).should == true
-      Rdb4o::Types::Boolean.dump(false).should == false
-      Rdb4o::Types::Boolean.dump(nil).should == false
+      Jrodb::Types::Boolean.dump("some string").should == true
+      Jrodb::Types::Boolean.dump(4).should == true
+      Jrodb::Types::Boolean.dump(:symbol).should == true
+      Jrodb::Types::Boolean.dump(5.9).should == true
+      Jrodb::Types::Boolean.dump(true).should == true
+      Jrodb::Types::Boolean.dump(false).should == false
+      Jrodb::Types::Boolean.dump(nil).should == false
 
       c = Chef.new
       c.dead = nil

@@ -1,9 +1,9 @@
 require 'rubygems'
 require 'rake/gempackagetask'
 
-PLUGIN = "rdb4o"
-GEM_NAME = "rdb4o"
-GEM_VERSION = "0.1.0"
+PLUGIN = "jrodb"
+GEM_NAME = "jrodb"
+GEM_VERSION = "0.2.0"
 AUTHOR = "Kacper Cieśla, Tymon Tobolski"
 EMAIL = "kacper.ciesla@gmail.com"
 HOMEPAGE = "http://blog.teamon.eu/projekty/"
@@ -22,7 +22,7 @@ spec = Gem::Specification.new do |s|
   s.homepage = HOMEPAGE  
   s.require_path = 'lib'
   s.bindir = 'bin'
-  s.executables = %w( rdb4o )
+  s.executables = %w( jrodb )
   s.files = %w( LICENSE README.markdown Rakefile TODO ) +  Dir["{bin,lib,spec}/**/*"]
   s.add_dependency('extlib', '>= 0.9')
 end
@@ -33,7 +33,7 @@ end
 
 
 dir = File.dirname(__FILE__)
-ENV["CLASSPATH"] = "#{dir}/lib/java/db4o.jar:#{dir}/lib/java/rdb4o.jar:#{dir}/spec"
+ENV["CLASSPATH"] = "#{dir}/lib/java/db4o.jar:#{dir}/lib/java/jrodb.jar:#{dir}/spec"
 
 if ENV['file']
   files = "#{dir}/spec/#{ENV['file']}_spec.rb"
@@ -50,7 +50,7 @@ end
 
 desc 'Compile lib'
 task :compile do
-  Dir["#{dir}/lib/java/com/rdb4o/*.java"].each do |f|
+  Dir["#{dir}/lib/java/com/jrodb/*.java"].each do |f|
     puts "Compiling #{f}"
     system "javac -cp #{dir}/lib/java/db4o.jar:#{dir}/lib/java #{f}"
   end
@@ -59,7 +59,7 @@ end
 desc 'Make jar'
 task :jar => :compile do
   Dir.chdir "#{dir}/lib/java"
-  system "jar -c com > rdb4o.jar"
+  system "jar -c com > jrodb.jar"
   puts "JAR file created"
 end
 
@@ -78,8 +78,8 @@ namespace :spec do
   task :gen do
     Dir.chdir(dir + "/spec")
     ENV["DEV"] = "true"
-    system "../bin/rdb4o generate app/models"
-    system "../bin/rdb4o compile app/models"
+    system "../bin/jrodb generate app/models"
+    system "../bin/jrodb compile app/models"
   end
 
   desc "Console"

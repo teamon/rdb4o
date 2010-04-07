@@ -1,4 +1,4 @@
-module Rdb4o
+module Jrodb
   module Types
 
     class Generic
@@ -90,7 +90,7 @@ module Rdb4o
         end
 
         def java_type
-          "#{Rdb4o::Type.java_type_for(type)}[]"
+          "#{Jrodb::Type.java_type_for(type)}[]"
         end
 
         def load(value)
@@ -100,7 +100,7 @@ module Rdb4o
         def dump(value)
           if value && type.respond_to?(:java_type)
             value.map do |e|
-              e = Rdb4o::Type.dump(type, e)
+              e = Jrodb::Type.dump(type, e)
               # e.save if e.respond_to?(:save)
               e
             end.to_java(type.java_type)

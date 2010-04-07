@@ -1,24 +1,24 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe Rdb4o::Model::Generator do
+describe Jrodb::Model::Generator do
   before(:all) do
 
     class Eric
-      include Rdb4o::Model
+      include Jrodb::Model
 
       field :name, "String"
       field :age, Fixnum
     end
 
     class Kyle
-      include Rdb4o::Model
+      include Jrodb::Model
 
       field :name, "String"
       field :age, Float
     end
 
     class Stan
-      include Rdb4o::Model
+      include Jrodb::Model
 
       field :name, "String"
       field :age, "int"
@@ -27,10 +27,10 @@ describe Rdb4o::Model::Generator do
   end
 
   it "should generate .java file" do
-    file = Rdb4o::Model::Generator.generate!(Eric)
+    file = Jrodb::Model::Generator.generate!(Eric)
 
-    file.should include("import com.rdb4o.Rdb4oModel;")
-    file.should include("public class Eric extends Rdb4oModel")
+    file.should include("import com.jrodb.JrodbModel;")
+    file.should include("public class Eric extends JrodbModel")
     file.should include("public Eric() {}")
 
     file.should include("private int age;")
@@ -43,10 +43,10 @@ describe Rdb4o::Model::Generator do
 
     file.should_not include("package")
 
-    file = Rdb4o::Model::Generator.generate!(Kyle)
+    file = Jrodb::Model::Generator.generate!(Kyle)
 
-    file.should include("import com.rdb4o.Rdb4oModel;")
-    file.should include("public class Kyle extends Rdb4oModel")
+    file.should include("import com.jrodb.JrodbModel;")
+    file.should include("public class Kyle extends JrodbModel")
     file.should include("public Kyle() {}")
 
     file.should include("private float age;")
@@ -61,20 +61,20 @@ describe Rdb4o::Model::Generator do
   end
 
   it "should generate .java file with package" do
-    file = Rdb4o::Model::Generator.generate!(Eric, "app.models")
+    file = Jrodb::Model::Generator.generate!(Eric, "app.models")
     file.should include("package app.models.java;")
   end
 
   it "should have list of all classes" do
-    Rdb4o::Model::Generator.classes.should include(Eric, Kyle, Stan)
+    Jrodb::Model::Generator.classes.should include(Eric, Kyle, Stan)
   end
 
   # it "should generate all .java files" do
-  #   files = Rdb4o::Model::Generator.generate_all!.join
+  #   files = Jrodb::Model::Generator.generate_all!.join
   #
-  #   files.should include("public class Eric extends Rdb4oModel")
-  #   files.should include("public class Kyle extends Rdb4oModel")
-  #   files.should include("public class Stan extends Rdb4oModel")
+  #   files.should include("public class Eric extends JrodbModel")
+  #   files.should include("public class Kyle extends JrodbModel")
+  #   files.should include("public class Stan extends JrodbModel")
   # end
 
 end

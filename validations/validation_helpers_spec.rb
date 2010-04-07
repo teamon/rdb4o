@@ -1,10 +1,10 @@
 require File.join(File.dirname(__FILE__), "spec_helper")
 
-Rdb4o.use_validations = true
+Jrodb.use_validations = true
 
-describe Rdb4o::ValidationHelpers do
+describe Jrodb::ValidationHelpers do
   before(:all) do
-    Rdb4o::Database.setup(:dbfile => "validation_helpers_spec.db")
+    Jrodb::Database.setup(:dbfile => "validation_helpers_spec.db")
 
     class Person
       def self.set_validations(&block)

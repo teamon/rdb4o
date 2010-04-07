@@ -1,4 +1,23 @@
-module Rdb4o
+module Jrodb
+  class Adapter
+    def setup!(config)
+      
+    end
+    
+    def close!
+      
+    end
+    
+  end
+  
+  module Adapters
+    class Neodatis
+      
+    end
+  end
+  
+  
+  
   class Database
     Db4o = com.db4o.Db4o
 
@@ -119,7 +138,7 @@ module Rdb4o
 
 
     def query(model = nil, conditions = {}, procs = [], order_fields = [], comparator = nil)
-      Rdb4o.logger.debug "QUERY: #{model}  #{conditions.inspect}  #{procs.size}"
+      Jrodb.logger.debug "QUERY: #{model}  #{conditions.inspect}  #{procs.size}"
 
       if !order_fields.empty? && !comparator.nil?
         raise ArgumentError.new("You can`t specify both order_fields and order_proc")
@@ -162,12 +181,12 @@ module Rdb4o
     end
 
     def store(object)
-      Rdb4o.logger.debug "STORE: #{object}"
+      Jrodb.logger.debug "STORE: #{object}"
       @connection.set(object)
     end
 
     def delete(object)
-      Rdb4o.logger.debug "DELETE: #{object}"
+      Jrodb.logger.debug "DELETE: #{object}"
       @connection.delete(object)
     end
 

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 
-describe Rdb4o::Collection do
+describe Jrodb::Collection do
   before(:all) do
     reconnect_database
 
